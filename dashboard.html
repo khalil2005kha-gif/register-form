@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>لوحة التحكم – Workshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    /* ═══════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:        #E05555;
+      --red-dark:   #c43e3e;
+      --red-glow:   rgba(224,85,85,0.25);
+      --bg:         #0f1117;
+      --bg2:        #161b27;
+      --bg3:        #1e2536;
+      --border:     rgba(255,255,255,0.07);
+      --text:       #e8eaf0;
+      --text-soft:  #8b92a8;
+      --green:      #22c55e;
+      --blue:       #3b82f6;
+      --yellow:     #f59e0b;
+      --radius:     14px;
+      --transition: 0.25s cubic-bezier(.4,0,.2,1);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════
+       LOGIN PAGE
+    ═══════════════════════════════════════ */
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 60% 40%, rgba(224,85,85,0.12) 0%, transparent 65%),
+                  radial-gradient(ellipse at 20% 80%, rgba(59,130,246,0.08) 0%, transparent 50%),
+                  var(--bg);
+    }
+
+    .login-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      animation: slideUp .5s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity:0; transform: translateY(30px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .login-logo {
+      width: 64px; height: 64px;
+      background: var(--red);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 24px var(--red-glow);
+    }
+
+    .login-card h1 {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .login-card p {
+      text-align: center;
+      color: var(--text-soft);
+      font-size: .9rem;
+      margin-bottom: 32px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+      letter-spacing: .5px;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--bg3);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      margin-bottom: 20px;
+    }
+
+    .field-input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 4px var(--red-glow);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 6px 20px var(--red-glow);
+    }
+
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .login-error {
+      background: rgba(224,85,85,0.12);
+      border: 1px solid rgba(224,85,85,0.3);
+      color: #ff8080;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: .85rem;
+      margin-top: 14px;
+      display: none;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════
+       DASHBOARD
+    ═══════════════════════════════════════ */
+    #dashboard { display: none; }
+
+    /* Sidebar */
+    .layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 240px;
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      margin-bottom: 32px;
+    }
+
+    .sidebar-logo-icon {
+      width: 38px; height: 38px;
+      background: var(--red);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .sidebar-logo-text { font-size: 1rem; font-weight: 700; }
+    .sidebar-logo-sub  { font-size: .72rem; color: var(--text-soft); }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all var(--transition);
+      margin-bottom: 4px;
+      text-decoration: none;
+    }
+
+    .nav-item:hover { background: var(--bg3); color: var(--text); }
+    .nav-item.active { background: rgba(224,85,85,0.15); color: var(--red); font-weight: 600; }
+    .nav-item.active .nav-icon { color: var(--red); }
+    .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Main content */
+    .main {
+      margin-right: 240px;
+      flex: 1;
+      padding: 32px;
+      min-height: 100vh;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .topbar-title { font-size: 1.5rem; font-weight: 700; }
+    .topbar-sub   { font-size: .85rem; color: var(--text-soft); margin-top: 2px; }
+
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+    .btn-icon {
+      padding: 9px 18px;
+      border-radius: 9px;
+      font-family: 'Outfit', sans-serif;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex; align-items: center; gap: 7px;
+      border: 1.5px solid var(--border);
+      background: var(--bg2);
+      color: var(--text);
+    }
+
+    .btn-icon:hover { border-color: var(--red); color: var(--red); }
+
+    .btn-danger {
+      background: rgba(224,85,85,0.1);
+      border-color: rgba(224,85,85,0.3);
+      color: var(--red);
+    }
+
+    .btn-danger:hover { background: var(--red); color: white; }
+
+    .btn-success {
+      background: rgba(34,197,94,0.1);
+      border-color: rgba(34,197,94,0.3);
+      color: var(--green);
+    }
+
+    .btn-success:hover { background: var(--green); color: white; }
+
+    /* ── Stats cards ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .stat-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.12); }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .stat-label { font-size: .82rem; color: var(--text-soft); font-weight: 500; }
+
+    .stat-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-change {
+      font-size: .78rem;
+      color: var(--green);
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    /* ── Table section ── */
+    .section-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .section-title { font-size: 1rem; font-weight: 700; }
+
+    .search-input {
+      padding: 9px 14px;
+      background: var(--bg3);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: .88rem;
+      outline: none;
+      width: 220px;
+      transition: border-color var(--transition);
+    }
+
+    .search-input:focus { border-color: var(--red); }
+    .search-input::placeholder { color: var(--text-soft); }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+    }
+
+    thead th {
+      padding: 14px 20px;
+      text-align: right;
+      font-weight: 600;
+      font-size: .78rem;
+      letter-spacing: .5px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    tbody td {
+      padding: 14px 20px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background: rgba(34,197,94,0.12); color: var(--green); }
+    .badge-red   { background: rgba(224,85,85,0.12);  color: var(--red); }
+
+    .avatar-sm {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--red);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .9rem;
+      color: white;
+      margin-left: 10px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .user-cell { display: flex; align-items: center; gap: 0; }
+
+    .delete-btn {
+      padding: 6px 12px;
+      background: rgba(224,85,85,0.08);
+      border: 1px solid rgba(224,85,85,0.2);
+      border-radius: 7px;
+      color: var(--red);
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .delete-btn:hover { background: var(--red); color: white; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-soft);
+    }
+
+    .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state h3 { font-size: 1.1rem; margin-bottom: 6px; color: var(--text); }
+
+    /* Loading spinner */
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 60px auto;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 22px;
+      font-size: .9rem;
+      font-weight: 500;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      z-index: 9999;
+      transition: transform .4s cubic-bezier(.4,0,.2,1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: rgba(34,197,94,0.4); }
+    .toast.error   { border-color: rgba(224,85,85,0.4); }
+
+    /* Refresh indicator */
+    .refresh-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+      animation: pulse 2s ease infinite;
+      margin-left: 6px;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.5; transform:scale(0.8); }
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      font-size: .85rem;
+      color: var(--text-soft);
+    }
+
+    .page-btns { display: flex; gap: 6px; }
+
+    .page-btn {
+      padding: 6px 12px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text);
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-size: .82rem;
+      transition: all var(--transition);
+    }
+
+    .page-btn:hover, .page-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .sidebar { display: none; }
+      .main { margin-right: 0; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LOGIN PAGE
+═══════════════════════════════════════ -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">📊</div>
+    <h1>لوحة التحكم</h1>
+    <p>ادخل كلمة السر للوصول إلى بيانات المسجلين</p>
+
+    <label class="field-label" for="passwordInput">كلمة السر</label>
+    <input
+      type="password"
+      id="passwordInput"
+      class="field-input"
+      placeholder="••••••••"
+      onkeydown="if(event.key==='Enter') login()"
+    />
+
+    <button class="btn-primary" onclick="login()">دخول إلى لوحة التحكم</button>
+    <div class="login-error" id="loginError">❌ كلمة السر غير صحيحة</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════ -->
+<div id="dashboard">
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">📊</div>
+        <div>
+          <div class="sidebar-logo-text">Workshop</div>
+          <div class="sidebar-logo-sub">لوحة التحكم</div>
+        </div>
+      </div>
+
+      <nav>
+        <div class="nav-item active">
+          <span class="nav-icon">👥</span> المسجلون
+        </div>
+        <div class="nav-item" onclick="exportExcel()">
+          <span class="nav-icon">📥</span> تصدير Excel
+        </div>
+        <div class="nav-item" onclick="loadData()">
+          <span class="nav-icon">🔄</span> تحديث البيانات
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="nav-item btn-danger" onclick="logout()">
+          <span class="nav-icon">🚪</span> تسجيل الخروج
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">المسجلون في Workshop</div>
+          <div class="topbar-sub" id="lastUpdate">جارٍ التحميل… <span class="refresh-dot"></span></div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-icon btn-success" onclick="exportExcel()">📥 تصدير Excel</button>
+          <button class="btn-icon" onclick="loadData()">🔄 تحديث</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">إجمالي المسجلين</span>
+            <div class="stat-icon" style="background:rgba(224,85,85,0.12)">👥</div>
+          </div>
+          <div class="stat-value" id="statTotal">—</div>
+          <div class="stat-change">📋 جميع الأوقات</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">تسجيلات اليوم</span>
+            <div class="stat-icon" style="background:rgba(34,197,94,0.12)">📅</div>
+          </div>
+          <div class="stat-value" id="statToday">—</div>
+          <div class="stat-change">✅ اليوم</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">لديهم هاتف</span>
+            <div class="stat-icon" style="background:rgba(59,130,246,0.12)">📞</div>
+          </div>
+          <div class="stat-value" id="statPhone">—</div>
+          <div class="stat-change">📱 رقم مسجل</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">آخر تسجيل</span>
+            <div class="stat-icon" style="background:rgba(245,158,11,0.12)">🕐</div>
+          </div>
+          <div class="stat-value" style="font-size:1rem;padding-top:6px;" id="statLast">—</div>
+          <div class="stat-change">🔔 الأحدث</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="section-card">
+        <div class="section-header">
+          <span class="section-title">قائمة المسجلين</span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="🔍 بحث بالاسم أو الإيميل..."
+            oninput="filterTable()"
+          />
+        </div>
+
+        <div class="table-wrap">
+          <div id="tableContent">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+        <div class="pagination" id="pagination" style="display:none">
+          <span id="pageInfo">عرض 1–10 من 0</span>
+          <div class="page-btns" id="pageBtns"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+//  CONFIG — ضع رابط Apps Script هنا
+// ══════════════════════════════════════
+const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbxBv6J-iHj-wvwq2XDiKArfMqKD9ydjYSWa0AZxHHeqbAZ26jt46njrrFPWkZxzpcAZ/exec';
+const DASHBOARD_SECRET = 'admin2024';  // ← نفس كلمة السر في Apps Script
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let allData     = [];
+let filtered    = [];
+let currentPage = 1;
+const perPage   = 10;
+let autoRefreshTimer;
+
+// ══════════════════════════════════════
+//  LOGIN
+// ══════════════════════════════════════
+function login() {
+  const pass = document.getElementById('passwordInput').value.trim();
+  if (pass === DASHBOARD_SECRET) {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    sessionStorage.setItem('dash_auth', '1');
+    loadData();
+    startAutoRefresh();
+  } else {
+    const err = document.getElementById('loginError');
+    err.style.display = 'block';
+    document.getElementById('passwordInput').value = '';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('dash_auth');
+  clearInterval(autoRefreshTimer);
+  document.getElementById('dashboard').style.display  = 'none';
+  document.getElementById('loginPage').style.display  = 'flex';
+  document.getElementById('passwordInput').value = '';
+}
+
+// Auto-login if session still alive
+if (sessionStorage.getItem('dash_auth') === '1') {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadData();
+  startAutoRefresh();
+}
+
+// ══════════════════════════════════════
+//  LOAD DATA
+// ══════════════════════════════════════
+async function loadData() {
+  document.getElementById('tableContent').innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=list&t=${Date.now()}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'unauthorized') {
+      showToast('❌ رمز الوصول خاطئ', 'error'); return;
+    }
+
+    allData = json.data || [];
+    filtered = [...allData];
+    currentPage = 1;
+
+    // Stats
+    document.getElementById('statTotal').textContent = json.total || 0;
+    document.getElementById('statToday').textContent = json.todayCount || 0;
+    document.getElementById('statPhone').textContent =
+      allData.filter(r => r.phone && r.phone !== 'لم يُدخل').length;
+
+    const last = allData.length ? allData[allData.length - 1] : null;
+    document.getElementById('statLast').textContent =
+      last ? last.username : '—';
+
+    // Update time
+    document.getElementById('lastUpdate').innerHTML =
+      `آخر تحديث: ${new Date().toLocaleTimeString('ar-SA')} <span class="refresh-dot"></span>`;
+
+    renderTable();
+
+  } catch(e) {
+    document.getElementById('tableContent').innerHTML =
+      '<div class="empty-state"><div class="empty-state-icon">⚠️</div>' +
+      '<h3>فشل تحميل البيانات</h3><p>تأكد من رابط Apps Script ثم حاول مجدداً</p></div>';
+  }
+}
+
+// ══════════════════════════════════════
+//  RENDER TABLE
+// ══════════════════════════════════════
+function renderTable() {
+  const start = (currentPage - 1) * perPage;
+  const end   = start + perPage;
+  const page  = filtered.slice(start, end);
+
+  if (filtered.length === 0) {
+    document.getElementById('tableContent').innerHTML =
+      '<div class="empty-state"><div class="empty-state-icon">📭</div>' +
+      '<h3>لا توجد بيانات</h3><p>لم يتم التسجيل بعد أو لا توجد نتائج للبحث</p></div>';
+    document.getElementById('pagination').style.display = 'none';
+    return;
+  }
+
+  let rows = page.map((r, i) => `
+    <tr id="row-${r.id}">
+      <td style="color:var(--text-soft);font-size:.8rem">${start + i + 1}</td>
+      <td>
+        <div class="user-cell">
+          <div class="avatar-sm">${r.username ? r.username[0].toUpperCase() : '?'}</div>
+          <span style="margin-right:10px;font-weight:600">${esc(r.username)}</span>
+        </div>
+      </td>
+      <td style="color:var(--text-soft)">${esc(r.email)}</td>
+      <td>${r.phone && r.phone !== 'لم يُدخل'
+        ? `<span class="badge badge-green">📞 ${esc(r.phone)}</span>`
+        : `<span class="badge badge-red">—</span>`}
+      </td>
+      <td style="color:var(--text-soft);font-size:.82rem">${esc(r.date)}</td>
+      <td>
+        <button class="delete-btn" onclick="deleteRow('${r.id}')">🗑️ حذف</button>
+      </td>
+    </tr>
+  `).join('');
+
+  document.getElementById('tableContent').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>اسم المستخدم</th>
+          <th>البريد الإلكتروني</th>
+          <th>رقم الهاتف</th>
+          <th>تاريخ التسجيل</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+
+  // Pagination
+  const totalPages = Math.ceil(filtered.length / perPage);
+  document.getElementById('pageInfo').textContent =
+    `عرض ${start+1}–${Math.min(end, filtered.length)} من ${filtered.length}`;
+
+  let btns = '';
+  for (let p = 1; p <= totalPages; p++) {
+    btns += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+  }
+  document.getElementById('pageBtns').innerHTML = btns;
+  document.getElementById('pagination').style.display = 'flex';
+}
+
+function goPage(p) { currentPage = p; renderTable(); }
+
+// ══════════════════════════════════════
+//  FILTER
+// ══════════════════════════════════════
+function filterTable() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  filtered = q
+    ? allData.filter(r =>
+        (r.username||'').toLowerCase().includes(q) ||
+        (r.email||'').toLowerCase().includes(q) ||
+        (r.phone||'').includes(q))
+    : [...allData];
+  currentPage = 1;
+  renderTable();
+}
+
+// ══════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════
+async function deleteRow(id) {
+  if (!confirm('هل تريد حذف هذا المسجّل نهائياً؟')) return;
+
+  const row = document.getElementById('row-' + id);
+  if (row) row.style.opacity = '.3';
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=delete&id=${id}&t=${Date.now()}`;
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'deleted') {
+      allData  = allData.filter(r => r.id !== id);
+      filtered = filtered.filter(r => r.id !== id);
+      document.getElementById('statTotal').textContent = allData.length;
+      renderTable();
+      showToast('✅ تم الحذف بنجاح', 'success');
+    } else {
+      if (row) row.style.opacity = '1';
+      showToast('❌ فشل الحذف', 'error');
+    }
+  } catch(e) {
+    if (row) row.style.opacity = '1';
+    showToast('❌ خطأ في الاتصال', 'error');
+  }
+}
+
+// ══════════════════════════════════════
+//  EXPORT EXCEL (CSV)
+// ══════════════════════════════════════
+function exportExcel() {
+  if (!allData.length) { showToast('⚠️ لا توجد بيانات للتصدير', 'error'); return; }
+
+  const bom  = '\uFEFF';
+  const head = 'اسم المستخدم,البريد الإلكتروني,رقم الهاتف,تاريخ التسجيل\n';
+  const rows = allData.map(r =>
+    `"${r.username}","${r.email}","${r.phone}","${r.date}"`
+  ).join('\n');
+
+  const blob = new Blob([bom + head + rows], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href  = URL.createObjectURL(blob);
+  link.download = `workshop_registrations_${new Date().toLocaleDateString('ar-SA').replace(/\//g,'-')}.csv`;
+  link.click();
+  showToast('📥 تم تصدير الملف بنجاح', 'success');
+}
+
+// ══════════════════════════════════════
+//  AUTO REFRESH (كل 60 ثانية)
+// ══════════════════════════════════════
+function startAutoRefresh() {
+  autoRefreshTimer = setInterval(loadData, 60000);
+}
+
+// ══════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ══════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
