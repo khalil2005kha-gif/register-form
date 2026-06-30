@@ -1,540 +1,615 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl" id="htmlRoot">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register Now – SIM & e-SIM</title>
-  <meta name="description" content="Register for SIM and e-SIM services."/>
+  <title>مرحبا بكم في عالم شرائح – JK</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
   <style>
-    /* ══════════════════════════════════
-       RESET
-    ══════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --teal:       #2ec4b6;
-      --teal-dark:  #1a9e92;
-      --teal-light: #3dd6c8;
-      --bg-grad1:   #1ab5aa;
-      --bg-grad2:   #0d8c82;
-      --white:      #ffffff;
-      --text-dark:  #1a2e2d;
-      --text-soft:  #4a7a76;
-      --border:     rgba(46,196,182,0.25);
-      --shadow:     0 24px 64px rgba(0,0,0,0.25);
-      --radius:     18px;
-      --transition: 0.3s cubic-bezier(.4,0,.2,1);
+      --teal:      #2ec4b6;
+      --teal-dark: #1a9e92;
+      --teal-light:#3dd6c8;
+      --white:     #ffffff;
+      --text-dark: #1a2e2d;
+      --text-soft: #4a7a76;
+      --radius:    16px;
+      --T:         0.3s cubic-bezier(.4,0,.2,1);
     }
 
     body {
       font-family: 'Outfit', sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, var(--bg-grad1) 0%, var(--bg-grad2) 50%, #0a6b62 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, #1ec8ba 0%, #12a89b 50%, #0a7a72 100%);
+      display: flex; align-items: center; justify-content: center;
       padding: 20px;
-      overflow: hidden;
-      position: relative;
+      position: relative; overflow: hidden;
     }
 
-    /* Decorative blobs */
     body::before {
-      content: '';
-      position: fixed;
-      top: -120px; right: -120px;
-      width: 380px; height: 380px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 50%;
-      pointer-events: none;
+      content:''; position:fixed; top:-140px; right:-140px;
+      width:400px; height:400px;
+      background:rgba(255,255,255,0.08); border-radius:50%; pointer-events:none;
     }
-
     body::after {
-      content: '';
-      position: fixed;
-      bottom: -100px; left: -100px;
-      width: 320px; height: 320px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-      pointer-events: none;
+      content:''; position:fixed; bottom:-100px; left:-100px;
+      width:300px; height:300px;
+      background:rgba(255,255,255,0.05); border-radius:50%; pointer-events:none;
     }
 
-    .hidden { display: none !important; }
+    .hidden { display:none !important; }
+
+    /* ── Animate pages ── */
+    .page { animation: fadeUp .45s ease; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
 
     /* ══════════════════════════════════
-       OUTER WRAPPER (teal bg card)
+       PAGE 1 – LOGIN
     ══════════════════════════════════ */
-    .page-wrapper {
-      width: 100%;
-      max-width: 760px;
-      animation: fadeIn .5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity:0; transform:translateY(20px); }
-      to   { opacity:1; transform:translateY(0); }
+    #page1 {
+      width:100%; max-width:680px;
+      display:flex; flex-direction:column; align-items:center;
     }
 
     /* Outer teal card */
     .outer-card {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.25);
       border-radius: 28px;
-      padding: 48px 40px;
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 44px 36px;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 28px 72px rgba(0,0,0,0.25);
+      display: flex; flex-direction:column; align-items:center;
     }
 
-    /* ══════════════════════════════════
-       K MONOGRAM LOGO
-    ══════════════════════════════════ */
-    .brand-logo {
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .k-monogram {
+    /* JK Logo */
+    .jk-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 5rem;
+      font-size: 4.8rem;
       font-weight: 800;
-      color: var(--white);
+      color: white;
       line-height: 1;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      letter-spacing: -4px;
-      display: inline-block;
-      position: relative;
+      letter-spacing: -6px;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      margin-bottom: 10px;
+      user-select: none;
     }
 
-    .k-monogram::before {
-      content: 'J';
-      font-size: 3.5rem;
-      position: absolute;
-      top: 8px;
-      left: -18px;
-      opacity: 0.6;
-    }
-
-    .brand-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 30px;
-      padding: 5px 16px;
-      font-size: .78rem;
-      font-weight: 600;
-      color: white;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-top: 10px;
-    }
-
-    .brand-tag-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--teal-light);
-      box-shadow: 0 0 8px var(--teal-light);
-    }
-
-    /* ══════════════════════════════════
-       INNER WHITE FORM CARD
-    ══════════════════════════════════ */
-    .form-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 36px 40px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-    }
-
-    .form-card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      text-align: center;
-      margin-bottom: 4px;
-    }
-
-    .form-card-sub {
-      font-size: .82rem;
-      color: var(--text-soft);
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    /* ══════════════════════════════════
-       INPUT GROUPS
-    ══════════════════════════════════ */
-    .input-group {
-      position: relative;
-      margin-bottom: 14px;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--teal);
-      display: flex;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 13px 14px 13px 42px;
-      border: 1.5px solid #e0efee;
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: .9rem;
-      color: var(--text-dark);
-      outline: none;
-      background: #f7fefe;
-      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
-    }
-
-    .input-group input::placeholder { color: #aac5c3; font-size: .85rem; }
-
-    .input-group input:focus {
-      border-color: var(--teal);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(46,196,182,0.15);
-    }
-
-    .input-group.error input {
-      border-color: #e05555;
-      animation: shake .3s ease;
-    }
-
-    @keyframes shake {
-      0%,100% { transform:translateX(0); }
-      25%      { transform:translateX(-5px); }
-      75%      { transform:translateX(5px); }
-    }
-
-    .error-msg {
-      font-size: .72rem;
-      color: #e05555;
-      margin-top: 4px;
-      margin-left: 4px;
-      display: none;
-    }
-
-    .input-group.error .error-msg { display: block; }
-
-    /* ══════════════════════════════════
-       BUTTONS
-    ══════════════════════════════════ */
-    .btn-login {
-      width: 100%;
-      padding: 14px;
-      background: var(--teal);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: .95rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      margin-top: 6px;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-      box-shadow: 0 6px 20px rgba(46,196,182,0.4);
-    }
-
-    .btn-login:hover {
-      background: var(--teal-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(46,196,182,0.5);
-    }
-
-    .btn-login:active { transform: translateY(0); }
-
-    .btn-login.loading {
-      opacity: .8;
-      pointer-events: none;
-    }
-
-    /* OR divider */
-    .or-divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 18px 0 14px;
-      color: #b0c8c6;
-      font-size: .8rem;
-      font-weight: 600;
-    }
-
-    .or-divider::before,
-    .or-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #e8f4f3;
-    }
-
-    /* Scroll indicator (dropdown arrow) */
-    .scroll-hint {
-      text-align: center;
-      color: var(--teal);
-      font-size: 1.3rem;
-      cursor: pointer;
-      animation: bounce 1.5s ease infinite;
-    }
-
-    @keyframes bounce {
-      0%,100% { transform:translateY(0); }
-      50%      { transform:translateY(5px); }
-    }
-
-    /* ══════════════════════════════════
-       BUTTON ROW (back + submit)
-    ══════════════════════════════════ */
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .btn-back {
-      padding: 13px 18px;
-      background: #f0fafa;
-      border: 1.5px solid #d0ecea;
-      border-radius: 10px;
-      font-family: 'Outfit', sans-serif;
-      font-size: .85rem;
-      font-weight: 600;
-      color: var(--teal-dark);
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-
-    .btn-back:hover { background: #e0f5f4; }
-
-    .btn-row .btn-login {
-      flex: 1;
-      margin-top: 0;
-      letter-spacing: 1px;
-    }
-
-    /* ══════════════════════════════════
-       SIM & e-SIM TAG
-    ══════════════════════════════════ */
-    .sim-tag {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 20px;
+    /* SIM badges */
+    .sim-badges {
+      display: flex; align-items:center; gap:10px;
+      margin-bottom: 28px;
     }
 
     .sim-badge {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      border-radius: 30px;
-      font-size: .8rem;
-      font-weight: 700;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      border: 1.5px solid rgba(255,255,255,0.5);
-      color: white;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(4px);
-      transition: background var(--transition);
+      display:flex; align-items:center; gap:6px;
+      padding:6px 16px; border-radius:30px;
+      font-size:.8rem; font-weight:700;
+      letter-spacing:.5px; text-transform:uppercase;
+      border:1.5px solid rgba(255,255,255,0.5);
+      color:white; background:rgba(255,255,255,0.15);
+      backdrop-filter:blur(4px);
     }
 
-    .sim-badge:hover { background: rgba(255,255,255,0.25); }
-    .sim-badge-icon  { font-size: 1rem; }
+    .sim-divider { width:1px; height:20px; background:rgba(255,255,255,0.35); }
 
-    .sim-divider {
-      width: 1px; height: 20px;
-      background: rgba(255,255,255,0.3);
+    /* White form card */
+    .form-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 14px 42px rgba(0,0,0,0.14);
     }
 
-    /* ══════════════════════════════════
-       PRIVACY & POWERED
-    ══════════════════════════════════ */
-    .privacy-note {
-      font-size: .7rem;
-      color: rgba(255,255,255,0.6);
+    /* Welcome title (red circle area) */
+    .welcome-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-dark);
       text-align: center;
-      margin-top: 18px;
-      line-height: 1.6;
+      margin-bottom: 4px;
+      line-height: 1.4;
     }
+
+    .welcome-sub {
+      font-size: .82rem;
+      color: var(--text-soft);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    /* Input */
+    .inp-wrap { position:relative; margin-bottom:14px; }
+
+    .inp-icon {
+      position:absolute; left:14px; top:50%;
+      transform:translateY(-50%);
+      color:var(--teal); display:flex; align-items:center;
+      pointer-events:none;
+    }
+
+    /* RTL: icon on right */
+    html[dir="rtl"] .inp-icon { left:auto; right:14px; }
+    html[dir="rtl"] .inp-wrap input { padding: 13px 42px 13px 14px; }
+
+    .inp-wrap input {
+      width:100%;
+      padding: 13px 14px 13px 42px;
+      border:1.5px solid #e0efee;
+      border-radius:10px;
+      font-family:'Outfit',sans-serif;
+      font-size:.9rem; color:var(--text-dark);
+      outline:none; background:#f7fefe;
+      transition: border-color var(--T), box-shadow var(--T);
+    }
+
+    .inp-wrap input::placeholder { color:#aac5c3; }
+    .inp-wrap input:focus {
+      border-color:var(--teal);
+      box-shadow: 0 0 0 4px rgba(46,196,182,0.15);
+      background:#fff;
+    }
+
+    .inp-wrap.error input { border-color:#e05555; animation:shake .3s ease; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+    .err-msg { font-size:.72rem; color:#e05555; margin-top:3px; display:none; }
+    .inp-wrap.error .err-msg { display:block; }
+
+    /* LOGIN button */
+    .btn-login {
+      width:100%; padding:14px;
+      background:var(--teal); color:white;
+      border:none; border-radius:10px;
+      font-family:'Outfit',sans-serif;
+      font-size:.95rem; font-weight:700;
+      letter-spacing:2px; text-transform:uppercase;
+      cursor:pointer; margin-top:4px;
+      transition: background var(--T), transform var(--T), box-shadow var(--T);
+      box-shadow: 0 6px 20px rgba(46,196,182,0.4);
+    }
+
+    .btn-login:hover { background:var(--teal-dark); transform:translateY(-2px); box-shadow:0 10px 28px rgba(46,196,182,0.5); }
+    .btn-login:active { transform:translateY(0); }
+
+    /* OR + Language toggle (yellow circle area) */
+    .or-row {
+      display:flex; align-items:center; justify-content:center;
+      gap:14px; margin:18px 0 0;
+    }
+
+    .lang-toggle {
+      display:flex; align-items:center; gap:0;
+      border-radius:30px; overflow:hidden;
+      border:1.5px solid var(--teal);
+    }
+
+    .lang-btn {
+      padding:6px 14px;
+      font-family:'Outfit',sans-serif;
+      font-size:.78rem; font-weight:700;
+      cursor:pointer; border:none;
+      background:transparent; color:var(--teal);
+      transition: background var(--T), color var(--T);
+      letter-spacing:.5px;
+    }
+
+    .lang-btn.active { background:var(--teal); color:white; }
+    .lang-sep { width:1px; height:100%; background:var(--teal); }
+
+    /* Privacy */
+    .privacy { font-size:.7rem; color:rgba(255,255,255,0.6); text-align:center; margin-top:18px; line-height:1.6; }
 
     .powered-by {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      margin-top: 12px;
-      background: rgba(255,255,255,0.9);
-      padding: 4px 14px;
-      border-radius: 30px;
-      font-size: .72rem;
-      color: var(--text-soft);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display:inline-flex; align-items:center; gap:3px;
+      margin-top:12px; background:rgba(255,255,255,0.92);
+      padding:4px 14px; border-radius:30px;
+      font-size:.72rem; color:var(--text-soft);
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .powered-by strong { color: var(--text-dark); font-weight: 700; }
+    .powered-by strong { color:var(--text-dark); font-weight:700; }
 
     /* ══════════════════════════════════
-       SUCCESS CARD
+       PAGE 2 – WELCOME / SERVICES
     ══════════════════════════════════ */
-    .success-icon {
-      width: 80px; height: 80px;
-      background: var(--teal);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; color: white;
-      box-shadow: 0 8px 28px rgba(46,196,182,0.45);
-      animation: popIn .5s cubic-bezier(.175,.885,.32,1.275) forwards;
-      margin-bottom: 20px;
+    #page2 {
+      width:100%; max-width:860px;
+      display:flex; flex-direction:column; align-items:center;
     }
 
-    @keyframes popIn {
-      from { transform:scale(0); opacity:0; }
-      to   { transform:scale(1); opacity:1; }
+    .welcome-page {
+      background: rgba(255,255,255,0.13);
+      border:1px solid rgba(255,255,255,0.25);
+      border-radius:28px; padding:36px;
+      width:100%; backdrop-filter:blur(12px);
+      box-shadow:0 28px 72px rgba(0,0,0,0.25);
     }
 
-    /* ══════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════ */
-    @media (max-width: 520px) {
-      .outer-card { padding: 36px 20px; }
-      .form-card  { padding: 28px 22px; }
-      .k-monogram { font-size: 3.8rem; }
+    /* Top bar */
+    .topbar-welcome {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:28px;
+    }
+
+    .welcome-heading {
+      font-family:'Playfair Display',serif;
+      font-size:2.4rem; font-weight:800;
+      color:white;
+      text-shadow:0 3px 12px rgba(0,0,0,0.2);
+    }
+
+    .user-chip {
+      display:flex; align-items:center; gap:10px;
+      background:rgba(255,255,255,0.15);
+      border:1px solid rgba(255,255,255,0.3);
+      border-radius:30px; padding:8px 18px;
+      color:white; font-size:.9rem; font-weight:600;
+    }
+
+    .user-chip svg { opacity:.8; }
+
+    /* Main content row */
+    .services-layout {
+      display:flex; gap:28px; align-items:flex-start;
+    }
+
+    /* Big JK on left */
+    .big-jk {
+      font-family:'Playfair Display',serif;
+      font-size:7rem; font-weight:800;
+      color:white; line-height:1;
+      letter-spacing:-8px;
+      text-shadow:0 6px 24px rgba(0,0,0,0.2);
+      user-select:none; flex-shrink:0;
+      align-self:center;
+    }
+
+    /* Service cards */
+    .services-col { flex:1; display:flex; flex-direction:column; gap:14px; }
+
+    .service-card {
+      background:white;
+      border-radius:14px;
+      padding:22px 28px;
+      display:flex; align-items:center; justify-content:space-between;
+      cursor:pointer;
+      transition: transform var(--T), box-shadow var(--T);
+      box-shadow:0 4px 18px rgba(0,0,0,0.1);
+      position:relative; overflow:hidden;
+    }
+
+    .service-card::after {
+      content:'';
+      position:absolute; top:0; right:0; bottom:0;
+      width:5px;
+      background:var(--teal);
+      border-radius:0 14px 14px 0;
+    }
+
+    html[dir="rtl"] .service-card::after {
+      right:auto; left:0;
+      border-radius:14px 0 0 14px;
+    }
+
+    .service-card:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(0,0,0,0.18); }
+
+    .service-name {
+      font-size:1.5rem; font-weight:800;
+      color:var(--text-dark); letter-spacing:-0.5px;
+    }
+
+    .service-sub {
+      font-size:.8rem; color:var(--text-soft);
+      margin-top:3px; font-weight:500;
+    }
+
+    .service-icon-wrap {
+      width:52px; height:52px; flex-shrink:0;
+      background:linear-gradient(135deg,rgba(46,196,182,0.15),rgba(46,196,182,0.05));
+      border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.6rem;
+    }
+
+    /* SIM chip illustration inside card */
+    .sim-chip {
+      width:48px; height:34px;
+      background:linear-gradient(135deg,#e8c84a,#c8a420);
+      border-radius:6px;
+      position:relative;
+      box-shadow:0 3px 10px rgba(200,164,32,0.35);
+    }
+
+    .sim-chip::before {
+      content:'';
+      position:absolute; top:6px; left:6px; right:6px; bottom:6px;
+      border:1.5px solid rgba(255,255,255,0.4);
+      border-radius:3px;
+    }
+
+    .sim-chip::after {
+      content:'';
+      position:absolute; top:0; left:0;
+      width:14px; height:14px;
+      background:linear-gradient(135deg,#c8a420,#e8c84a);
+      border-bottom-right-radius:6px;
+    }
+
+    /* Lang toggle in welcome page */
+    .welcome-lang {
+      display:flex; align-items:center; gap:8px;
+    }
+
+    /* Responsive */
+    @media (max-width:600px) {
+      .services-layout { flex-direction:column; }
+      .big-jk { font-size:5rem; align-self:auto; letter-spacing:-5px; }
+      .welcome-heading { font-size:1.8rem; }
+      .topbar-welcome { flex-direction:column; gap:12px; align-items:flex-start; }
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════ STEP 1 ═══════ -->
-<div class="page-wrapper" id="step1">
+<!-- ═══════════════════════════════════════
+     PAGE 1 – LOGIN
+═══════════════════════════════════════ -->
+<div id="page1" class="page">
   <div class="outer-card">
 
-    <!-- K Logo -->
-    <div class="brand-logo">
-      <div class="k-monogram">K</div>
-      <!-- SIM & e-SIM badges under logo -->
-      <div class="sim-tag" style="justify-content:center;margin-top:14px;">
-        <div class="sim-badge"><span class="sim-badge-icon">📶</span> SIM</div>
-        <div class="sim-divider"></div>
-        <div class="sim-badge"><span class="sim-badge-icon">📱</span> e-SIM</div>
-      </div>
+    <!-- JK Logo -->
+    <div class="jk-logo">JK</div>
+
+    <!-- SIM & e-SIM badges -->
+    <div class="sim-badges">
+      <div class="sim-badge">📶 SIM</div>
+      <div class="sim-divider"></div>
+      <div class="sim-badge">📱 e-SIM</div>
     </div>
 
     <!-- White form card -->
     <div class="form-card">
-      <div class="form-card-title">Register Now</div>
-      <div class="form-card-sub">Fill in this form to participate in our online workshop</div>
 
-      <form id="step1Form" novalidate>
-        <!-- Username -->
-        <div class="input-group" id="grp-username">
-          <span class="input-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </span>
-          <input type="text" id="usernameField" name="username"
-            placeholder="ENTER USERNAME" autocomplete="username" required/>
+      <!-- Welcome title (RED CIRCLE AREA) -->
+      <div class="welcome-title" id="t-title">مرحباً بكم في عالم شرائح</div>
+      <div class="welcome-sub" id="t-sub">سجّل الآن للمشاركة في ورشة العمل</div>
+
+      <!-- Username input -->
+      <div class="inp-wrap" id="grp-username">
+        <span class="inp-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <input type="text" id="usernameField" placeholder="أدخل اسم المستخدم" autocomplete="username" required/>
+        <div class="err-msg" id="username-err">الرجاء إدخال اسم المستخدم</div>
+      </div>
+
+      <!-- LOGIN button -->
+      <button class="btn-login" id="loginBtn" onclick="goToWelcome()">تسجيل الدخول</button>
+
+      <!-- YELLOW CIRCLE AREA – Language toggle -->
+      <div class="or-row">
+        <div class="lang-toggle">
+          <button class="lang-btn" id="btnAr" onclick="setLang('ar')">عربي</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn active" id="btnEn" onclick="setLang('en')">EN</button>
         </div>
+      </div>
 
-        <button type="submit" id="nextBtn" class="btn-login">LOGIN</button>
+    </div><!-- /form-card -->
 
-        <div class="or-divider">OR</div>
-        <div class="scroll-hint">&#8964;</div>
-      </form>
-    </div>
-
-    <p class="privacy-note">We respect your privacy. Your information will never be shared with third parties.</p>
+    <p class="privacy" id="t-privacy">نحترم خصوصيتك. لن تُشارك معلوماتك مع أي طرف ثالث.</p>
     <div class="powered-by"><span>Powered by&nbsp;</span><strong>VizorForms</strong></div>
+
   </div>
 </div>
 
-<!-- ═══════ STEP 2 ═══════ -->
-<div class="page-wrapper hidden" id="step2">
-  <div class="outer-card">
+<!-- ═══════════════════════════════════════
+     PAGE 2 – WELCOME / SERVICES
+═══════════════════════════════════════ -->
+<div id="page2" class="page hidden">
+  <div class="welcome-page">
 
-    <div class="brand-logo">
-      <div class="k-monogram">K</div>
-      <div class="sim-tag" style="justify-content:center;margin-top:14px;">
-        <div class="sim-badge"><span class="sim-badge-icon">📶</span> SIM</div>
-        <div class="sim-divider"></div>
-        <div class="sim-badge"><span class="sim-badge-icon">📱</span> e-SIM</div>
+    <!-- Top bar -->
+    <div class="topbar-welcome">
+      <div class="welcome-heading" id="t-welcome">أهلاً وسهلاً</div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <!-- User chip -->
+        <div class="user-chip">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span id="displayUsername">—</span>
+        </div>
+        <!-- Language toggle in welcome page -->
+        <div class="lang-toggle welcome-lang">
+          <button class="lang-btn" id="btnAr2" onclick="setLang('ar')">عربي</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn active" id="btnEn2" onclick="setLang('en')">EN</button>
+        </div>
+        <!-- Back -->
+        <button onclick="goBack()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back">← رجوع</button>
       </div>
     </div>
 
-    <div class="form-card">
-      <div style="text-align:center;margin-bottom:8px;font-size:1.8rem;">👋</div>
-      <div class="form-card-title">Almost There!</div>
-      <div class="form-card-sub">One more step to complete your registration.</div>
+    <!-- Services layout -->
+    <div class="services-layout">
 
-      <form id="step2Form" novalidate>
-        <!-- Email -->
-        <div class="input-group" id="grp-email">
-          <span class="input-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-            </svg>
-          </span>
-          <input type="email" id="emailField" name="email"
-            placeholder="Email Address" autocomplete="email" required/>
+      <!-- Big JK logo -->
+      <div class="big-jk">JK</div>
+
+      <!-- Service cards -->
+      <div class="services-col">
+
+        <!-- e-SIM card -->
+        <div class="service-card" onclick="selectService('esim')">
+          <div>
+            <div class="service-name">e-SIM</div>
+            <div class="service-sub" id="t-esim-sub">شريحة إلكترونية — بدون بطاقة فعلية</div>
+          </div>
+          <div class="service-icon-wrap">📱</div>
         </div>
 
-        <!-- Phone -->
-        <div class="input-group" id="grp-phone">
-          <span class="input-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11 19.79 19.79 0 0 1 1.61 2.38A2 2 0 0 1 3.58.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 7.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-          </span>
-          <input type="tel" id="phoneField" name="phone"
-            placeholder="Phone Number" autocomplete="tel"/>
+        <!-- SIM card -->
+        <div class="service-card" onclick="selectService('sim')">
+          <div>
+            <div class="service-name">SIM</div>
+            <div class="service-sub" id="t-sim-sub">شريحة اتصال فيزيائية تقليدية</div>
+          </div>
+          <div class="service-icon-wrap">
+            <div class="sim-chip"></div>
+          </div>
         </div>
 
-        <div class="btn-row">
-          <button type="button" id="backBtn" class="btn-back">&larr; BACK</button>
-          <button type="submit" id="submitBtn" class="btn-login">SUBMIT &rarr;</button>
+        <!-- Renewing SIM -->
+        <div class="service-card" onclick="selectService('renew')">
+          <div>
+            <div class="service-name" id="t-renew-name" style="font-size:1.15rem;">تجديد اشتراك الشريحة</div>
+            <div class="service-sub" id="t-renew-sub">تجديد خططك الحالية وإدارة الاشتراكات</div>
+          </div>
+          <div class="service-icon-wrap">🔄</div>
         </div>
-      </form>
-    </div>
 
-    <p class="privacy-note">Your data is fully protected and will not be shared.</p>
-    <div class="powered-by"><span>Powered by&nbsp;</span><strong>VizorForms</strong></div>
+      </div><!-- /services-col -->
+    </div><!-- /services-layout -->
+
   </div>
 </div>
 
-<!-- ═══════ SUCCESS ═══════ -->
-<div class="page-wrapper hidden" id="stepSuccess">
-  <div class="outer-card" style="text-align:center;">
-    <div class="success-icon">&#10003;</div>
-    <div class="k-monogram" style="margin-bottom:16px;">K</div>
-    <div class="form-card" style="text-align:center;">
-      <div class="form-card-title" style="font-size:1.4rem;margin-bottom:8px;">You're Registered! 🎉</div>
-      <div class="form-card-sub">Thank you for signing up. Check your email for confirmation details.</div>
-      <button id="restartBtn" class="btn-login" style="margin-top:20px;">Register Another &rarr;</button>
-    </div>
-    <div class="powered-by" style="margin-top:16px;"><span>Powered by&nbsp;</span><strong>VizorForms</strong></div>
-  </div>
-</div>
+<script>
+/* ═══════════════════════════════════════
+   TRANSLATIONS
+═══════════════════════════════════════ */
+const translations = {
+  ar: {
+    title:       'مرحباً بكم في عالم شرائح',
+    sub:         'سجّل الآن للمشاركة في ورشة العمل',
+    placeholder: 'أدخل اسم المستخدم',
+    loginBtn:    'تسجيل الدخول',
+    privacy:     'نحترم خصوصيتك. لن تُشارك معلوماتك مع أي طرف ثالث.',
+    errUser:     'الرجاء إدخال اسم المستخدم',
+    welcome:     'أهلاً وسهلاً',
+    back:        '← رجوع',
+    esimSub:     'شريحة إلكترونية — بدون بطاقة فعلية',
+    simSub:      'شريحة اتصال فيزيائية تقليدية',
+    renewName:   'تجديد اشتراك الشريحة',
+    renewSub:    'تجديد خططك الحالية وإدارة الاشتراكات',
+    dir:         'rtl', lang: 'ar'
+  },
+  en: {
+    title:       'Welcome to the World of SIM',
+    sub:         'Register now to participate in the online workshop',
+    placeholder: 'Enter Username',
+    loginBtn:    'LOGIN',
+    privacy:     'We respect your privacy. Your information will never be shared with third parties.',
+    errUser:     'Please enter your username.',
+    welcome:     'Welcome',
+    back:        '← Back',
+    esimSub:     'Electronic SIM — no physical card needed',
+    simSub:      'Traditional physical SIM card',
+    renewName:   'Renewing SIM card subscriptions',
+    renewSub:    'Renew your current plans and manage subscriptions',
+    dir:         'ltr', lang: 'en'
+  }
+};
 
-<script src="app.js"></script>
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+
+  // Direction
+  document.getElementById('htmlRoot').setAttribute('dir', t.dir);
+  document.getElementById('htmlRoot').setAttribute('lang', t.lang);
+
+  // Page 1
+  document.getElementById('t-title').textContent    = t.title;
+  document.getElementById('t-sub').textContent      = t.sub;
+  document.getElementById('usernameField').placeholder = t.placeholder;
+  document.getElementById('loginBtn').textContent   = t.loginBtn;
+  document.getElementById('t-privacy').textContent  = t.privacy;
+  document.getElementById('username-err').textContent = t.errUser;
+
+  // Page 2
+  document.getElementById('t-welcome').textContent   = t.welcome;
+  document.getElementById('t-back').textContent      = t.back;
+  document.getElementById('t-esim-sub').textContent  = t.esimSub;
+  document.getElementById('t-sim-sub').textContent   = t.simSub;
+  document.getElementById('t-renew-name').textContent= t.renewName;
+  document.getElementById('t-renew-sub').textContent = t.renewSub;
+
+  // Toggle buttons
+  ['btnAr','btnAr2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', lang === 'ar');
+  });
+  ['btnEn','btnEn2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', lang === 'en');
+  });
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function goToWelcome() {
+  const username = document.getElementById('usernameField').value.trim();
+  const grp = document.getElementById('grp-username');
+
+  if (!username) {
+    grp.classList.add('error');
+    return;
+  }
+  grp.classList.remove('error');
+
+  document.getElementById('displayUsername').textContent = username;
+  document.getElementById('page1').classList.add('hidden');
+  document.getElementById('page2').classList.remove('hidden');
+  document.getElementById('page2').classList.add('page');
+
+  // Remove and re-add animation
+  void document.getElementById('page2').offsetWidth;
+}
+
+function goBack() {
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page1').classList.remove('hidden');
+  document.getElementById('page1').classList.add('page');
+  void document.getElementById('page1').offsetWidth;
+}
+
+function selectService(type) {
+  const names = {
+    esim:  { ar: 'e-SIM', en: 'e-SIM' },
+    sim:   { ar: 'SIM', en: 'SIM' },
+    renew: { ar: 'تجديد الاشتراك', en: 'Renewing SIM Subscriptions' }
+  };
+  const name = names[type][currentLang];
+  alert((currentLang === 'ar' ? 'اخترت: ' : 'You selected: ') + name);
+  // ← هنا تقدر تربط كل خدمة بصفحة أو فورم تسجيل مستقبلاً
+}
+
+// Live clear error
+document.getElementById('usernameField').addEventListener('input', () => {
+  document.getElementById('grp-username').classList.remove('error');
+});
+
+// Default language: English
+setLang('en');
+</script>
 </body>
 </html>
