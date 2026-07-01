@@ -24,9 +24,15 @@
       font-family: 'Outfit', sans-serif;
       min-height: 100vh;
       background: linear-gradient(135deg, #1ec8ba 0%, #12a89b 50%, #0a7a72 100%);
-      display: flex; align-items: center; justify-content: center;
-      padding: 20px;
-      position: relative; overflow: hidden;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 24px 20px 40px;
+      position: relative; overflow-y: auto;
+    }
+
+    /* center page1 vertically */
+    #page1 {
+      min-height: calc(100vh - 64px);
+      display:flex; align-items:center; justify-content:center;
     }
 
     body::before {
@@ -220,10 +226,12 @@
     /* ══════════════════════════════════
        PAGE 2 – WELCOME / SERVICES
     ══════════════════════════════════ */
-    #page2 {
-      width:100%; max-width:860px;
+    #page2, #page3 {
+      width:100%;
       display:flex; flex-direction:column; align-items:center;
     }
+
+    #page2 { max-width:860px; }
 
     .welcome-page {
       background: rgba(255,255,255,0.13);
@@ -348,13 +356,418 @@
       display:flex; align-items:center; gap:8px;
     }
 
-    /* Responsive */
-    @media (max-width:600px) {
+    /* ══════════════════════════════════
+       PAGE 3 – PROVIDER LIST
+    ══════════════════════════════════ */
+    #page3 { max-width:900px; width:100%; }
+
+    .provider-list {
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:14px;
+      margin-top:6px;
+    }
+
+    /* single column on narrow screens */
+    @media (max-width:640px) {
+      .provider-list { grid-template-columns: 1fr; gap:10px; }
+    }
+
+    .provider-row {
+      background:white;
+      border-radius:16px;
+      padding:16px 20px;
+      display:flex; align-items:center; gap:14px;
+      cursor:pointer;
+      transition: transform var(--T), box-shadow var(--T);
+      box-shadow:0 4px 16px rgba(0,0,0,0.1);
+      position:relative; overflow:hidden;
+    }
+
+    .provider-row::before {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(46,196,182,0.06),transparent);
+      opacity:0;
+      transition:opacity var(--T);
+    }
+
+    .provider-row:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,0.16); }
+    .provider-row:hover::before { opacity:1; }
+    .provider-row:active { transform:scale(0.98); }
+
+    /* Accent stripe left/right */
+    .provider-row::after {
+      content:'';
+      position:absolute; top:0; left:0; bottom:0;
+      width:4px;
+      background:linear-gradient(180deg, var(--teal), var(--teal-dark));
+      border-radius:4px 0 0 4px;
+    }
+    html[dir="rtl"] .provider-row::after { left:auto; right:0; border-radius:0 4px 4px 0; }
+
+    /* Logo area */
+    .provider-logo {
+      width:52px; height:52px; flex-shrink:0;
+      background:linear-gradient(135deg,#f0fafa,#e0f5f3);
+      border-radius:12px; border:1.5px solid rgba(46,196,182,0.2);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif;
+      font-weight:800; font-size:.75rem;
+      color:var(--teal-dark); text-align:center;
+      line-height:1.2; letter-spacing:-.5px;
+      padding:4px;
+    }
+
+    /* Provider info */
+    .provider-info { flex:1; min-width:0; }
+
+    .provider-name {
+      font-size:1.1rem; font-weight:800;
+      color:var(--text-dark); line-height:1.2;
+    }
+
+    .provider-tagline {
+      font-size:.73rem; color:var(--text-soft);
+      margin-top:2px; font-weight:500;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    /* Plans column */
+    .provider-plans {
+      display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0;
+    }
+
+    .plan-chip {
+      display:flex; align-items:center; gap:6px;
+      background:linear-gradient(135deg,rgba(46,196,182,0.12),rgba(46,196,182,0.06));
+      border:1px solid rgba(46,196,182,0.25);
+      border-radius:999px; padding:4px 10px;
+      cursor:pointer;
+      transition:background var(--T), transform var(--T);
+    }
+
+    .plan-chip:hover {
+      background:linear-gradient(135deg,rgba(46,196,182,0.25),rgba(46,196,182,0.15));
+      transform:scale(1.05);
+    }
+
+    .plan-gb {
+      font-size:.8rem; font-weight:800; color:var(--teal-dark);
+    }
+
+    .plan-price {
+      font-size:.7rem; font-weight:600; color:var(--text-soft);
+      border-left:1px solid rgba(46,196,182,0.3); padding-left:6px;
+    }
+    html[dir="rtl"] .plan-price { border-left:none; border-right:1px solid rgba(46,196,182,0.3); padding-left:0; padding-right:6px; }
+
+    /* Arrow */
+    .provider-arrow {
+      width:28px; height:28px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(46,196,182,0.1); border-radius:50%;
+      color:var(--teal); font-size:.75rem;
+      transition:background var(--T), transform var(--T);
+    }
+    .provider-row:hover .provider-arrow { background:var(--teal); color:white; transform:translateX(2px); }
+    html[dir="rtl"] .provider-row:hover .provider-arrow { transform:translateX(-2px); }
+
+    /* Subtitle bar above list */
+    .esim-subtitle {
+      font-size:.82rem; color:rgba(255,255,255,0.75);
+      margin-bottom:10px; font-weight:500;
+    }
+
+    /* ══════════════════════════════════
+       PAGE 4 – PROVIDER PACKAGES
+    ══════════════════════════════════ */
+    #page4 { max-width:760px; width:100%; }
+
+    .pkg-header {
+      display:flex; align-items:center; gap:18px;
+      margin-bottom:24px;
+    }
+
+    .pkg-logo-big {
+      width:72px; height:72px; flex-shrink:0;
+      background:white;
+      border-radius:18px;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif;
+      font-weight:800; font-size:.85rem;
+      color:var(--teal-dark); text-align:center;
+      line-height:1.3; padding:6px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    .pkg-provider-name {
+      font-family:'Playfair Display',serif;
+      font-size:2rem; font-weight:800;
+      color:white;
+      text-shadow:0 3px 12px rgba(0,0,0,0.2);
+      line-height:1;
+    }
+
+    .pkg-provider-sub {
+      font-size:.82rem; color:rgba(255,255,255,0.72);
+      margin-top:4px; font-weight:500;
+    }
+
+    .pkg-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:16px;
+    }
+
+    .pkg-card {
+      background:white;
+      border-radius:20px;
+      padding:26px 22px;
+      display:flex; flex-direction:column; align-items:center;
+      text-align:center;
+      box-shadow:0 8px 24px rgba(0,0,0,0.12);
+      cursor:pointer;
+      transition: transform var(--T), box-shadow var(--T);
+      position:relative; overflow:hidden;
+      border:2px solid transparent;
+    }
+
+    .pkg-card:hover {
+      transform:translateY(-4px);
+      box-shadow:0 16px 36px rgba(0,0,0,0.18);
+      border-color:rgba(46,196,182,0.3);
+    }
+
+    .pkg-card.popular {
+      border-color:var(--teal);
+    }
+
+    .popular-badge {
+      position:absolute; top:12px; right:12px;
+      background:var(--teal); color:white;
+      font-size:.65rem; font-weight:800;
+      padding:3px 9px; border-radius:999px;
+      letter-spacing:.5px; text-transform:uppercase;
+    }
+    html[dir="rtl"] .popular-badge { right:auto; left:12px; }
+
+    .pkg-gb {
+      font-size:3rem; font-weight:800;
+      color:var(--teal); line-height:1;
+    }
+
+    .pkg-unit {
+      font-size:.85rem; font-weight:700;
+      color:var(--teal-dark); margin-bottom:8px;
+    }
+
+    .pkg-divider {
+      width:40px; height:2px;
+      background:linear-gradient(90deg,var(--teal),var(--teal-light));
+      border-radius:2px; margin:10px auto;
+    }
+
+    .pkg-price {
+      font-size:1.8rem; font-weight:800;
+      color:var(--text-dark); line-height:1;
+    }
+
+    .pkg-period {
+      font-size:.75rem; color:var(--text-soft);
+      margin-top:2px; font-weight:500;
+    }
+
+    .pkg-features {
+      list-style:none; margin:14px 0 18px;
+      text-align:right; width:100%;
+    }
+    html[dir="ltr"] .pkg-features { text-align:left; }
+
+    .pkg-features li {
+      font-size:.78rem; color:var(--text-soft);
+      padding:3px 0; display:flex; align-items:center; gap:6px;
+    }
+
+    .pkg-features li::before {
+      content:'✓'; color:var(--teal);
+      font-weight:800; flex-shrink:0;
+    }
+
+    .btn-choose {
+      width:100%; padding:12px;
+      background:var(--teal); color:white;
+      border:none; border-radius:10px;
+      font-family:'Outfit',sans-serif;
+      font-size:.88rem; font-weight:700;
+      cursor:pointer; margin-top:auto;
+      transition:background var(--T), transform var(--T), box-shadow var(--T);
+      box-shadow:0 4px 14px rgba(46,196,182,0.35);
+      letter-spacing:.5px;
+    }
+
+    .btn-choose:hover {
+      background:var(--teal-dark);
+      transform:translateY(-1px);
+      box-shadow:0 8px 20px rgba(46,196,182,0.45);
+    }
+
+    .btn-choose:active { transform:scale(0.98); }
+
+    /* ── Desktop tweaks ── */
+    @media (min-width:901px) {
+      .provider-row { padding:18px 24px; }
+      .provider-name { font-size:1.2rem; }
+      .provider-logo { width:58px; height:58px; }
+    }
+
+    /* ── Tablet ── */
+    @media (max-width:900px) {
+      #page2 { max-width:680px; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width:640px) {
       .services-layout { flex-direction:column; }
       .big-jk { font-size:5rem; align-self:auto; letter-spacing:-5px; }
       .welcome-heading { font-size:1.8rem; }
       .topbar-welcome { flex-direction:column; gap:12px; align-items:flex-start; }
+      .provider-logo { width:44px; height:44px; font-size:.65rem; }
+      .plan-chip { padding:3px 8px; }
+      .provider-row { padding:13px 14px; gap:10px; }
     }
+
+    /* ══════════════════════════════════
+       MODAL – ORDER FORM
+    ══════════════════════════════════ */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:999;
+      background:rgba(10,60,56,0.55);
+      backdrop-filter:blur(6px);
+      display:flex; align-items:center; justify-content:center;
+      padding:20px;
+      opacity:0; pointer-events:none;
+      transition:opacity .3s ease;
+    }
+
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+
+    .modal-card {
+      background:white; border-radius:24px;
+      padding:32px 28px;
+      width:100%; max-width:420px;
+      box-shadow:0 24px 64px rgba(0,0,0,0.3);
+      transform:translateY(28px) scale(0.97);
+      transition:transform .35s cubic-bezier(.4,0,.2,1);
+      position:relative;
+    }
+
+    .modal-overlay.open .modal-card { transform:translateY(0) scale(1); }
+
+    .modal-close {
+      position:absolute; top:14px; right:14px;
+      width:30px; height:30px; border-radius:50%;
+      background:#f0f5f5; border:none; cursor:pointer;
+      font-size:1rem; color:var(--text-soft);
+      display:flex; align-items:center; justify-content:center;
+      transition:background var(--T);
+    }
+    html[dir="rtl"] .modal-close { right:auto; left:14px; }
+    .modal-close:hover { background:#e0efee; color:var(--text-dark); }
+
+    .modal-plan-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,rgba(46,196,182,0.12),rgba(46,196,182,0.06));
+      border:1.5px solid rgba(46,196,182,0.3);
+      border-radius:999px; padding:6px 14px;
+      margin-bottom:18px;
+    }
+
+    .modal-plan-badge .mpb-name { font-size:.78rem; font-weight:700; color:var(--teal-dark); }
+    .modal-plan-badge .mpb-dot  { width:4px;height:4px;border-radius:50%;background:var(--teal); }
+    .modal-plan-badge .mpb-gb   { font-size:.78rem; font-weight:800; color:var(--teal); }
+    .modal-plan-badge .mpb-price{ font-size:.78rem; font-weight:700; color:var(--text-soft); }
+
+    .modal-title { font-size:1.15rem; font-weight:800; color:var(--text-dark); margin-bottom:4px; }
+    .modal-sub   { font-size:.8rem; color:var(--text-soft); margin-bottom:22px; }
+
+    /* Inputs reuse existing styles but slight override */
+    .modal-card .inp-wrap { margin-bottom:14px; }
+
+    /* WhatsApp row: prefix select + number input */
+    .wa-row { display:flex; gap:8px; margin-bottom:14px; }
+
+    .wa-prefix {
+      flex-shrink:0; width:110px;
+      padding:13px 10px;
+      border:1.5px solid #e0efee; border-radius:10px;
+      font-family:'Outfit',sans-serif; font-size:.82rem;
+      color:var(--text-dark); background:#f7fefe;
+      outline:none; cursor:pointer;
+      transition:border-color var(--T), box-shadow var(--T);
+      appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232ec4b6' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 10px center;
+      padding-right:28px;
+    }
+    html[dir="rtl"] .wa-prefix {
+      background-position:left 10px center;
+      padding-right:10px; padding-left:28px;
+    }
+    .wa-prefix:focus { border-color:var(--teal); box-shadow:0 0 0 4px rgba(46,196,182,0.15); }
+
+    .wa-number-wrap { flex:1; position:relative; }
+    .wa-icon {
+      position:absolute; top:50%; transform:translateY(-50%);
+      left:14px; color:#25d366; display:flex; pointer-events:none;
+    }
+    html[dir="rtl"] .wa-icon { left:auto; right:14px; }
+
+    .wa-number-wrap input {
+      width:100%; padding:13px 14px 13px 40px;
+      border:1.5px solid #e0efee; border-radius:10px;
+      font-family:'Outfit',sans-serif; font-size:.9rem;
+      color:var(--text-dark); background:#f7fefe; outline:none;
+      transition:border-color var(--T), box-shadow var(--T);
+    }
+    html[dir="rtl"] .wa-number-wrap input { padding:13px 40px 13px 14px; }
+    .wa-number-wrap input:focus { border-color:#25d366; box-shadow:0 0 0 4px rgba(37,211,102,0.15); }
+    .wa-number-wrap input::placeholder { color:#aac5c3; }
+    .wa-number-wrap.error input { border-color:#e05555; }
+
+    .modal-err { font-size:.72rem; color:#e05555; margin:-10px 0 10px; display:none; }
+    .modal-err.show { display:block; }
+
+    .btn-submit {
+      width:100%; padding:14px;
+      background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+      color:white; border:none; border-radius:10px;
+      font-family:'Outfit',sans-serif; font-size:.95rem; font-weight:700;
+      letter-spacing:1px; cursor:pointer; margin-top:6px;
+      box-shadow:0 6px 20px rgba(46,196,182,0.4);
+      transition:opacity var(--T), transform var(--T), box-shadow var(--T);
+    }
+    .btn-submit:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 10px 28px rgba(46,196,182,0.5); }
+    .btn-submit:active { transform:scale(0.98); }
+
+    /* Success state */
+    .modal-success {
+      display:none; flex-direction:column; align-items:center;
+      text-align:center; gap:10px; padding:12px 0 4px;
+    }
+    .modal-success.show { display:flex; }
+    .success-icon {
+      width:64px; height:64px; border-radius:50%;
+      background:linear-gradient(135deg,#25d366,#1aaa52);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.8rem;
+      box-shadow:0 8px 24px rgba(37,211,102,0.35);
+      animation:popIn .4s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+    .success-title { font-size:1.1rem; font-weight:800; color:var(--text-dark); }
+    .success-sub   { font-size:.82rem; color:var(--text-soft); line-height:1.6; }
   </style>
 </head>
 <body>
@@ -489,6 +902,242 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════
+     PAGE 3 – E-SIM PROVIDER LIST
+═══════════════════════════════════════ -->
+<div id="page3" class="page hidden">
+  <div class="welcome-page">
+
+    <!-- Top bar -->
+    <div class="topbar-welcome">
+      <div class="welcome-heading" id="t-esim-title">e-SIM Plans</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="user-chip">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span id="displayUsername3">—</span>
+        </div>
+        <div class="lang-toggle welcome-lang">
+          <button class="lang-btn" id="btnAr3" onclick="setLang('ar')">عربي</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn active" id="btnEn3" onclick="setLang('en')">EN</button>
+        </div>
+        <button onclick="goToServices()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back2">← Back</button>
+      </div>
+    </div>
+
+    <!-- Subtitle -->
+    <p class="esim-subtitle" id="t-esim-desc">Choose a smart e-SIM plan and install it instantly with no physical card.</p>
+
+    <!-- Provider list -->
+    <div class="provider-list">
+
+      <!-- Cellcom -->
+      <div class="provider-row" onclick="openProvider('cellcom')">
+        <div class="provider-logo">Cell<br>com</div>
+        <div class="provider-info">
+          <div class="provider-name">Cellcom</div>
+          <div class="provider-tagline" id="t-tagline-1">A SIM card that works everywhere.</div>
+        </div>
+        <div class="provider-plans">
+          <div class="plan-chip"><span class="plan-gb">400 GB</span><span class="plan-price">65₪</span></div>
+          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">70₪</span></div>
+        </div>
+        <div class="provider-arrow">›</div>
+      </div>
+
+      <!-- Hot Mobile -->
+      <div class="provider-row" onclick="openProvider('hotmobile')">
+        <div class="provider-logo">Hot<br>Mob</div>
+        <div class="provider-info">
+          <div class="provider-name">Hot Mobile</div>
+          <div class="provider-tagline" id="t-tagline-2">A SIM card that works everywhere.</div>
+        </div>
+        <div class="provider-plans">
+          <div class="plan-chip"><span class="plan-gb">150 GB</span><span class="plan-price">55₪</span></div>
+          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">75₪</span></div>
+        </div>
+        <div class="provider-arrow">›</div>
+      </div>
+
+      <!-- Pelephone -->
+      <div class="provider-row" onclick="openProvider('pelephone')">
+        <div class="provider-logo">Pele<br>phone</div>
+        <div class="provider-info">
+          <div class="provider-name">Pelephone</div>
+          <div class="provider-tagline" id="t-tagline-3">A SIM card that works everywhere.</div>
+        </div>
+        <div class="provider-plans">
+          <div class="plan-chip"><span class="plan-gb">150 GB</span><span class="plan-price">50₪</span></div>
+          <div class="plan-chip"><span class="plan-gb">300 GB</span><span class="plan-price">65₪</span></div>
+        </div>
+        <div class="provider-arrow">›</div>
+      </div>
+
+      <!-- Partner -->
+      <div class="provider-row" onclick="openProvider('partner')">
+        <div class="provider-logo" style="font-size:.85rem;letter-spacing:0;">Partner</div>
+        <div class="provider-info">
+          <div class="provider-name">Partner</div>
+          <div class="provider-tagline" id="t-tagline-4">A SIM card that works everywhere.</div>
+        </div>
+        <div class="provider-plans">
+          <div class="plan-chip"><span class="plan-gb">400 GB</span><span class="plan-price">65₪</span></div>
+          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">70₪</span></div>
+        </div>
+        <div class="provider-arrow">›</div>
+      </div>
+
+      <!-- we -->
+      <div class="provider-row" onclick="openProvider('we')">
+        <div class="provider-logo" style="font-size:1.4rem;font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:-1px;">we</div>
+        <div class="provider-info">
+          <div class="provider-name">we</div>
+          <div class="provider-tagline" id="t-tagline-5">A SIM card that works everywhere.</div>
+        </div>
+        <div class="provider-plans">
+          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">65₪</span></div>
+          <div class="plan-chip"><span class="plan-gb">∞ GB</span><span class="plan-price">80₪</span></div>
+        </div>
+        <div class="provider-arrow">›</div>
+      </div>
+
+      <!-- 019 -->
+      <div class="provider-row" onclick="openProvider('019')">
+        <div class="provider-logo" style="font-size:1.2rem;font-family:'Outfit',sans-serif;font-weight:800;">019</div>
+        <div class="provider-info">
+          <div class="provider-name">019</div>
+          <div class="provider-tagline" id="t-tagline-6">A SIM card that works everywhere.</div>
+        </div>
+        <div class="provider-plans">
+          <div class="plan-chip"><span class="plan-gb">100 GB</span><span class="plan-price">45₪</span></div>
+          <div class="plan-chip"><span class="plan-gb">250 GB</span><span class="plan-price">60₪</span></div>
+        </div>
+        <div class="provider-arrow">›</div>
+      </div>
+
+    </div><!-- /provider-list -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 4 – PROVIDER PACKAGES
+═══════════════════════════════════════ -->
+<div id="page4" class="page hidden">
+  <div class="welcome-page">
+
+    <!-- Top bar -->
+    <div class="topbar-welcome">
+      <div class="pkg-header">
+        <div class="pkg-logo-big" id="p4-logo">—</div>
+        <div>
+          <div class="pkg-provider-name" id="p4-name">—</div>
+          <div class="pkg-provider-sub" id="p4-sub">A SIM card that works everywhere.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="user-chip">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span id="displayUsername4">—</span>
+        </div>
+        <div class="lang-toggle welcome-lang">
+          <button class="lang-btn" id="btnAr4" onclick="setLang('ar')">عربي</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn active" id="btnEn4" onclick="setLang('en')">EN</button>
+        </div>
+        <button onclick="goToProviders()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back3">← Back</button>
+      </div>
+    </div>
+
+    <!-- Dynamic package grid -->
+    <div class="pkg-grid" id="pkg-grid"></div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL – ORDER FORM
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="orderModal" onclick="closeModalOutside(event)">
+  <div class="modal-card">
+
+    <button class="modal-close" onclick="closeModal()" aria-label="close">✕</button>
+
+    <!-- Normal form state -->
+    <div id="modal-form-content">
+      <!-- Selected plan badge -->
+      <div class="modal-plan-badge">
+        <span class="mpb-name" id="mb-provider">—</span>
+        <span class="mpb-dot"></span>
+        <span class="mpb-gb" id="mb-gb">—</span>
+        <span class="mpb-dot"></span>
+        <span class="mpb-price" id="mb-price">—</span>
+      </div>
+
+      <div class="modal-title" id="mb-title">Complete your order</div>
+      <div class="modal-sub" id="mb-sub">We'll contact you on WhatsApp to activate your e-SIM.</div>
+
+      <!-- Full name -->
+      <div class="inp-wrap" id="grp-fullname">
+        <span class="inp-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <input type="text" id="fullnameField" placeholder="Full name (three parts)" autocomplete="name"/>
+        <div class="err-msg" id="fullname-err">Please enter your full name</div>
+      </div>
+
+      <!-- WhatsApp row -->
+      <div class="wa-row">
+        <select class="wa-prefix" id="waPrefix">
+          <option value="+970">🇵🇸 +970</option>
+          <option value="+972">🇮🇱 +972</option>
+          <option value="+962">🇯🇴 +962</option>
+          <option value="+961">🇱🇧 +961</option>
+          <option value="+963">🇸🇾 +963</option>
+          <option value="+964">🇮🇶 +964</option>
+          <option value="+966">🇸🇦 +966</option>
+          <option value="+971">🇦🇪 +971</option>
+          <option value="+965">🇰🇼 +965</option>
+          <option value="+20"> 🇪🇬 +20</option>
+          <option value="+212">🇲🇦 +212</option>
+          <option value="+216">🇹🇳 +216</option>
+        </select>
+        <div class="wa-number-wrap" id="grp-wanum">
+          <span class="wa-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#25d366">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </span>
+          <input type="tel" id="waNumber" placeholder="5xxxxxxxx" inputmode="numeric"/>
+          <div class="err-msg" id="wanum-err">Please enter your WhatsApp number</div>
+        </div>
+      </div>
+      <div class="modal-err" id="wanum-format-err">Number must be 7–12 digits</div>
+
+      <button class="btn-submit" id="mb-submit" onclick="submitOrder()">Confirm Order</button>
+    </div>
+
+    <!-- Success state (hidden until submit) -->
+    <div class="modal-success" id="modal-success">
+      <div class="success-icon">✓</div>
+      <div class="success-title" id="ms-title">Order received!</div>
+      <div class="success-sub" id="ms-sub">We'll contact you on WhatsApp shortly to activate your e-SIM plan.</div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 /* ═══════════════════════════════════════
    TRANSLATIONS
@@ -507,6 +1156,9 @@ const translations = {
     simSub:      'شريحة اتصال فيزيائية تقليدية',
     renewName:   'تجديد اشتراك الشريحة',
     renewSub:    'تجديد خططك الحالية وإدارة الاشتراكات',
+    esimTitle:   'خطط e-SIM',
+    esimDesc:    'اختر خطة e-SIM الذكية وقم بتثبيتها فورياً بدون بطاقة فعلية.',
+    tagline:     'شريحة تعمل في كل مكان.',
     dir:         'rtl', lang: 'ar'
   },
   en: {
@@ -522,6 +1174,9 @@ const translations = {
     simSub:      'Traditional physical SIM card',
     renewName:   'Renewing SIM card subscriptions',
     renewSub:    'Renew your current plans and manage subscriptions',
+    esimTitle:   'e-SIM Plans',
+    esimDesc:    'Choose a smart e-SIM plan and install it instantly with no physical card.',
+    tagline:     'A SIM card that works everywhere.',
     dir:         'ltr', lang: 'en'
   }
 };
@@ -552,12 +1207,25 @@ function setLang(lang) {
   document.getElementById('t-renew-name').textContent= t.renewName;
   document.getElementById('t-renew-sub').textContent = t.renewSub;
 
+  // Page 3
+  document.getElementById('t-esim-title').textContent = t.esimTitle;
+  document.getElementById('t-esim-desc').textContent  = t.esimDesc;
+  document.getElementById('t-back2').textContent      = t.back;
+  for (let i = 1; i <= 6; i++) {
+    const el = document.getElementById('t-tagline-' + i);
+    if (el) el.textContent = t.tagline;
+  }
+
+  // Page 4
+  const back3 = document.getElementById('t-back3');
+  if (back3) back3.textContent = t.back;
+
   // Toggle buttons
-  ['btnAr','btnAr2'].forEach(id => {
+  ['btnAr','btnAr2','btnAr3','btnAr4'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', lang === 'ar');
   });
-  ['btnEn','btnEn2'].forEach(id => {
+  ['btnEn','btnEn2','btnEn3','btnEn4'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', lang === 'en');
   });
@@ -593,19 +1261,316 @@ function goBack() {
 }
 
 function selectService(type) {
+  if (type === 'esim') {
+    goToEsimPage();
+    return;
+  }
+
   const names = {
-    esim:  { ar: 'e-SIM', en: 'e-SIM' },
     sim:   { ar: 'SIM', en: 'SIM' },
     renew: { ar: 'تجديد الاشتراك', en: 'Renewing SIM Subscriptions' }
   };
   const name = names[type][currentLang];
   alert((currentLang === 'ar' ? 'اخترت: ' : 'You selected: ') + name);
-  // ← هنا تقدر تربط كل خدمة بصفحة أو فورم تسجيل مستقبلاً
 }
 
-// Live clear error
+/* ═══════════════════════════════════════
+   PROVIDERS DATA
+═══════════════════════════════════════ */
+const PROVIDERS = {
+  cellcom: {
+    key: 'cellcom',
+    logo: 'Cell\ncom',
+    name: { en: 'Cellcom', ar: 'سيلקום' },
+    plans: [
+      { gb: '400', price: '65', popular: false,
+        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
+      { gb: '500', price: '70', popular: true,
+        features: { en: ['Unlimited calls','5G ready','Hotspot + Roaming'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال + تجوال'] } }
+    ]
+  },
+  hotmobile: {
+    key: 'hotmobile',
+    logo: 'Hot\nMob',
+    name: { en: 'Hot Mobile', ar: 'هوت موبايل' },
+    plans: [
+      { gb: '150', price: '55', popular: false,
+        features: { en: ['Unlimited calls','4G LTE','Basic hotspot'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال أساسية'] } },
+      { gb: '500', price: '75', popular: true,
+        features: { en: ['Unlimited calls','5G ready','Hotspot + Roaming'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال + تجوال'] } }
+    ]
+  },
+  pelephone: {
+    key: 'pelephone',
+    logo: 'Pele\nphone',
+    name: { en: 'Pelephone', ar: 'פלאפון' },
+    plans: [
+      { gb: '150', price: '50', popular: false,
+        features: { en: ['Unlimited calls','4G LTE','SMS unlimited'], ar: ['مكالمات غير محدودة','4G LTE','رسائل غير محدودة'] } },
+      { gb: '300', price: '65', popular: true,
+        features: { en: ['Unlimited calls','5G ready','Hotspot included'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال مجانية'] } }
+    ]
+  },
+  partner: {
+    key: 'partner',
+    logo: 'Part\nner',
+    name: { en: 'Partner', ar: 'פרטנר' },
+    plans: [
+      { gb: '400', price: '65', popular: false,
+        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
+      { gb: '500', price: '70', popular: true,
+        features: { en: ['Unlimited calls','5G ready','Hotspot + Roaming'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال + تجوال'] } }
+    ]
+  },
+  we: {
+    key: 'we',
+    logo: 'we',
+    logoStyle: 'font-size:1.4rem;font-family:Outfit,sans-serif;font-weight:300;',
+    name: { en: 'we', ar: 'we' },
+    plans: [
+      { gb: '500', price: '65', popular: false,
+        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
+      { gb: '∞', price: '80', popular: true,
+        features: { en: ['Unlimited calls','5G ready','Unlimited data'], ar: ['مكالمات غير محدودة','5G جاهز','بيانات غير محدودة'] } }
+    ]
+  },
+  '019': {
+    key: '019',
+    logo: '019',
+    logoStyle: 'font-size:1.2rem;font-family:Outfit,sans-serif;font-weight:800;',
+    name: { en: '019', ar: '019' },
+    plans: [
+      { gb: '100', price: '45', popular: false,
+        features: { en: ['Unlimited calls','4G LTE','Basic plan'], ar: ['مكالمات غير محدودة','4G LTE','خطة أساسية'] } },
+      { gb: '250', price: '60', popular: true,
+        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } }
+    ]
+  }
+};
+
+function openProvider(key) {
+  const p = PROVIDERS[key];
+  if (!p) return;
+
+  const lang = currentLang;
+
+  // Fill header
+  const logoEl = document.getElementById('p4-logo');
+  logoEl.textContent = p.logo.replace('\\n', '\n');
+  if (p.logoStyle) logoEl.style.cssText += p.logoStyle;
+
+  document.getElementById('p4-name').textContent = p.name[lang];
+  document.getElementById('p4-sub').textContent  = translations[lang].tagline;
+  document.getElementById('displayUsername4').textContent = document.getElementById('displayUsername').textContent;
+
+  // Build package cards
+  const grid = document.getElementById('pkg-grid');
+  const perMonth = lang === 'ar' ? '/ شهرياً' : '/ month';
+  const chooseTxt = lang === 'ar' ? 'اختر الخطة' : 'Choose Plan';
+  const popularTxt = lang === 'ar' ? 'الأكثر طلباً' : 'Popular';
+
+  grid.innerHTML = p.plans.map(plan => `
+    <div class="pkg-card${plan.popular ? ' popular' : ''}" onclick="confirmPlan('${p.name.en}','${plan.gb} GB','${plan.price}₪')">
+      ${plan.popular ? `<div class="popular-badge">${popularTxt}</div>` : ''}
+      <div class="pkg-gb">${plan.gb}</div>
+      <div class="pkg-unit">GB</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-price">${plan.price}₪</div>
+      <div class="pkg-period">${perMonth}</div>
+      <ul class="pkg-features">
+        ${plan.features[lang].map(f => `<li>${f}</li>`).join('')}
+      </ul>
+      <button class="btn-choose">${chooseTxt}</button>
+    </div>
+  `).join('');
+
+  // Navigate
+  document.getElementById('page3').classList.add('hidden');
+  document.getElementById('page4').classList.remove('hidden');
+  document.getElementById('page4').classList.add('page');
+  void document.getElementById('page4').offsetWidth;
+  window.scrollTo(0, 0);
+}
+
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+let _pendingPlan = {};
+
+function confirmPlan(provider, gb, price) {
+  _pendingPlan = { provider, gb, price };
+  const lang = currentLang;
+  const isAr = lang === 'ar';
+
+  // Fill badge
+  document.getElementById('mb-provider').textContent = provider;
+  document.getElementById('mb-gb').textContent        = gb;
+  document.getElementById('mb-price').textContent     = price;
+
+  // Localise texts
+  document.getElementById('mb-title').textContent  = isAr ? 'أكمل طلبك' : 'Complete your order';
+  document.getElementById('mb-sub').textContent    = isAr
+    ? 'سنتواصل معك عبر الواتساب لتفعيل الشريحة.'
+    : 'We\'ll contact you on WhatsApp to activate your e-SIM.';
+  document.getElementById('fullnameField').placeholder = isAr ? 'الاسم الثلاثي' : 'Full name (three parts)';
+  document.getElementById('waNumber').placeholder      = isAr ? '5xxxxxxxx' : '5xxxxxxxx';
+  document.getElementById('mb-submit').textContent     = isAr ? 'تأكيد الطلب' : 'Confirm Order';
+  document.getElementById('fullname-err').textContent  = isAr ? 'الرجاء إدخال الاسم الثلاثي' : 'Please enter your full name (3 words)';
+  document.getElementById('wanum-err').textContent     = isAr ? 'الرجاء إدخال رقم الواتساب' : 'Please enter your WhatsApp number';
+  document.getElementById('wanum-format-err').textContent = isAr ? 'الرقم يجب أن يكون 7–12 رقم' : 'Number must be 7–12 digits';
+
+  // Reset form
+  document.getElementById('fullnameField').value = '';
+  document.getElementById('waNumber').value = '';
+  document.getElementById('grp-fullname').classList.remove('error');
+  document.getElementById('grp-wanum').classList.remove('error');
+  document.getElementById('wanum-format-err').classList.remove('show');
+  document.getElementById('modal-form-content').style.display = '';
+  document.getElementById('modal-success').classList.remove('show');
+
+  document.getElementById('orderModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('fullnameField').focus(), 350);
+}
+
+function closeModal() {
+  document.getElementById('orderModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('orderModal')) closeModal();
+}
+
+async function submitOrder() {
+  const isAr = currentLang === 'ar';
+  const name = document.getElementById('fullnameField').value.trim();
+  const num  = document.getElementById('waNumber').value.trim().replace(/\D/g,'');
+  const prefix = document.getElementById('waPrefix').value;
+  let valid = true;
+
+  // Validate name: at least 3 words
+  if (name.split(/\s+/).filter(Boolean).length < 3) {
+    document.getElementById('grp-fullname').classList.add('error');
+    valid = false;
+  } else {
+    document.getElementById('grp-fullname').classList.remove('error');
+  }
+
+  // Validate number
+  document.getElementById('wanum-format-err').classList.remove('show');
+  if (!num) {
+    document.getElementById('grp-wanum').classList.add('error');
+    valid = false;
+  } else if (num.length < 7 || num.length > 12) {
+    document.getElementById('grp-wanum').classList.remove('error');
+    document.getElementById('wanum-format-err').classList.add('show');
+    valid = false;
+  } else {
+    document.getElementById('grp-wanum').classList.remove('error');
+  }
+
+  if (!valid) return;
+
+  // Disable button while sending
+  const submitBtn = document.getElementById('mb-submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...';
+
+  // 1️⃣ Save to Google Sheets
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type:     'order',
+        fullname: name,
+        phone:    prefix + num,
+        provider: _pendingPlan.provider,
+        plan:     _pendingPlan.gb,
+        price:    _pendingPlan.price,
+        date:     new Date().toLocaleString('ar-SA')
+      })
+    });
+  } catch(e) { /* no-cors – ignore */ }
+
+  // 2️⃣ Build WhatsApp message and open it
+  const ownerPhone = '972593425031'; // رقم الواتساب بدون +
+  const waMsg =
+    '🔔 *طلب جديد – KhalilOrders*\n' +
+    '━━━━━━━━━━━━━━\n' +
+    '👤 *الاسم:* ' + name + '\n' +
+    '📱 *رقمي:* ' + prefix + num + '\n' +
+    '🏢 *الشركة:* ' + _pendingPlan.provider + '\n' +
+    '💾 *الباقة:* ' + _pendingPlan.gb + ' GB\n' +
+    '💰 *السعر:* ' + _pendingPlan.price + '\n' +
+    '━━━━━━━━━━━━━━\n' +
+    '✅ أرجو التواصل لتفعيل الشريحة';
+
+  const waUrl = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
+
+  // Show success first, then open WhatsApp
+  submitBtn.disabled = false;
+  submitBtn.textContent = isAr ? 'تأكيد الطلب' : 'Confirm Order';
+  document.getElementById('modal-form-content').style.display = 'none';
+
+  const sTitle = document.getElementById('ms-title');
+  const sSub   = document.getElementById('ms-sub');
+  sTitle.textContent = isAr ? 'تم استلام طلبك! ✓' : 'Order received!';
+  sSub.innerHTML = isAr
+    ? `شكراً <strong>${name.split(' ')[0]}</strong>!<br>
+       <span style="color:#25d366;font-weight:700;">📱 سيفتح واتساب الآن — اضغط إرسال لإتمام طلبك</span>`
+    : `Thanks <strong>${name.split(' ')[0]}</strong>!<br>
+       <span style="color:#25d366;font-weight:700;">📱 WhatsApp will open — tap Send to complete your order</span>`;
+  document.getElementById('modal-success').classList.add('show');
+
+  // Open WhatsApp after short delay
+  setTimeout(() => { window.open(waUrl, '_blank'); }, 800);
+}
+
+function goToEsimPage() {
+  document.getElementById('displayUsername3').textContent = document.getElementById('displayUsername').textContent;
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page3').classList.remove('hidden');
+  document.getElementById('page3').classList.add('page');
+  void document.getElementById('page3').offsetWidth;
+  window.scrollTo(0, 0);
+}
+
+function goToServices() {
+  document.getElementById('page3').classList.add('hidden');
+  document.getElementById('page2').classList.remove('hidden');
+  document.getElementById('page2').classList.add('page');
+  void document.getElementById('page2').offsetWidth;
+  window.scrollTo(0, 0);
+}
+
+function goToProviders() {
+  document.getElementById('page4').classList.add('hidden');
+  document.getElementById('page3').classList.remove('hidden');
+  document.getElementById('page3').classList.add('page');
+  void document.getElementById('page3').offsetWidth;
+  window.scrollTo(0, 0);
+}
+
+// Live clear errors
 document.getElementById('usernameField').addEventListener('input', () => {
   document.getElementById('grp-username').classList.remove('error');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+document.getElementById('fullnameField').addEventListener('input', () => {
+  document.getElementById('grp-fullname').classList.remove('error');
+});
+
+document.getElementById('waNumber').addEventListener('input', () => {
+  document.getElementById('grp-wanum').classList.remove('error');
+  document.getElementById('wanum-format-err').classList.remove('show');
 });
 
 // Default language: English
