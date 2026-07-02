@@ -1016,15 +1016,25 @@
         <!-- Serial number -->
         <div class="inp-wrap" id="grp-serial" style="margin-bottom:18px;">
           <label for="serialNumberField" style="display:block; margin-bottom:8px; font-weight:600; color: var(--text-dark); font-size:0.9rem;" id="t-label-serial">الرقم السري (Serial Number)</label>
-          <input type="text" id="serialNumberField" inputmode="numeric" pattern="[0-9]*" maxlength="14" placeholder="أدخل الرقم السري المكون من 14 خانة" style="padding: 12px 14px;" />
-          <div class="err-msg" id="serial-err">الرجاء إدخال رقم سري صحيح مكون من 14 رقم</div>
+          <input type="text" id="serialNumberField" inputmode="numeric" pattern="[0-9]*" maxlength="14" placeholder="أدخل الرقم السري (9-14 خانة)" style="padding: 12px 14px;" />
+          <div class="err-msg" id="serial-err">الرجاء إدخال رقم سري صحيح (9-14 خانة)</div>
         </div>
 
         <!-- Phone number -->
         <div class="inp-wrap" id="grp-renew-phone" style="margin-bottom:18px;">
           <label for="renewPhoneField" style="display:block; margin-bottom:8px; font-weight:600; color: var(--text-dark); font-size:0.9rem;" id="t-label-renew-phone">رقم الهاتف</label>
-          <input type="tel" id="renewPhoneField" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="مثال: 059XXXXXXX" style="padding: 12px 14px;" />
+          <input type="tel" id="renewPhoneField" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="مثال: 05XXXXXXXX" style="padding: 12px 14px;" />
           <div class="err-msg" id="renew-phone-err">الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام</div>
+        </div>
+
+        <!-- Price Badge (70 NIS) -->
+        <div style="display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,#e0f5f3,#f0fffe); border:2px solid #2ec4b6; border-radius:12px; padding:14px 18px; margin-bottom:18px;">
+          <div style="font-size:1.8rem;">💰</div>
+          <div style="flex:1;">
+            <div style="font-size:0.78rem; color:var(--text-soft); font-weight:600; margin-bottom:2px;" id="t-renew-price-label">سعر التجديد</div>
+            <div style="font-size:1.5rem; font-weight:800; color:var(--teal); letter-spacing:1px;">70 ₪</div>
+          </div>
+          <div style="background:#2ec4b6; color:white; border-radius:8px; padding:6px 12px; font-size:0.78rem; font-weight:700;" id="t-renew-badge">ثابت</div>
         </div>
 
         <button type="button" class="btn-login" style="margin-top:10px; text-transform:none; letter-spacing:0;" id="btn-submit-renew" onclick="submitRenew()">متابعة التجديد</button>
@@ -1144,13 +1154,15 @@ const translations = {
     cardRenewSub: 'Renew your current plans and manage subscriptions',
     labelSerial: 'الرقم السري (Serial Number)',
     labelRenewPhone: 'رقم الهاتف',
-    serialPlaceholder: 'أدخل الرقم السري المكون من 14 خانة',
-    renewPhonePlaceholder: 'مثال: 059XXXXXXX',
+    serialPlaceholder: 'أدخل الرقم السري (9-14 خانة)',
+    renewPhonePlaceholder: 'مثال: 05XXXXXXXX',
     btnSubmitRenew: 'متابعة التجديد',
-    serialErr:   'الرجاء إدخال رقم سري صحيح مكون من 14 رقم',
+    serialErr:   'الرجاء إدخال رقم سري صحيح (9-14 خانة)',
     renewPhoneErr: 'الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام',
     renewSuccessTitle: 'تم استلام طلب التجديد! ✓',
     renewSuccessSub: '<span style="color:#25d366;font-weight:700;">📱 سيفتح واتساب الآن — اضغط إرسال لإتمام التجديد</span>',
+    renewPriceLabel: 'سعر التجديد',
+    renewBadge: 'ثابت',
     dir:         'rtl', lang: 'ar'
   },
   en: {
@@ -1176,13 +1188,15 @@ const translations = {
     cardRenewSub: 'Renew your current plans and manage subscriptions',
     labelSerial: 'Serial Number',
     labelRenewPhone: 'Phone Number',
-    serialPlaceholder: 'Enter the 14-digit serial number',
-    renewPhonePlaceholder: 'Example: 059XXXXXXX',
+    serialPlaceholder: 'Enter the serial number (9-14 digits)',
+    renewPhonePlaceholder: 'Example: 05XXXXXXXX',
     btnSubmitRenew: 'Continue Renewal',
-    serialErr:   'Please enter a valid 14-digit serial number',
+    serialErr:   'Please enter a valid serial number (9-14 digits)',
     renewPhoneErr: 'Please enter a valid 10-digit phone number',
     renewSuccessTitle: 'Renewal received!',
     renewSuccessSub: '<span style="color:#25d366;font-weight:700;">📱 WhatsApp will open — tap Send to complete renewal</span>',
+    renewPriceLabel: 'Renewal Price',
+    renewBadge: 'Fixed',
     dir:         'ltr', lang: 'en'
   }
 };
@@ -1223,6 +1237,34 @@ function setLang(lang) {
   // Page 4
   const back3 = document.getElementById('t-back3');
   if (back3) back3.textContent = t.back;
+
+  // Page 5
+  const renewTitle = document.getElementById('t-renew-title');
+  if (renewTitle) renewTitle.textContent = t.renewTitle;
+  const cardRenewTitle = document.getElementById('t-card-renew-title');
+  if (cardRenewTitle) cardRenewTitle.textContent = t.cardRenewTitle;
+  const cardRenewSub = document.getElementById('t-card-renew-sub');
+  if (cardRenewSub) cardRenewSub.textContent = t.cardRenewSub;
+  const labelSerial = document.getElementById('t-label-serial');
+  if (labelSerial) labelSerial.textContent = t.labelSerial;
+  const labelRenewPhone = document.getElementById('t-label-renew-phone');
+  if (labelRenewPhone) labelRenewPhone.textContent = t.labelRenewPhone;
+  const serialInp = document.getElementById('serialNumberField');
+  if (serialInp) serialInp.placeholder = t.serialPlaceholder;
+  const renewPhoneInp = document.getElementById('renewPhoneField');
+  if (renewPhoneInp) renewPhoneInp.placeholder = t.renewPhonePlaceholder;
+  const serialErr = document.getElementById('serial-err');
+  if (serialErr) serialErr.textContent = t.serialErr;
+  const renewPhoneErr = document.getElementById('renew-phone-err');
+  if (renewPhoneErr) renewPhoneErr.textContent = t.renewPhoneErr;
+  const btnSubmitRenew = document.getElementById('btn-submit-renew');
+  if (btnSubmitRenew) btnSubmitRenew.textContent = t.btnSubmitRenew;
+  const renewPriceLabel = document.getElementById('t-renew-price-label');
+  if (renewPriceLabel) renewPriceLabel.textContent = t.renewPriceLabel;
+  const renewBadge = document.getElementById('t-renew-badge');
+  if (renewBadge) renewBadge.textContent = t.renewBadge;
+  const back5 = document.getElementById('t-back5');
+  if (back5) back5.textContent = t.back;
 
   // Toggle buttons
   ['btnAr','btnAr2','btnAr3','btnAr4','btnAr5'].forEach(id => {
@@ -1563,7 +1605,7 @@ async function submitOrder() {
   submitBtn.disabled = true;
   submitBtn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...';
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoRSkl1mjRAWahBhG4yj14uyTEHZrh10j14h1HcMDt4PVIiaK14kSWrPlLHWrbSuh3/exec';
   const serviceLabel = selectedServiceType === 'sim' ? 'SIM' : 'e-SIM';
 
   try {
@@ -1675,7 +1717,7 @@ async function submitRenew() {
   const phone = document.getElementById('renewPhoneField').value.trim();
   let valid = true;
 
-  if (serial.length !== 14) {
+  if (serial.length < 9 || serial.length > 14) {
     document.getElementById('grp-serial').classList.add('error');
     valid = false;
   } else {
@@ -1695,7 +1737,7 @@ async function submitRenew() {
   submitBtn.disabled = true;
   submitBtn.textContent = isAr ? 'جاري الإرسال...' : 'Sending...';
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoRSkl1mjRAWahBhG4yj14uyTEHZrh10j14h1HcMDt4PVIiaK14kSWrPlLHWrbSuh3/exec';
 
   try {
     await fetch(SCRIPT_URL, {
@@ -1717,6 +1759,7 @@ async function submitRenew() {
     '━━━━━━━━━━━━━━\n' +
     '🔢 *الرقم السري (Serial):* ' + serial + '\n' +
     '📱 *رقم الهاتف:* ' + phone + '\n' +
+    '💰 *السعر:* 70 ₪\n' +
     '━━━━━━━━━━━━━━\n' +
     '✅ أرجو معالجة طلب التجديد في أقرب وقت.';
 
@@ -1740,7 +1783,7 @@ async function submitRenew() {
 setLang('en');
 
 async function fetchPrices() {
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoRSkl1mjRAWahBhG4yj14uyTEHZrh10j14h1HcMDt4PVIiaK14kSWrPlLHWrbSuh3/exec';
   try {
     const res = await fetch(SCRIPT_URL + '?action=get_prices&t=' + Date.now());
     const json = await res.json();

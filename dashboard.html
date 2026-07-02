@@ -704,7 +704,10 @@
 
       <nav>
         <div class="nav-item active" id="nav-registrations" onclick="switchTab('registrations')">
-          <span class="nav-icon">👥</span> المسجلون
+          <span class="nav-icon">👥</span> طلبات الشرائح
+        </div>
+        <div class="nav-item" id="nav-renewals" onclick="switchTab('renewals')">
+          <span class="nav-icon">🔄</span> طلبات التجديد
         </div>
         <div class="nav-item" id="nav-prices" onclick="switchTab('prices')">
           <span class="nav-icon">💰</span> أسعار الباقات
@@ -732,7 +735,7 @@
         <!-- Topbar -->
         <div class="topbar">
           <div>
-            <div class="topbar-title">المسجلون في Workshop</div>
+            <div class="topbar-title">طلبات الشرائح المستلمة</div>
             <div class="topbar-sub" id="lastUpdate">جارٍ التحميل… <span class="refresh-dot"></span></div>
           </div>
           <div class="topbar-actions">
@@ -745,7 +748,7 @@
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-top">
-              <span class="stat-label">إجمالي المسجلين</span>
+              <span class="stat-label">إجمالي الطلبات</span>
               <div class="stat-icon" style="background:rgba(224,85,85,0.12)">👥</div>
             </div>
             <div class="stat-value" id="statTotal">—</div>
@@ -753,7 +756,7 @@
           </div>
           <div class="stat-card">
             <div class="stat-top">
-              <span class="stat-label">تسجيلات اليوم</span>
+              <span class="stat-label">طلبات اليوم</span>
               <div class="stat-icon" style="background:rgba(34,197,94,0.12)">📅</div>
             </div>
             <div class="stat-value" id="statToday">—</div>
@@ -769,7 +772,7 @@
           </div>
           <div class="stat-card">
             <div class="stat-top">
-              <span class="stat-label">آخر تسجيل</span>
+              <span class="stat-label">آخر طلب</span>
               <div class="stat-icon" style="background:rgba(245,158,11,0.12)">🕐</div>
             </div>
             <div class="stat-value" style="font-size:1rem;padding-top:6px;" id="statLast">—</div>
@@ -803,7 +806,68 @@
         </div>
       </div>
 
-      <!-- 2. PRICES SECTION (HIDDEN BY DEFAULT) -->
+      <!-- 2. RENEWALS SECTION (HIDDEN BY DEFAULT) -->
+      <div id="section-renewals" class="hidden">
+        <!-- Topbar -->
+        <div class="topbar">
+          <div>
+            <div class="topbar-title">طلبات تجديد اشتراكات الشريحة</div>
+            <div class="topbar-sub" id="lastRenewUpdate">جارٍ التحميل… <span class="refresh-dot"></span></div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn-icon btn-success" onclick="exportRenewalsExcel()">📥 تصدير Excel</button>
+            <button class="btn-icon" onclick="loadRenewals()">🔄 تحديث</button>
+          </div>
+        </div>
+
+        <!-- Stats for Renewals -->
+        <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 500px; margin-bottom: 28px;">
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">إجمالي التجديدات</span>
+              <div class="stat-icon" style="background:rgba(46,196,182,0.12)">🔄</div>
+            </div>
+            <div class="stat-value" id="statRenewTotal">—</div>
+            <div class="stat-change">📋 جميع الأوقات</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">تجديدات اليوم</span>
+              <div class="stat-icon" style="background:rgba(34,197,94,0.12)">📅</div>
+            </div>
+            <div class="stat-value" id="statRenewToday">—</div>
+            <div class="stat-change">✅ اليوم</div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="section-card">
+          <div class="section-header">
+            <span class="section-title">قائمة طلبات التجديد</span>
+            <input
+              type="text"
+              id="searchRenewInput"
+              class="search-input"
+              placeholder="🔍 بحث بالرقم السري أو رقم الهاتف..."
+              oninput="filterRenewalsTable()"
+              style="width: 260px;"
+            />
+          </div>
+
+          <div class="table-wrap">
+            <div id="renewalsTableContent">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+          <div class="pagination" id="renewalsPagination" style="display:none">
+            <span id="renewalsPageInfo">عرض 1–10 من 0</span>
+            <div class="page-btns" id="renewalsPageBtns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. PRICES SECTION (HIDDEN BY DEFAULT) -->
       <div id="section-prices" class="hidden">
         <!-- Topbar -->
         <div class="topbar">
@@ -832,7 +896,7 @@
 // ══════════════════════════════════════
 //  CONFIG — ضع رابط Apps Script هنا
 // ══════════════════════════════════════
-const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbwoRSkl1mjRAWahBhG4yj14uyTEHZrh10j14h1HcMDt4PVIiaK14kSWrPlLHWrbSuh3/exec';
 const DASHBOARD_SECRET = 'admin2024';  // ← نفس كلمة السر في Apps Script
 
 // ══════════════════════════════════════
@@ -886,15 +950,21 @@ if (sessionStorage.getItem('dash_auth') === '1') {
 function switchTab(section) {
   activeTab = section;
   const isReg = section === 'registrations';
+  const isRenew = section === 'renewals';
+  const isPrice = section === 'prices';
   
   document.getElementById('nav-registrations').classList.toggle('active', isReg);
-  document.getElementById('nav-prices').classList.toggle('active', !isReg);
+  document.getElementById('nav-renewals').classList.toggle('active', isRenew);
+  document.getElementById('nav-prices').classList.toggle('active', isPrice);
 
   document.getElementById('section-registrations').classList.toggle('hidden', !isReg);
-  document.getElementById('section-prices').classList.toggle('hidden', isReg);
+  document.getElementById('section-renewals').classList.toggle('hidden', !isRenew);
+  document.getElementById('section-prices').classList.toggle('hidden', !isPrice);
 
-  if (!isReg) {
+  if (isPrice) {
     loadPrices();
+  } else if (isRenew) {
+    loadRenewals();
   } else {
     loadData();
   }
@@ -1179,11 +1249,169 @@ async function savePrice(id) {
 }
 
 // ══════════════════════════════════════
+//  RENEWALS MANAGER
+// ══════════════════════════════════════
+let allRenewals = [];
+let filteredRenewals = [];
+let currentRenewPage = 1;
+const renewPerPage = 10;
+
+async function loadRenewals() {
+  if (activeTab !== 'renewals') return;
+  document.getElementById('renewalsTableContent').innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=list_renewals&t=${Date.now()}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'unauthorized') {
+      showToast('❌ رمز الوصول خاطئ', 'error'); return;
+    }
+
+    allRenewals = json.data || [];
+    filteredRenewals = [...allRenewals];
+    currentRenewPage = 1;
+
+    // Stats
+    document.getElementById('statRenewTotal').textContent = allRenewals.length;
+    
+    const today = new Date().toLocaleDateString('ar-SA');
+    const todayCount = allRenewals.filter(r => r.date && r.date.toString().indexOf(today) !== -1).length;
+    document.getElementById('statRenewToday').textContent = todayCount;
+
+    // Update time
+    document.getElementById('lastRenewUpdate').innerHTML =
+      `آخر تحديث: ${new Date().toLocaleTimeString('ar-SA')} <span class="refresh-dot"></span>`;
+
+    renderRenewalsTable();
+
+  } catch(e) {
+    document.getElementById('renewalsTableContent').innerHTML =
+      '<div class="empty-state"><div class="empty-state-icon">⚠️</div>' +
+      '<h3>فشل تحميل البيانات</h3><p>تأكد من رابط Apps Script ثم حاول مجدداً</p></div>';
+  }
+}
+
+function renderRenewalsTable() {
+  const start = (currentRenewPage - 1) * renewPerPage;
+  const end   = start + renewPerPage;
+  const page  = filteredRenewals.slice(start, end);
+
+  if (filteredRenewals.length === 0) {
+    document.getElementById('renewalsTableContent').innerHTML =
+      '<div class="empty-state"><div class="empty-state-icon">📭</div>' +
+      '<h3>لا توجد بيانات</h3><p>لم يتم تسجيل أي طلبات تجديد بعد أو لا توجد نتائج للبحث</p></div>';
+    document.getElementById('renewalsPagination').style.display = 'none';
+    return;
+  }
+
+  let rows = page.map((r, i) => `
+    <tr id="renew-row-${r.id}">
+      <td style="color:var(--text-soft);font-size:.8rem">${start + i + 1}</td>
+      <td style="font-family:monospace;font-size:0.95rem;color:var(--text);font-weight:600;">${esc(r.serial)}</td>
+      <td>
+        <span class="badge badge-green">📱 ${esc(r.phone)}</span>
+      </td>
+      <td style="color:var(--text-soft);font-size:.82rem">${esc(r.date)}</td>
+      <td>
+        <button class="delete-btn" onclick="deleteRenewRow('${r.id}')">🗑️ حذف</button>
+      </td>
+    </tr>
+  `).join('');
+
+  document.getElementById('renewalsTableContent').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>الرقم السري (Serial Number)</th>
+          <th>رقم الهاتف</th>
+          <th>تاريخ الطلب</th>
+          <th>إجراء</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+
+  // Pagination
+  const totalPages = Math.ceil(filteredRenewals.length / renewPerPage);
+  document.getElementById('renewalsPageInfo').textContent =
+    `عرض ${start+1}–${Math.min(end, filteredRenewals.length)} من ${filteredRenewals.length}`;
+
+  let btns = '';
+  for (let p = 1; p <= totalPages; p++) {
+    btns += `<button class="page-btn ${p===currentRenewPage?'active':''}" onclick="goRenewPage(${p})">${p}</button>`;
+  }
+  document.getElementById('renewalsPageBtns').innerHTML = btns;
+  document.getElementById('renewalsPagination').style.display = 'flex';
+}
+
+function goRenewPage(p) { currentRenewPage = p; renderRenewalsTable(); }
+
+function filterRenewalsTable() {
+  const q = document.getElementById('searchRenewInput').value.trim().toLowerCase();
+  filteredRenewals = q
+    ? allRenewals.filter(r =>
+        (r.serial||'').includes(q) ||
+        (r.phone||'').includes(q))
+    : [...allRenewals];
+  currentRenewPage = 1;
+  renderRenewalsTable();
+}
+
+async function deleteRenewRow(id) {
+  if (!confirm('هل تريد حذف هذا الطلب نهائياً؟')) return;
+
+  const row = document.getElementById('renew-row-' + id);
+  if (row) row.style.opacity = '.3';
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=delete&sheet=التجديدات&id=${id}&t=${Date.now()}`;
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'deleted') {
+      allRenewals  = allRenewals.filter(r => r.id !== id);
+      filteredRenewals = filteredRenewals.filter(r => r.id !== id);
+      document.getElementById('statRenewTotal').textContent = allRenewals.length;
+      renderRenewalsTable();
+      showToast('✅ تم الحذف بنجاح', 'success');
+    } else {
+      if (row) row.style.opacity = '1';
+      showToast('❌ فشل الحذف', 'error');
+    }
+  } catch(e) {
+    if (row) row.style.opacity = '1';
+    showToast('❌ خطأ في الاتصال', 'error');
+  }
+}
+
+function exportRenewalsExcel() {
+  if (!allRenewals.length) { showToast('⚠️ لا توجد بيانات للتصدير', 'error'); return; }
+
+  const bom  = '\uFEFF';
+  const head = 'الرقم السري (Serial),رقم الهاتف,التاريخ\n';
+  const rows = allRenewals.map(r =>
+    `"${r.serial}","${r.phone}","${r.date}"`
+  ).join('\n');
+
+  const blob = new Blob([bom + head + rows], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href  = URL.createObjectURL(blob);
+  link.download = `renewals_orders_${new Date().toLocaleDateString('ar-SA').replace(/\//g,'-')}.csv`;
+  link.click();
+  showToast('📥 تم تصدير الملف بنجاح', 'success');
+}
+
+// ══════════════════════════════════════
 //  AUTO REFRESH (كل 60 ثانية)
 // ══════════════════════════════════════
 function startAutoRefresh() {
   autoRefreshTimer = setInterval(() => {
     if (activeTab === 'registrations') loadData();
+    else if (activeTab === 'renewals') loadRenewals();
   }, 60000);
 }
 
