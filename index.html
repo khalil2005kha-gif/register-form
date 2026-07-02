@@ -975,6 +975,71 @@
   </div>
 </div>
 
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 5 – RENEW SIM SUBSCRIPTION
+═══════════════════════════════════════ -->
+<div id="page5" class="page hidden">
+  <div class="welcome-page" style="max-width:500px; margin: 0 auto;">
+
+    <!-- Top bar -->
+    <div class="topbar-welcome">
+      <div class="welcome-heading" id="t-renew-title">تجديد اشتراكات الشريحة</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="lang-toggle welcome-lang">
+          <button class="lang-btn" id="btnAr5" onclick="setLang('ar')">عربي</button>
+          <div class="lang-sep"></div>
+          <button class="lang-btn active" id="btnEn5" onclick="setLang('en')">EN</button>
+        </div>
+        <button onclick="goToServices()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back5">← Back</button>
+      </div>
+    </div>
+
+    <!-- White Card for Form -->
+    <div class="form-card" style="max-width: 100%; margin-top: 18px; padding: 28px 24px;">
+      <!-- Header inside the card -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 2px solid #f0f5f5; padding-bottom: 16px; width: 100%;">
+        <div>
+          <h3 style="font-size:1.2rem; color: var(--text-dark); font-weight: 700; margin:0;" id="t-card-renew-title">تجديد اشتراك الشريحة</h3>
+          <p style="font-size:0.8rem; color: var(--text-soft); margin: 4px 0 0;" id="t-card-renew-sub">Renew your current plans and manage subscriptions</p>
+        </div>
+        <div class="icon-box" style="background-color: #e0f5f3; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease;">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:24px; height:24px; fill: var(--teal);">
+            <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Form Inputs wrapper -->
+      <div id="renew-form-fields" style="width: 100%;">
+        <!-- Serial number -->
+        <div class="inp-wrap" id="grp-serial" style="margin-bottom:18px;">
+          <label for="serialNumberField" style="display:block; margin-bottom:8px; font-weight:600; color: var(--text-dark); font-size:0.9rem;" id="t-label-serial">الرقم السري (Serial Number)</label>
+          <input type="text" id="serialNumberField" inputmode="numeric" pattern="[0-9]*" maxlength="14" placeholder="أدخل الرقم السري المكون من 14 خانة" style="padding: 12px 14px;" />
+          <div class="err-msg" id="serial-err">الرجاء إدخال رقم سري صحيح مكون من 14 رقم</div>
+        </div>
+
+        <!-- Phone number -->
+        <div class="inp-wrap" id="grp-renew-phone" style="margin-bottom:18px;">
+          <label for="renewPhoneField" style="display:block; margin-bottom:8px; font-weight:600; color: var(--text-dark); font-size:0.9rem;" id="t-label-renew-phone">رقم الهاتف</label>
+          <input type="tel" id="renewPhoneField" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="مثال: 059XXXXXXX" style="padding: 12px 14px;" />
+          <div class="err-msg" id="renew-phone-err">الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام</div>
+        </div>
+
+        <button type="button" class="btn-login" style="margin-top:10px; text-transform:none; letter-spacing:0;" id="btn-submit-renew" onclick="submitRenew()">متابعة التجديد</button>
+      </div>
+
+      <!-- Success state for renew (hidden by default) -->
+      <div class="modal-success" id="renew-success" style="display:none; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:12px 0 4px; width: 100%;">
+        <div class="success-icon">✓</div>
+        <div class="success-title" id="t-renew-success-title">تم استلام طلب التجديد!</div>
+        <div class="success-sub" id="t-renew-success-sub">سيفتح واتساب الآن لإرسال الطلب وإتمام عملية التجديد.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════
      MODAL – ORDER FORM
 ═══════════════════════════════════════ -->
@@ -1074,6 +1139,18 @@ const translations = {
     simTitle:    'شرائح SIM',
     simDesc:     'شرائح SIM جديدة مع باقة 400 جيجابايت.',
     tagline:     'شريحة تعمل في كل مكان.',
+    renewTitle:  'تجديد اشتراكات الشريحة',
+    cardRenewTitle: 'تجديد اشتراكات الشريحة',
+    cardRenewSub: 'Renew your current plans and manage subscriptions',
+    labelSerial: 'الرقم السري (Serial Number)',
+    labelRenewPhone: 'رقم الهاتف',
+    serialPlaceholder: 'أدخل الرقم السري المكون من 14 خانة',
+    renewPhonePlaceholder: 'مثال: 059XXXXXXX',
+    btnSubmitRenew: 'متابعة التجديد',
+    serialErr:   'الرجاء إدخال رقم سري صحيح مكون من 14 رقم',
+    renewPhoneErr: 'الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام',
+    renewSuccessTitle: 'تم استلام طلب التجديد! ✓',
+    renewSuccessSub: '<span style="color:#25d366;font-weight:700;">📱 سيفتح واتساب الآن — اضغط إرسال لإتمام التجديد</span>',
     dir:         'rtl', lang: 'ar'
   },
   en: {
@@ -1094,6 +1171,18 @@ const translations = {
     simTitle:    'SIM',
     simDesc:     'New SIM cards with a 400GB package.',
     tagline:     'A SIM card that works everywhere.',
+    renewTitle:  'Renew SIM Subscriptions',
+    cardRenewTitle: 'Renewing SIM Subscriptions',
+    cardRenewSub: 'Renew your current plans and manage subscriptions',
+    labelSerial: 'Serial Number',
+    labelRenewPhone: 'Phone Number',
+    serialPlaceholder: 'Enter the 14-digit serial number',
+    renewPhonePlaceholder: 'Example: 059XXXXXXX',
+    btnSubmitRenew: 'Continue Renewal',
+    serialErr:   'Please enter a valid 14-digit serial number',
+    renewPhoneErr: 'Please enter a valid 10-digit phone number',
+    renewSuccessTitle: 'Renewal received!',
+    renewSuccessSub: '<span style="color:#25d366;font-weight:700;">📱 WhatsApp will open — tap Send to complete renewal</span>',
     dir:         'ltr', lang: 'en'
   }
 };
@@ -1136,11 +1225,11 @@ function setLang(lang) {
   if (back3) back3.textContent = t.back;
 
   // Toggle buttons
-  ['btnAr','btnAr2','btnAr3','btnAr4'].forEach(id => {
+  ['btnAr','btnAr2','btnAr3','btnAr4','btnAr5'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', lang === 'ar');
   });
-  ['btnEn','btnEn2','btnEn3','btnEn4'].forEach(id => {
+  ['btnEn','btnEn2','btnEn3','btnEn4','btnEn5'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', lang === 'en');
   });
@@ -1181,12 +1270,28 @@ function selectService(type) {
     goToProviderPage();
     return;
   }
+  if (type === 'renew') {
+    goToRenewPage();
+    return;
+  }
+}
 
-  const names = {
-    renew: { ar: 'تجديد الاشتراك', en: 'Renewing SIM Subscriptions' }
-  };
-  const name = names[type][currentLang];
-  alert((currentLang === 'ar' ? 'اخترت: ' : 'You selected: ') + name);
+function goToRenewPage() {
+  // Clear fields
+  document.getElementById('serialNumberField').value = '';
+  document.getElementById('renewPhoneField').value = '';
+  document.getElementById('grp-serial').classList.remove('error');
+  document.getElementById('grp-renew-phone').classList.remove('error');
+  
+  // Reset success state
+  document.getElementById('renew-form-fields').style.display = '';
+  document.getElementById('renew-success').style.display = 'none';
+
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page5').classList.remove('hidden');
+  document.getElementById('page5').classList.add('page');
+  void document.getElementById('page5').offsetWidth;
+  window.scrollTo(0, 0);
 }
 
 function goToProviderPage() {
@@ -1204,15 +1309,6 @@ function goToProviderPage() {
   // Render provider rows dynamically
   const container = document.getElementById('provider-list-container');
   let html = '';
-
-  const SIM_PRICES = {
-    cellcom: '70₪',
-    hotmobile: '180₪',
-    pelephone: '180₪',
-    partner: '150₪',
-    we: '80₪',
-    '019': '150₪'
-  };
 
   for (const key in PROVIDERS) {
     const p = PROVIDERS[key];
@@ -1265,8 +1361,17 @@ function goToProviderPage() {
 }
 
 /* ═══════════════════════════════════════
-   PROVIDERS DATA
+   PROVIDERS DATA & PRICES
 ═══════════════════════════════════════ */
+let SIM_PRICES = {
+  cellcom: '70₪',
+  hotmobile: '180₪',
+  pelephone: '180₪',
+  partner: '150₪',
+  we: '80₪',
+  '019': '150₪'
+};
+
 const PROVIDERS = {
   cellcom: {
     key: 'cellcom',
@@ -1521,6 +1626,7 @@ function goToEsimPage() {
 
 function goToServices() {
   document.getElementById('page3').classList.add('hidden');
+  document.getElementById('page5').classList.add('hidden');
   document.getElementById('page2').classList.remove('hidden');
   document.getElementById('page2').classList.add('page');
   void document.getElementById('page2').offsetWidth;
@@ -1553,8 +1659,132 @@ document.getElementById('waNumber').addEventListener('input', () => {
   document.getElementById('wanum-format-err').classList.remove('show');
 });
 
+document.getElementById('serialNumberField').addEventListener('input', function() {
+  this.value = this.value.replace(/[^0-9]/g, '');
+  document.getElementById('grp-serial').classList.remove('error');
+});
+
+document.getElementById('renewPhoneField').addEventListener('input', function() {
+  this.value = this.value.replace(/[^0-9]/g, '');
+  document.getElementById('grp-renew-phone').classList.remove('error');
+});
+
+async function submitRenew() {
+  const isAr = currentLang === 'ar';
+  const serial = document.getElementById('serialNumberField').value.trim();
+  const phone = document.getElementById('renewPhoneField').value.trim();
+  let valid = true;
+
+  if (serial.length !== 14) {
+    document.getElementById('grp-serial').classList.add('error');
+    valid = false;
+  } else {
+    document.getElementById('grp-serial').classList.remove('error');
+  }
+
+  if (phone.length !== 10) {
+    document.getElementById('grp-renew-phone').classList.add('error');
+    valid = false;
+  } else {
+    document.getElementById('grp-renew-phone').classList.remove('error');
+  }
+
+  if (!valid) return;
+
+  const submitBtn = document.getElementById('btn-submit-renew');
+  submitBtn.disabled = true;
+  submitBtn.textContent = isAr ? 'جاري الإرسال...' : 'Sending...';
+
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type:   'renew_sim',
+        serial: serial,
+        phone:  phone,
+        date:   new Date().toLocaleString('ar-SA')
+      })
+    });
+  } catch(e) { /* no-cors */ }
+
+  const ownerPhone = '972593425031';
+  const waMsg =
+    '🔄 *طلب تجديد اشتراك الشريحة*\n' +
+    '━━━━━━━━━━━━━━\n' +
+    '🔢 *الرقم السري (Serial):* ' + serial + '\n' +
+    '📱 *رقم الهاتف:* ' + phone + '\n' +
+    '━━━━━━━━━━━━━━\n' +
+    '✅ أرجو معالجة طلب التجديد في أقرب وقت.';
+
+  const waUrl = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = isAr ? 'متابعة التجديد' : 'Continue Renewal';
+  document.getElementById('renew-form-fields').style.display = 'none';
+
+  const sTitle = document.getElementById('t-renew-success-title');
+  const sSub   = document.getElementById('t-renew-success-sub');
+  const t = translations[currentLang];
+  sTitle.textContent = t.renewSuccessTitle;
+  sSub.innerHTML = t.renewSuccessSub;
+  document.getElementById('renew-success').style.display = 'flex';
+
+  setTimeout(() => { window.open(waUrl, '_blank'); }, 800);
+}
+
 // Default language: English
 setLang('en');
+
+async function fetchPrices() {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=get_prices&t=' + Date.now());
+    const json = await res.json();
+    if (json.status === 'success' && json.prices) {
+      const p = json.prices;
+      
+      // Update eSIM prices in PROVIDERS
+      if (p.esim_cellcom_400) PROVIDERS.cellcom.plans[0].price = p.esim_cellcom_400;
+      if (p.esim_cellcom_500) PROVIDERS.cellcom.plans[1].price = p.esim_cellcom_500;
+      
+      if (p.esim_hotmobile_150) PROVIDERS.hotmobile.plans[0].price = p.esim_hotmobile_150;
+      if (p.esim_hotmobile_500) PROVIDERS.hotmobile.plans[1].price = p.esim_hotmobile_500;
+      
+      if (p.esim_pelephone_150) PROVIDERS.pelephone.plans[0].price = p.esim_pelephone_150;
+      if (p.esim_pelephone_300) PROVIDERS.pelephone.plans[1].price = p.esim_pelephone_300;
+      
+      if (p.esim_partner_400) PROVIDERS.partner.plans[0].price = p.esim_partner_400;
+      if (p.esim_partner_500) PROVIDERS.partner.plans[1].price = p.esim_partner_500;
+      
+      if (p.esim_we_500) PROVIDERS.we.plans[0].price = p.esim_we_500;
+      if (p.esim_we_inf) PROVIDERS.we.plans[1].price = p.esim_we_inf;
+      
+      if (p.esim_019_100) PROVIDERS['019'].plans[0].price = p.esim_019_100;
+      if (p.esim_019_250) PROVIDERS['019'].plans[1].price = p.esim_019_250;
+
+      // Update SIM prices
+      if (p.sim_cellcom_400) SIM_PRICES.cellcom = p.sim_cellcom_400 + '₪';
+      if (p.sim_hotmobile_400) SIM_PRICES.hotmobile = p.sim_hotmobile_400 + '₪';
+      if (p.sim_pelephone_400) SIM_PRICES.pelephone = p.sim_pelephone_400 + '₪';
+      if (p.sim_partner_400) SIM_PRICES.partner = p.sim_partner_400 + '₪';
+      if (p.sim_we_400) SIM_PRICES.we = p.sim_we_400 + '₪';
+      if (p.sim_019_400) SIM_PRICES['019'] = p.sim_019_400 + '₪';
+
+      // If user is currently looking at Page 3 or 4, re-render/update
+      if (!document.getElementById('page3').classList.contains('hidden')) {
+        goToProviderPage();
+      }
+    }
+  } catch(e) {
+    console.warn("Failed to fetch prices, using defaults:", e);
+  }
+}
+
+fetchPrices();
 </script>
 </body>
 </html>

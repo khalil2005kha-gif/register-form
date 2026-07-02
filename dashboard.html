@@ -519,6 +519,140 @@
       color: white;
     }
 
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      font-size: .85rem;
+      color: var(--text-soft);
+    }
+
+    .page-btns { display: flex; gap: 6px; }
+
+    .page-btn {
+      padding: 6px 12px;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--bg3);
+      color: var(--text);
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-size: .82rem;
+      transition: all var(--transition);
+    }
+
+    .page-btn:hover, .page-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: white;
+    }
+
+    /* ── Pricing Grid Editor ── */
+    .prices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .price-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      animation: slideUp .4s ease;
+    }
+
+    .price-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .price-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .price-row-label {
+      font-size: .85rem;
+      color: var(--text-soft);
+      font-weight: 500;
+    }
+
+    .price-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .price-input {
+      width: 76px;
+      padding: 8px 10px;
+      background: var(--bg3);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .price-input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px var(--red-glow);
+    }
+
+    .price-input:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .btn-save-price {
+      padding: 8px 12px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: var(--green);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      transition: all var(--transition);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .btn-save-price:hover:not(:disabled) {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-save-price:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .hidden { display: none !important; }
+
     /* Responsive */
     @media (max-width: 900px) {
       .stats-grid { grid-template-columns: repeat(2,1fr); }
@@ -569,8 +703,11 @@
       </div>
 
       <nav>
-        <div class="nav-item active">
+        <div class="nav-item active" id="nav-registrations" onclick="switchTab('registrations')">
           <span class="nav-icon">👥</span> المسجلون
+        </div>
+        <div class="nav-item" id="nav-prices" onclick="switchTab('prices')">
+          <span class="nav-icon">💰</span> أسعار الباقات
         </div>
         <div class="nav-item" onclick="exportExcel()">
           <span class="nav-icon">📥</span> تصدير Excel
@@ -590,76 +727,97 @@
     <!-- Main -->
     <main class="main">
 
-      <!-- Topbar -->
-      <div class="topbar">
-        <div>
-          <div class="topbar-title">المسجلون في Workshop</div>
-          <div class="topbar-sub" id="lastUpdate">جارٍ التحميل… <span class="refresh-dot"></span></div>
+      <!-- 1. REGISTRATIONS SECTION -->
+      <div id="section-registrations">
+        <!-- Topbar -->
+        <div class="topbar">
+          <div>
+            <div class="topbar-title">المسجلون في Workshop</div>
+            <div class="topbar-sub" id="lastUpdate">جارٍ التحميل… <span class="refresh-dot"></span></div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn-icon btn-success" onclick="exportExcel()">📥 تصدير Excel</button>
+            <button class="btn-icon" onclick="loadData()">🔄 تحديث</button>
+          </div>
         </div>
-        <div class="topbar-actions">
-          <button class="btn-icon btn-success" onclick="exportExcel()">📥 تصدير Excel</button>
-          <button class="btn-icon" onclick="loadData()">🔄 تحديث</button>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">إجمالي المسجلين</span>
+              <div class="stat-icon" style="background:rgba(224,85,85,0.12)">👥</div>
+            </div>
+            <div class="stat-value" id="statTotal">—</div>
+            <div class="stat-change">📋 جميع الأوقات</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">تسجيلات اليوم</span>
+              <div class="stat-icon" style="background:rgba(34,197,94,0.12)">📅</div>
+            </div>
+            <div class="stat-value" id="statToday">—</div>
+            <div class="stat-change">✅ اليوم</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">لديهم هاتف</span>
+              <div class="stat-icon" style="background:rgba(59,130,246,0.12)">📞</div>
+            </div>
+            <div class="stat-value" id="statPhone">—</div>
+            <div class="stat-change">📱 رقم مسجل</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">آخر تسجيل</span>
+              <div class="stat-icon" style="background:rgba(245,158,11,0.12)">🕐</div>
+            </div>
+            <div class="stat-value" style="font-size:1rem;padding-top:6px;" id="statLast">—</div>
+            <div class="stat-change">🔔 الأحدث</div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="section-card">
+          <div class="section-header">
+            <span class="section-title">قائمة الطلبات</span>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="🔍 بحث بالاسم أو الرقم..."
+              oninput="filterTable()"
+            />
+          </div>
+
+          <div class="table-wrap">
+            <div id="tableContent">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+          <div class="pagination" id="pagination" style="display:none">
+            <span id="pageInfo">عرض 1–10 من 0</span>
+            <div class="page-btns" id="pageBtns"></div>
+          </div>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">إجمالي المسجلين</span>
-            <div class="stat-icon" style="background:rgba(224,85,85,0.12)">👥</div>
+      <!-- 2. PRICES SECTION (HIDDEN BY DEFAULT) -->
+      <div id="section-prices" class="hidden">
+        <!-- Topbar -->
+        <div class="topbar">
+          <div>
+            <div class="topbar-title">تعديل أسعار الباقات</div>
+            <div class="topbar-sub">تحديث الأسعار في لوحة التحكم وتطبيقها فوراً على الموقع الرئيسي.</div>
           </div>
-          <div class="stat-value" id="statTotal">—</div>
-          <div class="stat-change">📋 جميع الأوقات</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">تسجيلات اليوم</span>
-            <div class="stat-icon" style="background:rgba(34,197,94,0.12)">📅</div>
-          </div>
-          <div class="stat-value" id="statToday">—</div>
-          <div class="stat-change">✅ اليوم</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">لديهم هاتف</span>
-            <div class="stat-icon" style="background:rgba(59,130,246,0.12)">📞</div>
-          </div>
-          <div class="stat-value" id="statPhone">—</div>
-          <div class="stat-change">📱 رقم مسجل</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">آخر تسجيل</span>
-            <div class="stat-icon" style="background:rgba(245,158,11,0.12)">🕐</div>
-          </div>
-          <div class="stat-value" style="font-size:1rem;padding-top:6px;" id="statLast">—</div>
-          <div class="stat-change">🔔 الأحدث</div>
-        </div>
-      </div>
-
-      <!-- Table -->
-      <div class="section-card">
-        <div class="section-header">
-          <span class="section-title">قائمة المسجلين</span>
-          <input
-            type="text"
-            id="searchInput"
-            class="search-input"
-            placeholder="🔍 بحث بالاسم أو الإيميل..."
-            oninput="filterTable()"
-          />
-        </div>
-
-        <div class="table-wrap">
-          <div id="tableContent">
-            <div class="spinner"></div>
+          <div class="topbar-actions">
+            <button class="btn-icon btn-success" onclick="loadPrices()">🔄 تحديث الأسعار</button>
           </div>
         </div>
 
-        <div class="pagination" id="pagination" style="display:none">
-          <span id="pageInfo">عرض 1–10 من 0</span>
-          <div class="page-btns" id="pageBtns"></div>
+        <div id="prices-editor-container">
+          <div class="spinner"></div>
         </div>
       </div>
 
@@ -685,6 +843,7 @@ let filtered    = [];
 let currentPage = 1;
 const perPage   = 10;
 let autoRefreshTimer;
+let activeTab   = 'registrations';
 
 // ══════════════════════════════════════
 //  LOGIN
@@ -722,9 +881,30 @@ if (sessionStorage.getItem('dash_auth') === '1') {
 }
 
 // ══════════════════════════════════════
-//  LOAD DATA
+//  TAB SWITCHING
+// ══════════════════════════════════════
+function switchTab(section) {
+  activeTab = section;
+  const isReg = section === 'registrations';
+  
+  document.getElementById('nav-registrations').classList.toggle('active', isReg);
+  document.getElementById('nav-prices').classList.toggle('active', !isReg);
+
+  document.getElementById('section-registrations').classList.toggle('hidden', !isReg);
+  document.getElementById('section-prices').classList.toggle('hidden', isReg);
+
+  if (!isReg) {
+    loadPrices();
+  } else {
+    loadData();
+  }
+}
+
+// ══════════════════════════════════════
+//  LOAD REGISTRATION DATA
 // ══════════════════════════════════════
 async function loadData() {
+  if (activeTab !== 'registrations') return;
   document.getElementById('tableContent').innerHTML = '<div class="spinner"></div>';
 
   try {
@@ -748,7 +928,7 @@ async function loadData() {
 
     const last = allData.length ? allData[allData.length - 1] : null;
     document.getElementById('statLast').textContent =
-      last ? last.username : '—';
+      last ? last.fullname : '—';
 
     // Update time
     document.getElementById('lastUpdate').innerHTML =
@@ -764,7 +944,7 @@ async function loadData() {
 }
 
 // ══════════════════════════════════════
-//  RENDER TABLE
+//  RENDER REGISTRATION TABLE
 // ══════════════════════════════════════
 function renderTable() {
   const start = (currentPage - 1) * perPage;
@@ -774,7 +954,7 @@ function renderTable() {
   if (filtered.length === 0) {
     document.getElementById('tableContent').innerHTML =
       '<div class="empty-state"><div class="empty-state-icon">📭</div>' +
-      '<h3>لا توجد بيانات</h3><p>لم يتم التسجيل بعد أو لا توجد نتائج للبحث</p></div>';
+      '<h3>لا توجد بيانات</h3><p>لم يتم تسجيل أي طلبات بعد أو لا توجد نتائج للبحث</p></div>';
     document.getElementById('pagination').style.display = 'none';
     return;
   }
@@ -784,15 +964,17 @@ function renderTable() {
       <td style="color:var(--text-soft);font-size:.8rem">${start + i + 1}</td>
       <td>
         <div class="user-cell">
-          <div class="avatar-sm">${r.username ? r.username[0].toUpperCase() : '?'}</div>
-          <span style="margin-right:10px;font-weight:600">${esc(r.username)}</span>
+          <div class="avatar-sm">${r.fullname ? r.fullname[0].toUpperCase() : '?'}</div>
+          <span style="margin-right:10px;font-weight:600">${esc(r.fullname)}</span>
         </div>
       </td>
-      <td style="color:var(--text-soft)">${esc(r.email)}</td>
       <td>${r.phone && r.phone !== 'لم يُدخل'
-        ? `<span class="badge badge-green">📞 ${esc(r.phone)}</span>`
+        ? `<span class="badge badge-green">📱 ${esc(r.phone)}</span>`
         : `<span class="badge badge-red">—</span>`}
       </td>
+      <td style="font-weight:600;color:var(--text)">${esc(r.provider)}</td>
+      <td style="color:var(--teal)">${esc(r.plan)}</td>
+      <td style="color:var(--yellow);font-weight:700;">${esc(r.price)}</td>
       <td style="color:var(--text-soft);font-size:.82rem">${esc(r.date)}</td>
       <td>
         <button class="delete-btn" onclick="deleteRow('${r.id}')">🗑️ حذف</button>
@@ -805,10 +987,12 @@ function renderTable() {
       <thead>
         <tr>
           <th>#</th>
-          <th>اسم المستخدم</th>
-          <th>البريد الإلكتروني</th>
-          <th>رقم الهاتف</th>
-          <th>تاريخ التسجيل</th>
+          <th>الاسم الثلاثي</th>
+          <th>رقم الواتساب</th>
+          <th>الشركة</th>
+          <th>الباقة</th>
+          <th>السعر</th>
+          <th>تاريخ الطلب</th>
           <th>إجراء</th>
         </tr>
       </thead>
@@ -832,25 +1016,26 @@ function renderTable() {
 function goPage(p) { currentPage = p; renderTable(); }
 
 // ══════════════════════════════════════
-//  FILTER
+//  FILTER TABLE
 // ══════════════════════════════════════
 function filterTable() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   filtered = q
     ? allData.filter(r =>
-        (r.username||'').toLowerCase().includes(q) ||
-        (r.email||'').toLowerCase().includes(q) ||
-        (r.phone||'').includes(q))
+        (r.fullname||'').toLowerCase().includes(q) ||
+        (r.phone||'').includes(q) ||
+        (r.provider||'').toLowerCase().includes(q) ||
+        (r.plan||'').toLowerCase().includes(q))
     : [...allData];
   currentPage = 1;
   renderTable();
 }
 
 // ══════════════════════════════════════
-//  DELETE
+//  DELETE ROW
 // ══════════════════════════════════════
 async function deleteRow(id) {
-  if (!confirm('هل تريد حذف هذا المسجّل نهائياً؟')) return;
+  if (!confirm('هل تريد حذف هذا الطلب نهائياً؟')) return;
 
   const row = document.getElementById('row-' + id);
   if (row) row.style.opacity = '.3';
@@ -877,30 +1062,129 @@ async function deleteRow(id) {
 }
 
 // ══════════════════════════════════════
-//  EXPORT EXCEL (CSV)
+//  EXPORT EXCEL
 // ══════════════════════════════════════
 function exportExcel() {
   if (!allData.length) { showToast('⚠️ لا توجد بيانات للتصدير', 'error'); return; }
 
   const bom  = '\uFEFF';
-  const head = 'اسم المستخدم,البريد الإلكتروني,رقم الهاتف,تاريخ التسجيل\n';
+  const head = 'الاسم الثلاثي,رقم الواتساب,الشركة,الباقة,السعر,التاريخ\n';
   const rows = allData.map(r =>
-    `"${r.username}","${r.email}","${r.phone}","${r.date}"`
+    `"${r.fullname}","${r.phone}","${r.provider}","${r.plan}","${r.price}","${r.date}"`
   ).join('\n');
 
   const blob = new Blob([bom + head + rows], { type: 'text/csv;charset=utf-8;' });
   const link = document.createElement('a');
   link.href  = URL.createObjectURL(blob);
-  link.download = `workshop_registrations_${new Date().toLocaleDateString('ar-SA').replace(/\//g,'-')}.csv`;
+  link.download = `workshop_orders_${new Date().toLocaleDateString('ar-SA').replace(/\//g,'-')}.csv`;
   link.click();
   showToast('📥 تم تصدير الملف بنجاح', 'success');
+}
+
+// ══════════════════════════════════════
+//  PRICES MANAGER (GET & POST)
+// ══════════════════════════════════════
+async function loadPrices() {
+  const container = document.getElementById('prices-editor-container');
+  container.innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=list_prices&t=${Date.now()}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'success') {
+      renderPricesEditor(json.data);
+    } else {
+      container.innerHTML = '<div class="empty-state"><h3>فشل تحميل الأسعار</h3><p>تأكد من إعدادات Apps Script</p></div>';
+    }
+  } catch(e) {
+    container.innerHTML = '<div class="empty-state"><h3>خطأ في الاتصال بالخادم</h3></div>';
+  }
+}
+
+function renderPricesEditor(priceData) {
+  const providersList = {
+    cellcom: { name: 'سيلكوم (Cellcom)', keys: ['esim_cellcom_400', 'esim_cellcom_500', 'sim_cellcom_400'] },
+    hotmobile: { name: 'هوت موبايل (Hot Mobile)', keys: ['esim_hotmobile_150', 'esim_hotmobile_500', 'sim_hotmobile_400'] },
+    pelephone: { name: 'بيليفون (Pelephone)', keys: ['esim_pelephone_150', 'esim_pelephone_300', 'sim_pelephone_400'] },
+    partner: { name: 'بارتنر (Partner)', keys: ['esim_partner_400', 'esim_partner_500', 'sim_partner_400'] },
+    we: { name: 'we', keys: ['esim_we_500', 'esim_we_inf', 'sim_we_400'] },
+    '019': { name: '019', keys: ['esim_019_100', 'esim_019_250', 'sim_019_400'] }
+  };
+
+  const container = document.getElementById('prices-editor-container');
+  let html = '<div class="prices-grid">';
+
+  for (const key in providersList) {
+    const p = providersList[key];
+    html += `
+      <div class="price-card">
+        <div class="price-card-title">${p.name}</div>
+    `;
+
+    p.keys.forEach(k => {
+      const item = priceData.find(item => item.id === k);
+      if (!item) return;
+
+      const typeLabel = item.type.toUpperCase();
+      const label = `${typeLabel} - ${item.plan}`;
+      html += `
+        <div class="price-row">
+          <span class="price-row-label">${label}</span>
+          <div class="price-input-wrap">
+            <input type="text" class="price-input" id="inp-price-${k}" value="${item.price}" />
+            <button class="btn-save-price" id="btn-price-${k}" onclick="savePrice('${k}')">💾 حفظ</button>
+          </div>
+        </div>
+      `;
+    });
+
+    html += '</div>';
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+async function savePrice(id) {
+  const input = document.getElementById('inp-price-' + id);
+  const btn = document.getElementById('btn-price-' + id);
+  if (!input || !btn) return;
+
+  const newPrice = input.value.trim();
+  if (!newPrice) {
+    showToast('⚠️ الرجاء إدخال السعر', 'error'); return;
+  }
+
+  input.disabled = true;
+  btn.disabled = true;
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=update_price&id=${id}&price=${encodeURIComponent(newPrice)}&t=${Date.now()}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'success') {
+      showToast('✅ تم تحديث السعر بنجاح', 'success');
+    } else {
+      showToast('❌ فشل تحديث السعر', 'error');
+    }
+  } catch(e) {
+    showToast('❌ خطأ في الاتصال', 'error');
+  }
+
+  input.disabled = false;
+  btn.disabled = false;
 }
 
 // ══════════════════════════════════════
 //  AUTO REFRESH (كل 60 ثانية)
 // ══════════════════════════════════════
 function startAutoRefresh() {
-  autoRefreshTimer = setInterval(loadData, 60000);
+  autoRefreshTimer = setInterval(() => {
+    if (activeTab === 'registrations') loadData();
+  }, 60000);
 }
 
 // ══════════════════════════════════════
@@ -922,3 +1206,4 @@ function esc(str) {
 </script>
 </body>
 </html>
+
