@@ -860,7 +860,6 @@
 
     <!-- Services layout -->
     <div class="services-layout">
-
       <!-- Big JK logo -->
       <div class="big-jk">JK</div>
 
@@ -903,7 +902,7 @@
 </div>
 
 <!-- ═══════════════════════════════════════
-     PAGE 3 – E-SIM PROVIDER LIST
+     PAGE 3 – PROVIDER LIST
 ═══════════════════════════════════════ -->
 <div id="page3" class="page hidden">
   <div class="welcome-page">
@@ -933,93 +932,7 @@
     <p class="esim-subtitle" id="t-esim-desc">Choose a smart e-SIM plan and install it instantly with no physical card.</p>
 
     <!-- Provider list -->
-    <div class="provider-list">
-
-      <!-- Cellcom -->
-      <div class="provider-row" onclick="openProvider('cellcom')">
-        <div class="provider-logo">Cell<br>com</div>
-        <div class="provider-info">
-          <div class="provider-name">Cellcom</div>
-          <div class="provider-tagline" id="t-tagline-1">A SIM card that works everywhere.</div>
-        </div>
-        <div class="provider-plans">
-          <div class="plan-chip"><span class="plan-gb">400 GB</span><span class="plan-price">65₪</span></div>
-          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">70₪</span></div>
-        </div>
-        <div class="provider-arrow">›</div>
-      </div>
-
-      <!-- Hot Mobile -->
-      <div class="provider-row" onclick="openProvider('hotmobile')">
-        <div class="provider-logo">Hot<br>Mob</div>
-        <div class="provider-info">
-          <div class="provider-name">Hot Mobile</div>
-          <div class="provider-tagline" id="t-tagline-2">A SIM card that works everywhere.</div>
-        </div>
-        <div class="provider-plans">
-          <div class="plan-chip"><span class="plan-gb">150 GB</span><span class="plan-price">55₪</span></div>
-          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">75₪</span></div>
-        </div>
-        <div class="provider-arrow">›</div>
-      </div>
-
-      <!-- Pelephone -->
-      <div class="provider-row" onclick="openProvider('pelephone')">
-        <div class="provider-logo">Pele<br>phone</div>
-        <div class="provider-info">
-          <div class="provider-name">Pelephone</div>
-          <div class="provider-tagline" id="t-tagline-3">A SIM card that works everywhere.</div>
-        </div>
-        <div class="provider-plans">
-          <div class="plan-chip"><span class="plan-gb">150 GB</span><span class="plan-price">50₪</span></div>
-          <div class="plan-chip"><span class="plan-gb">300 GB</span><span class="plan-price">65₪</span></div>
-        </div>
-        <div class="provider-arrow">›</div>
-      </div>
-
-      <!-- Partner -->
-      <div class="provider-row" onclick="openProvider('partner')">
-        <div class="provider-logo" style="font-size:.85rem;letter-spacing:0;">Partner</div>
-        <div class="provider-info">
-          <div class="provider-name">Partner</div>
-          <div class="provider-tagline" id="t-tagline-4">A SIM card that works everywhere.</div>
-        </div>
-        <div class="provider-plans">
-          <div class="plan-chip"><span class="plan-gb">400 GB</span><span class="plan-price">65₪</span></div>
-          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">70₪</span></div>
-        </div>
-        <div class="provider-arrow">›</div>
-      </div>
-
-      <!-- we -->
-      <div class="provider-row" onclick="openProvider('we')">
-        <div class="provider-logo" style="font-size:1.4rem;font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:-1px;">we</div>
-        <div class="provider-info">
-          <div class="provider-name">we</div>
-          <div class="provider-tagline" id="t-tagline-5">A SIM card that works everywhere.</div>
-        </div>
-        <div class="provider-plans">
-          <div class="plan-chip"><span class="plan-gb">500 GB</span><span class="plan-price">65₪</span></div>
-          <div class="plan-chip"><span class="plan-gb">∞ GB</span><span class="plan-price">80₪</span></div>
-        </div>
-        <div class="provider-arrow">›</div>
-      </div>
-
-      <!-- 019 -->
-      <div class="provider-row" onclick="openProvider('019')">
-        <div class="provider-logo" style="font-size:1.2rem;font-family:'Outfit',sans-serif;font-weight:800;">019</div>
-        <div class="provider-info">
-          <div class="provider-name">019</div>
-          <div class="provider-tagline" id="t-tagline-6">A SIM card that works everywhere.</div>
-        </div>
-        <div class="provider-plans">
-          <div class="plan-chip"><span class="plan-gb">100 GB</span><span class="plan-price">45₪</span></div>
-          <div class="plan-chip"><span class="plan-gb">250 GB</span><span class="plan-price">60₪</span></div>
-        </div>
-        <div class="provider-arrow">›</div>
-      </div>
-
-    </div><!-- /provider-list -->
+    <div class="provider-list" id="provider-list-container"></div>
   </div>
 </div>
 
@@ -1082,7 +995,7 @@
       </div>
 
       <div class="modal-title" id="mb-title">Complete your order</div>
-      <div class="modal-sub" id="mb-sub">We'll contact you on WhatsApp to activate your e-SIM.</div>
+      <div class="modal-sub" id="mb-sub">We'll contact you on WhatsApp to activate your service.</div>
 
       <!-- Full name -->
       <div class="inp-wrap" id="grp-fullname">
@@ -1094,7 +1007,7 @@
           </svg>
         </span>
         <input type="text" id="fullnameField" placeholder="Full name (three parts)" autocomplete="name"/>
-        <div class="err-msg" id="fullname-err">Please enter your full name</div>
+        <div class="err-msg" id="fullname-err">Please enter your full name (3 words)</div>
       </div>
 
       <!-- WhatsApp row -->
@@ -1132,7 +1045,7 @@
     <div class="modal-success" id="modal-success">
       <div class="success-icon">✓</div>
       <div class="success-title" id="ms-title">Order received!</div>
-      <div class="success-sub" id="ms-sub">We'll contact you on WhatsApp shortly to activate your e-SIM plan.</div>
+      <div class="success-sub" id="ms-sub">We'll contact you on WhatsApp shortly to activate your service.</div>
     </div>
 
   </div>
@@ -1158,6 +1071,8 @@ const translations = {
     renewSub:    'تجديد خططك الحالية وإدارة الاشتراكات',
     esimTitle:   'خطط e-SIM',
     esimDesc:    'اختر خطة e-SIM الذكية وقم بتثبيتها فورياً بدون بطاقة فعلية.',
+    simTitle:    'شرائح SIM',
+    simDesc:     'شرائح SIM جديدة مع باقة 400 جيجابايت.',
     tagline:     'شريحة تعمل في كل مكان.',
     dir:         'rtl', lang: 'ar'
   },
@@ -1176,12 +1091,15 @@ const translations = {
     renewSub:    'Renew your current plans and manage subscriptions',
     esimTitle:   'e-SIM Plans',
     esimDesc:    'Choose a smart e-SIM plan and install it instantly with no physical card.',
+    simTitle:    'SIM',
+    simDesc:     'New SIM cards with a 400GB package.',
     tagline:     'A SIM card that works everywhere.',
     dir:         'ltr', lang: 'en'
   }
 };
 
 let currentLang = 'en';
+let selectedServiceType = 'esim'; // esim or sim
 
 function setLang(lang) {
   currentLang = lang;
@@ -1208,12 +1126,9 @@ function setLang(lang) {
   document.getElementById('t-renew-sub').textContent = t.renewSub;
 
   // Page 3
-  document.getElementById('t-esim-title').textContent = t.esimTitle;
-  document.getElementById('t-esim-desc').textContent  = t.esimDesc;
   document.getElementById('t-back2').textContent      = t.back;
-  for (let i = 1; i <= 6; i++) {
-    const el = document.getElementById('t-tagline-' + i);
-    if (el) el.textContent = t.tagline;
+  if (!document.getElementById('page3').classList.contains('hidden')) {
+    goToProviderPage();
   }
 
   // Page 4
@@ -1261,17 +1176,92 @@ function goBack() {
 }
 
 function selectService(type) {
-  if (type === 'esim') {
-    goToEsimPage();
+  selectedServiceType = type;
+  if (type === 'esim' || type === 'sim') {
+    goToProviderPage();
     return;
   }
 
   const names = {
-    sim:   { ar: 'SIM', en: 'SIM' },
     renew: { ar: 'تجديد الاشتراك', en: 'Renewing SIM Subscriptions' }
   };
   const name = names[type][currentLang];
   alert((currentLang === 'ar' ? 'اخترت: ' : 'You selected: ') + name);
+}
+
+function goToProviderPage() {
+  const lang = currentLang;
+  const isEsim = selectedServiceType === 'esim';
+
+  // Set Title & Desc
+  document.getElementById('t-esim-title').textContent = isEsim
+    ? translations[lang].esimTitle
+    : translations[lang].simTitle;
+  document.getElementById('t-esim-desc').textContent = isEsim
+    ? translations[lang].esimDesc
+    : translations[lang].simDesc;
+
+  // Render provider rows dynamically
+  const container = document.getElementById('provider-list-container');
+  let html = '';
+
+  const SIM_PRICES = {
+    cellcom: '70₪',
+    hotmobile: '180₪',
+    pelephone: '180₪',
+    partner: '150₪',
+    we: '80₪',
+    '019': '150₪'
+  };
+
+  for (const key in PROVIDERS) {
+    const p = PROVIDERS[key];
+    const logoStyle = p.logoStyle || '';
+
+    if (isEsim) {
+      // eSIM: multiple plans, clicks to Page 4 (openProvider)
+      const planChips = p.plans.map(plan => `
+        <div class="plan-chip"><span class="plan-gb">${plan.gb} GB</span><span class="plan-price">${plan.price}₪</span></div>
+      `).join('');
+
+      html += `
+        <div class="provider-row" onclick="openProvider('${key}')">
+          <div class="provider-logo" style="${logoStyle}">${p.logo.replace('\\n', '<br>')}</div>
+          <div class="provider-info">
+            <div class="provider-name">${p.name[lang]}</div>
+            <div class="provider-tagline">${translations[lang].tagline}</div>
+          </div>
+          <div class="provider-plans">${planChips}</div>
+          <div class="provider-arrow">›</div>
+        </div>
+      `;
+    } else {
+      // SIM: single 400GB plan, clicks directly to orderModal
+      const price = SIM_PRICES[key];
+      html += `
+        <div class="provider-row" onclick="confirmPlan('${p.name.en}', '400 GB', '${price}')">
+          <div class="provider-logo" style="${logoStyle}">${p.logo.replace('\\n', '<br>')}</div>
+          <div class="provider-info">
+            <div class="provider-name">${p.name[lang]}</div>
+            <div class="provider-tagline">${translations[lang].tagline}</div>
+          </div>
+          <div class="provider-plans">
+            <div class="plan-chip"><span class="plan-gb">400 GB</span><span class="plan-price">${price}</span></div>
+          </div>
+          <div class="provider-arrow">›</div>
+        </div>
+      `;
+    }
+  }
+
+  container.innerHTML = html;
+
+  document.getElementById('displayUsername3').textContent = document.getElementById('displayUsername').textContent;
+  document.getElementById('page2').classList.add('hidden');
+  document.getElementById('page3').classList.remove('hidden');
+  document.getElementById('page3').classList.add('page');
+  void document.getElementById('page3').offsetWidth;
+  window.scrollTo(0, 0);
 }
 
 /* ═══════════════════════════════════════
@@ -1281,7 +1271,7 @@ const PROVIDERS = {
   cellcom: {
     key: 'cellcom',
     logo: 'Cell\ncom',
-    name: { en: 'Cellcom', ar: 'سيلקום' },
+    name: { en: 'Cellcom', ar: 'سيلكوم' },
     plans: [
       { gb: '400', price: '65', popular: false,
         features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
@@ -1303,7 +1293,7 @@ const PROVIDERS = {
   pelephone: {
     key: 'pelephone',
     logo: 'Pele\nphone',
-    name: { en: 'Pelephone', ar: 'פלאפון' },
+    name: { en: 'Pelephone', ar: 'بيليفون' },
     plans: [
       { gb: '150', price: '50', popular: false,
         features: { en: ['Unlimited calls','4G LTE','SMS unlimited'], ar: ['مكالمات غير محدودة','4G LTE','رسائل غير محدودة'] } },
@@ -1314,7 +1304,7 @@ const PROVIDERS = {
   partner: {
     key: 'partner',
     logo: 'Part\nner',
-    name: { en: 'Partner', ar: 'פרטנר' },
+    name: { en: 'Partner', ar: 'بارتنر' },
     plans: [
       { gb: '400', price: '65', popular: false,
         features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
@@ -1354,7 +1344,6 @@ function openProvider(key) {
 
   const lang = currentLang;
 
-  // Fill header
   const logoEl = document.getElementById('p4-logo');
   logoEl.textContent = p.logo.replace('\\n', '\n');
   if (p.logoStyle) logoEl.style.cssText += p.logoStyle;
@@ -1363,7 +1352,6 @@ function openProvider(key) {
   document.getElementById('p4-sub').textContent  = translations[lang].tagline;
   document.getElementById('displayUsername4').textContent = document.getElementById('displayUsername').textContent;
 
-  // Build package cards
   const grid = document.getElementById('pkg-grid');
   const perMonth = lang === 'ar' ? '/ شهرياً' : '/ month';
   const chooseTxt = lang === 'ar' ? 'اختر الخطة' : 'Choose Plan';
@@ -1384,7 +1372,6 @@ function openProvider(key) {
     </div>
   `).join('');
 
-  // Navigate
   document.getElementById('page3').classList.add('hidden');
   document.getElementById('page4').classList.remove('hidden');
   document.getElementById('page4').classList.add('page');
@@ -1402,16 +1389,14 @@ function confirmPlan(provider, gb, price) {
   const lang = currentLang;
   const isAr = lang === 'ar';
 
-  // Fill badge
   document.getElementById('mb-provider').textContent = provider;
   document.getElementById('mb-gb').textContent        = gb;
   document.getElementById('mb-price').textContent     = price;
 
-  // Localise texts
   document.getElementById('mb-title').textContent  = isAr ? 'أكمل طلبك' : 'Complete your order';
   document.getElementById('mb-sub').textContent    = isAr
-    ? 'سنتواصل معك عبر الواتساب لتفعيل الشريحة.'
-    : 'We\'ll contact you on WhatsApp to activate your e-SIM.';
+    ? 'سنتواصل معك عبر الواتساب لتفعيل الخدمة.'
+    : 'We\'ll contact you on WhatsApp to activate your service.';
   document.getElementById('fullnameField').placeholder = isAr ? 'الاسم الثلاثي' : 'Full name (three parts)';
   document.getElementById('waNumber').placeholder      = isAr ? '5xxxxxxxx' : '5xxxxxxxx';
   document.getElementById('mb-submit').textContent     = isAr ? 'تأكيد الطلب' : 'Confirm Order';
@@ -1419,7 +1404,6 @@ function confirmPlan(provider, gb, price) {
   document.getElementById('wanum-err').textContent     = isAr ? 'الرجاء إدخال رقم الواتساب' : 'Please enter your WhatsApp number';
   document.getElementById('wanum-format-err').textContent = isAr ? 'الرقم يجب أن يكون 7–12 رقم' : 'Number must be 7–12 digits';
 
-  // Reset form
   document.getElementById('fullnameField').value = '';
   document.getElementById('waNumber').value = '';
   document.getElementById('grp-fullname').classList.remove('error');
@@ -1449,7 +1433,6 @@ async function submitOrder() {
   const prefix = document.getElementById('waPrefix').value;
   let valid = true;
 
-  // Validate name: at least 3 words
   if (name.split(/\s+/).filter(Boolean).length < 3) {
     document.getElementById('grp-fullname').classList.add('error');
     valid = false;
@@ -1457,7 +1440,6 @@ async function submitOrder() {
     document.getElementById('grp-fullname').classList.remove('error');
   }
 
-  // Validate number
   document.getElementById('wanum-format-err').classList.remove('show');
   if (!num) {
     document.getElementById('grp-wanum').classList.add('error');
@@ -1472,13 +1454,13 @@ async function submitOrder() {
 
   if (!valid) return;
 
-  // Disable button while sending
   const submitBtn = document.getElementById('mb-submit');
   submitBtn.disabled = true;
   submitBtn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...';
 
-  // 1️⃣ Save to Google Sheets
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALAZGO5EcX4LaBQmwcBdZ_VNjb1lI30672pItfzqW6IgyxeUKwc_4sLSd-sAWRYHq/exec';
+  const serviceLabel = selectedServiceType === 'sim' ? 'SIM' : 'e-SIM';
+
   try {
     await fetch(SCRIPT_URL, {
       method: 'POST',
@@ -1488,30 +1470,29 @@ async function submitOrder() {
         type:     'order',
         fullname: name,
         phone:    prefix + num,
-        provider: _pendingPlan.provider,
+        provider: _pendingPlan.provider + ' (' + serviceLabel + ')',
         plan:     _pendingPlan.gb,
         price:    _pendingPlan.price,
         date:     new Date().toLocaleString('ar-SA')
       })
     });
-  } catch(e) { /* no-cors – ignore */ }
+  } catch(e) { /* no-cors */ }
 
-  // 2️⃣ Build WhatsApp message and open it
-  const ownerPhone = '972593425031'; // رقم الواتساب بدون +
+  const ownerPhone = '972593425031';
   const waMsg =
     '🔔 *طلب جديد – KhalilOrders*\n' +
     '━━━━━━━━━━━━━━\n' +
     '👤 *الاسم:* ' + name + '\n' +
     '📱 *رقمي:* ' + prefix + num + '\n' +
+    '📶 *نوع الخدمة:* ' + serviceLabel + '\n' +
     '🏢 *الشركة:* ' + _pendingPlan.provider + '\n' +
-    '💾 *الباقة:* ' + _pendingPlan.gb + ' GB\n' +
+    '💾 *الباقة:* ' + _pendingPlan.gb + '\n' +
     '💰 *السعر:* ' + _pendingPlan.price + '\n' +
     '━━━━━━━━━━━━━━\n' +
     '✅ أرجو التواصل لتفعيل الشريحة';
 
   const waUrl = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
 
-  // Show success first, then open WhatsApp
   submitBtn.disabled = false;
   submitBtn.textContent = isAr ? 'تأكيد الطلب' : 'Confirm Order';
   document.getElementById('modal-form-content').style.display = 'none';
@@ -1526,7 +1507,6 @@ async function submitOrder() {
        <span style="color:#25d366;font-weight:700;">📱 WhatsApp will open — tap Send to complete your order</span>`;
   document.getElementById('modal-success').classList.add('show');
 
-  // Open WhatsApp after short delay
   setTimeout(() => { window.open(waUrl, '_blank'); }, 800);
 }
 
