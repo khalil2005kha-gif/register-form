@@ -1759,43 +1759,16 @@ async function fetchPrices() {
   try {
     const res = await fetch(SCRIPT_URL + '?action=get_prices&t=' + Date.now());
     const json = await res.json();
-    if (json.status === 'success' && json.prices) {
-      const p = json.prices;
+    if (json.status === 'success' && json.data) {
+      ALL_PLANS = json.data;
       
-      // Update eSIM prices in PROVIDERS
-      if (p.esim_cellcom_400) PROVIDERS.cellcom.plans[0].price = p.esim_cellcom_400;
-      if (p.esim_cellcom_500) PROVIDERS.cellcom.plans[1].price = p.esim_cellcom_500;
-      
-      if (p.esim_hotmobile_150) PROVIDERS.hotmobile.plans[0].price = p.esim_hotmobile_150;
-      if (p.esim_hotmobile_500) PROVIDERS.hotmobile.plans[1].price = p.esim_hotmobile_500;
-      
-      if (p.esim_pelephone_150) PROVIDERS.pelephone.plans[0].price = p.esim_pelephone_150;
-      if (p.esim_pelephone_300) PROVIDERS.pelephone.plans[1].price = p.esim_pelephone_300;
-      
-      if (p.esim_partner_400) PROVIDERS.partner.plans[0].price = p.esim_partner_400;
-      if (p.esim_partner_500) PROVIDERS.partner.plans[1].price = p.esim_partner_500;
-      
-      if (p.esim_we_500) PROVIDERS.we.plans[0].price = p.esim_we_500;
-      if (p.esim_we_inf) PROVIDERS.we.plans[1].price = p.esim_we_inf;
-      
-      if (p.esim_019_100) PROVIDERS['019'].plans[0].price = p.esim_019_100;
-      if (p.esim_019_250) PROVIDERS['019'].plans[1].price = p.esim_019_250;
-
-      // Update SIM prices
-      if (p.sim_cellcom_400) SIM_PRICES.cellcom = p.sim_cellcom_400 + '₪';
-      if (p.sim_hotmobile_400) SIM_PRICES.hotmobile = p.sim_hotmobile_400 + '₪';
-      if (p.sim_pelephone_400) SIM_PRICES.pelephone = p.sim_pelephone_400 + '₪';
-      if (p.sim_partner_400) SIM_PRICES.partner = p.sim_partner_400 + '₪';
-      if (p.sim_we_400) SIM_PRICES.we = p.sim_we_400 + '₪';
-      if (p.sim_019_400) SIM_PRICES['019'] = p.sim_019_400 + '₪';
-
       // If user is currently looking at Page 3 or 4, re-render/update
       if (!document.getElementById('page3').classList.contains('hidden')) {
         goToProviderPage();
       }
     }
   } catch(e) {
-    console.warn("Failed to fetch prices, using defaults:", e);
+    console.warn("Failed to fetch prices:", e);
   }
 }
 

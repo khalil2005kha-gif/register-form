@@ -162,11 +162,19 @@ function doGet(e) {
   if (action === 'get_prices') {
     var sheet = _initPricesSheet(ss);
     var rows = sheet.getDataRange().getValues();
-    var prices = {};
+    var list = [];
     for (var i = 1; i < rows.length; i++) {
-      prices[rows[i][0]] = rows[i][4]; // Map ID -> Price
+      list.push({
+        id:         rows[i][0],
+        type:       rows[i][1],
+        provider:   rows[i][2],
+        providerAr: rows[i][3] || rows[i][2],
+        plan:       rows[i][4],
+        price:      rows[i][5],
+        logo:       rows[i][6] || ''
+      });
     }
-    return _json({ status: 'success', prices: prices });
+    return _json({ status: 'success', data: list });
   }
 
   // --- 2. التحقق من أمان لوحة التحكم للعمليات الأخرى ---
@@ -230,7 +238,7 @@ function doGet(e) {
     });
   }
 
-  // --- حذف طلب ---
+  // --- حذف صف (طلب، تجديد، أو باقة) ---
   if (action === 'delete' && params.id) {
     var sheetName = params.sheet || 'الطلبات';
     var s = ss.getSheetByName(sheetName);
@@ -245,30 +253,52 @@ function doGet(e) {
     return _json({ status: 'not_found' });
   }
 
-  // --- جلب تفاصيل الأسعار للوحة الأدمن ---
+  // --- جلب تفاصيل الأسعار والباقات للوحة الأدمن ---
   if (action === 'list_prices') {
     var sheet = _initPricesSheet(ss);
     var rows = sheet.getDataRange().getValues();
     var list = [];
     for (var i = 1; i < rows.length; i++) {
       list.push({
-        id:       rows[i][0],
-        type:     rows[i][1],
-        provider: rows[i][2],
-        plan:     rows[i][3],
-        price:    rows[i][4]
+        id:         rows[i][0],
+        type:       rows[i][1],
+        provider:   rows[i][2],
+        providerAr: rows[i][3] || rows[i][2],
+        plan:       rows[i][4],
+        price:      rows[i][5],
+        logo:       rows[i][6] || ''
       });
     }
     return _json({ status: 'success', data: list });
   }
 
-  // --- تعديل سعر باقة معينة ---
-  if (action === 'update_price' && params.id && params.price) {
+  // --- إضافة باقة جديدة ---
+  if (action === 'add_price') {
+    var sheet = _initPricesSheet(ss);
+    var id = 'pkg_' + Utilities.getUuid().substring(0, 8);
+    var type = params.type || 'sim';
+    var provider = params.provider || 'New Provider';
+    var providerAr = params.providerAr || provider;
+    var plan = params.plan || '400 GB';
+    var price = params.price || '100';
+    var logo = params.logo || '';
+    
+    sheet.appendRow([id, type, provider, providerAr, plan, price, logo]);
+    return _json({ status: 'success', id: id });
+  }
+
+  // --- تعديل باقة معينة ---
+  if (action === 'update_price' && params.id) {
     var sheet = _initPricesSheet(ss);
     var rows = sheet.getDataRange().getValues();
     for (var k = 1; k < rows.length; k++) {
       if (rows[k][0] === params.id) {
-        sheet.getRange(k + 1, 5).setValue(params.price);
+        if (params.price !== undefined) sheet.getRange(k + 1, 6).setValue(params.price);
+        if (params.logo !== undefined) sheet.getRange(k + 1, 7).setValue(params.logo);
+        if (params.provider !== undefined) sheet.getRange(k + 1, 3).setValue(params.provider);
+        if (params.providerAr !== undefined) sheet.getRange(k + 1, 4).setValue(params.providerAr);
+        if (params.plan !== undefined) sheet.getRange(k + 1, 5).setValue(params.plan);
+        if (params.type !== undefined) sheet.getRange(k + 1, 2).setValue(params.type);
         return _json({ status: 'success' });
       }
     }
@@ -344,30 +374,30 @@ function _initPricesSheet(ss) {
   var sheet = ss.getSheetByName('الأسعار');
   if (!sheet) {
     sheet = ss.insertSheet('الأسعار');
-    sheet.appendRow(['معرف الباقة', 'النوع', 'الشركة', 'الباقة', 'السعر']);
-    sheet.getRange(1, 1, 1, 5).setFontWeight('bold').setBackground('#2ec4b6').setFontColor('#ffffff');
+    sheet.appendRow(['معرف الباقة', 'النوع', 'الشركة', 'الشركة بالعربية', 'الباقة', 'السعر', 'الشعار']);
+    sheet.getRange(1, 1, 1, 7).setFontWeight('bold').setBackground('#2ec4b6').setFontColor('#ffffff');
     sheet.setFrozenRows(1);
     
     var defaults = [
-      ['esim_cellcom_400', 'esim', 'Cellcom', '400 GB', '65'],
-      ['esim_cellcom_500', 'esim', 'Cellcom', '500 GB', '70'],
-      ['esim_hotmobile_150', 'esim', 'Hot Mobile', '150 GB', '55'],
-      ['esim_hotmobile_500', 'esim', 'Hot Mobile', '500 GB', '75'],
-      ['esim_pelephone_150', 'esim', 'Pelephone', '150 GB', '50'],
-      ['esim_pelephone_300', 'esim', 'Pelephone', '300 GB', '65'],
-      ['esim_partner_400', 'esim', 'Partner', '400 GB', '65'],
-      ['esim_partner_500', 'esim', 'Partner', '500 GB', '70'],
-      ['esim_we_500', 'esim', 'we', '500 GB', '65'],
-      ['esim_we_inf', 'esim', 'we', '∞ GB', '80'],
-      ['esim_019_100', 'esim', '019', '100 GB', '45'],
-      ['esim_019_250', 'esim', '019', '250 GB', '60'],
+      ['esim_cellcom_400', 'esim', 'Cellcom', 'سيلكوم', '400 GB', '65', 'Cell\ncom'],
+      ['esim_cellcom_500', 'esim', 'Cellcom', 'سيلكوم', '500 GB', '70', 'Cell\ncom'],
+      ['esim_hotmobile_150', 'esim', 'Hot Mobile', 'هوت موبايل', '150 GB', '55', 'Hot\nMob'],
+      ['esim_hotmobile_500', 'esim', 'Hot Mobile', 'هوت موبايل', '500 GB', '75', 'Hot\nMob'],
+      ['esim_pelephone_150', 'esim', 'Pelephone', 'بيليفون', '150 GB', '50', 'Pele\nphone'],
+      ['esim_pelephone_300', 'esim', 'Pelephone', 'بيليفون', '300 GB', '65', 'Pele\nphone'],
+      ['esim_partner_400', 'esim', 'Partner', 'بارتنر', '400 GB', '65', 'Part\nner'],
+      ['esim_partner_500', 'esim', 'Partner', 'بارتنر', '500 GB', '70', 'Part\nner'],
+      ['esim_we_500', 'esim', 'we', 'we', '500 GB', '65', 'we'],
+      ['esim_we_inf', 'esim', 'we', 'we', '∞ GB', '80', 'we'],
+      ['esim_019_100', 'esim', '019', '019', '100 GB', '45', '019'],
+      ['esim_019_250', 'esim', '019', '019', '250 GB', '60', '019'],
       
-      ['sim_cellcom_400', 'sim', 'Cellcom', '400 GB', '70'],
-      ['sim_hotmobile_400', 'sim', 'Hot Mobile', '400 GB', '180'],
-      ['sim_pelephone_400', 'sim', 'Pelephone', '400 GB', '180'],
-      ['sim_partner_400', 'sim', 'Partner', '400 GB', '150'],
-      ['sim_we_400', 'sim', 'we', '400 GB', '80'],
-      ['sim_019_400', 'sim', '019', '400 GB', '150']
+      ['sim_cellcom_400', 'sim', 'Cellcom', 'سيلكوم', '400 GB', '70', 'Cell\ncom'],
+      ['sim_hotmobile_400', 'sim', 'Hot Mobile', 'هوت موبايل', '400 GB', '180', 'Hot\nMob'],
+      ['sim_pelephone_400', 'sim', 'Pelephone', 'بيليفون', '400 GB', '180', 'Pele\nphone'],
+      ['sim_partner_400', 'sim', 'Partner', 'بارتنر', '400 GB', '150', 'Part\nner'],
+      ['sim_we_400', 'sim', 'we', 'we', '400 GB', '80', 'we'],
+      ['sim_019_400', 'sim', '019', '019', '400 GB', '150', '019']
     ];
     for (var i = 0; i < defaults.length; i++) {
       sheet.appendRow(defaults[i]);

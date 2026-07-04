@@ -872,16 +872,63 @@
         <!-- Topbar -->
         <div class="topbar">
           <div>
-            <div class="topbar-title">تعديل أسعار الباقات</div>
-            <div class="topbar-sub">تحديث الأسعار في لوحة التحكم وتطبيقها فوراً على الموقع الرئيسي.</div>
+            <div class="topbar-title">إدارة الباقات والأسعار</div>
+            <div class="topbar-sub">إضافة، تعديل، وحذف باقات SIM و e-SIM الخاصة بموقعك.</div>
           </div>
           <div class="topbar-actions">
-            <button class="btn-icon btn-success" onclick="loadPrices()">🔄 تحديث الأسعار</button>
+            <button class="btn-icon btn-success" onclick="loadPrices()">🔄 تحديث القائمة</button>
           </div>
         </div>
 
-        <div id="prices-editor-container">
-          <div class="spinner"></div>
+        <!-- Add Plan Form -->
+        <div class="section-card" style="margin-bottom: 24px;">
+          <div class="section-header">
+            <span class="section-title">➕ إضافة باقة جديدة</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 18px 0 6px;">
+            <div class="form-group">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">نوع الشريحة</label>
+              <select id="new-plan-type" class="search-input" style="width:100%; height:42px; background:var(--bg3); border-color:var(--border); color:var(--text); padding:0 12px; outline:none; border-radius:10px;">
+                <option value="sim">SIM (شريحة عادية)</option>
+                <option value="esim">e-SIM (شريحة إلكترونية)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">اسم الشركة (إنجليزي)</label>
+              <input type="text" id="new-plan-provider" class="search-input" style="width:100%; height:42px;" placeholder="مثال: Cellcom" />
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">اسم الشركة (عربي)</label>
+              <input type="text" id="new-plan-provider-ar" class="search-input" style="width:100%; height:42px;" placeholder="مثال: سيلكوم" />
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">حجم الباقة</label>
+              <input type="text" id="new-plan-size" class="search-input" style="width:100%; height:42px;" placeholder="مثال: 400 GB" />
+            </div>
+            <div class="form-group">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">السعر (شيكل)</label>
+              <input type="number" id="new-plan-price" class="search-input" style="width:100%; height:42px;" placeholder="مثال: 70" />
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">شعار الشركة (نصي أو رابط صورة مباشر)</label>
+              <input type="text" id="new-plan-logo" class="search-input" style="width:100%; height:42px;" placeholder="مثال: Cell\ncom أو https://example.com/logo.png" />
+            </div>
+            <div style="display:flex; align-items:flex-end;">
+              <button class="btn-icon btn-success" style="width:100%; height:42px; justify-content:center; gap:8px;" onclick="addPackage()">
+                <span>➕</span> إضافة الباقة
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prices list container -->
+        <div class="section-card">
+          <div class="section-header">
+            <span class="section-title">📋 الباقات الحالية</span>
+          </div>
+          <div id="prices-editor-container">
+            <div class="spinner"></div>
+          </div>
         </div>
       </div>
 
@@ -1174,78 +1221,177 @@ async function loadPrices() {
 }
 
 function renderPricesEditor(priceData) {
-  const providersList = {
-    cellcom: { name: 'سيلكوم (Cellcom)', keys: ['esim_cellcom_400', 'esim_cellcom_500', 'sim_cellcom_400'] },
-    hotmobile: { name: 'هوت موبايل (Hot Mobile)', keys: ['esim_hotmobile_150', 'esim_hotmobile_500', 'sim_hotmobile_400'] },
-    pelephone: { name: 'بيليفون (Pelephone)', keys: ['esim_pelephone_150', 'esim_pelephone_300', 'sim_pelephone_400'] },
-    partner: { name: 'بارتنر (Partner)', keys: ['esim_partner_400', 'esim_partner_500', 'sim_partner_400'] },
-    we: { name: 'we', keys: ['esim_we_500', 'esim_we_inf', 'sim_we_400'] },
-    '019': { name: '019', keys: ['esim_019_100', 'esim_019_250', 'sim_019_400'] }
-  };
-
   const container = document.getElementById('prices-editor-container');
-  let html = '<div class="prices-grid">';
-
-  for (const key in providersList) {
-    const p = providersList[key];
-    html += `
-      <div class="price-card">
-        <div class="price-card-title">${p.name}</div>
-    `;
-
-    p.keys.forEach(k => {
-      const item = priceData.find(item => item.id === k);
-      if (!item) return;
-
-      const typeLabel = item.type.toUpperCase();
-      const label = `${typeLabel} - ${item.plan}`;
-      html += `
-        <div class="price-row">
-          <span class="price-row-label">${label}</span>
-          <div class="price-input-wrap">
-            <input type="text" class="price-input" id="inp-price-${k}" value="${item.price}" />
-            <button class="btn-save-price" id="btn-price-${k}" onclick="savePrice('${k}')">💾 حفظ</button>
-          </div>
-        </div>
-      `;
-    });
-
-    html += '</div>';
+  if (!priceData || priceData.length === 0) {
+    container.innerHTML = `<div class="empty-state"><h3>لا توجد باقات حالية</h3><p>أضف باقة جديدة باستخدام النموذج أعلاه.</p></div>`;
+    return;
   }
+  
+  // Sort by type, then provider
+  priceData.sort((a,b) => {
+    if (a.type !== b.type) return a.type.localeCompare(b.type);
+    return a.provider.localeCompare(b.provider);
+  });
 
-  html += '</div>';
+  let html = `
+    <div class="table-wrap">
+      <table class="data-table" style="width:100%; text-align:right; border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">الشعار</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">النوع</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">الشركة (EN/AR)</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">الباقة</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">السعر (₪)</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">رابط الشعار / النص</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border); text-align:center">العمليات</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  priceData.forEach(item => {
+    const isUrl = (item.logo || '').trim().startsWith('http://') || (item.logo || '').trim().startsWith('https://') || (item.logo || '').trim().startsWith('data:image');
+    const logoPreview = isUrl 
+      ? `<img src="${item.logo}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px; border:1px solid var(--border);" />`
+      : `<div style="display:inline-block; padding:4px 8px; background:var(--bg3); border-radius:4px; font-size:.8rem; font-weight:700; color:var(--text-soft);">${item.logo.replace(/\\n/g, ' ')}</div>`;
+
+    html += `
+      <tr id="price-row-${item.id}">
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">${logoPreview}</td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
+          <select id="edit-type-${item.id}" class="search-input" style="width:85px; padding:4px 8px; height:36px; background:var(--bg3); border-color:var(--border); color:var(--text); border-radius:6px;">
+            <option value="sim" ${item.type === 'sim' ? 'selected' : ''}>SIM</option>
+            <option value="esim" ${item.type === 'esim' ? 'selected' : ''}>e-SIM</option>
+          </select>
+        </td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
+          <input type="text" id="edit-provider-${item.id}" class="search-input" style="width:110px; padding:4px 8px; height:34px; margin-bottom:4px;" value="${item.provider}" placeholder="English name" />
+          <input type="text" id="edit-providerAr-${item.id}" class="search-input" style="width:110px; padding:4px 8px; height:34px;" value="${item.providerAr}" placeholder="الاسم بالعربي" />
+        </td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
+          <input type="text" id="edit-plan-${item.id}" class="search-input" style="width:90px; padding:4px 8px; height:34px;" value="${item.plan}" />
+        </td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
+          <input type="number" id="edit-price-${item.id}" class="search-input" style="width:80px; padding:4px 8px; height:34px; font-weight:700;" value="${item.price}" />
+        </td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
+          <input type="text" id="edit-logo-${item.id}" class="search-input" style="width:200px; padding:4px 8px; height:34px;" value="${item.logo}" placeholder="رابط صورة أو نص الشعار" />
+        </td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); text-align:center; vertical-align:middle;">
+          <button class="btn-icon btn-success" style="padding:6px 12px; font-size:.8rem; margin-bottom:4px;" id="btn-save-${item.id}" onclick="updatePackage('${item.id}')">💾 حفظ</button>
+          <button class="btn-icon btn-danger" style="padding:6px 12px; font-size:.8rem;" onclick="deletePackage('${item.id}')">🗑️ حذف</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += `
+        </tbody>
+      </table>
+    </div>
+  `;
   container.innerHTML = html;
 }
 
-async function savePrice(id) {
-  const input = document.getElementById('inp-price-' + id);
-  const btn = document.getElementById('btn-price-' + id);
-  if (!input || !btn) return;
+async function updatePackage(id) {
+  const price = document.getElementById('edit-price-' + id).value.trim();
+  const logo = document.getElementById('edit-logo-' + id).value.trim();
+  const provider = document.getElementById('edit-provider-' + id).value.trim();
+  const providerAr = document.getElementById('edit-providerAr-' + id).value.trim();
+  const plan = document.getElementById('edit-plan-' + id).value.trim();
+  const type = document.getElementById('edit-type-' + id).value;
 
-  const newPrice = input.value.trim();
-  if (!newPrice) {
-    showToast('⚠️ الرجاء إدخال السعر', 'error'); return;
-  }
-
-  input.disabled = true;
-  btn.disabled = true;
+  const btn = document.getElementById('btn-save-' + id);
+  if (btn) btn.disabled = true;
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=update_price&id=${id}&price=${encodeURIComponent(newPrice)}&t=${Date.now()}`;
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=update_price&id=${id}` +
+      `&price=${encodeURIComponent(price)}` +
+      `&logo=${encodeURIComponent(logo)}` +
+      `&provider=${encodeURIComponent(provider)}` +
+      `&providerAr=${encodeURIComponent(providerAr)}` +
+      `&plan=${encodeURIComponent(plan)}` +
+      `&type=${encodeURIComponent(type)}` +
+      `&t=${Date.now()}`;
+    
     const res = await fetch(url);
     const json = await res.json();
 
     if (json.status === 'success') {
-      showToast('✅ تم تحديث السعر بنجاح', 'success');
+      showToast('✅ تم تحديث الباقة بنجاح', 'success');
+      loadPrices();
     } else {
-      showToast('❌ فشل تحديث السعر', 'error');
+      showToast('❌ فشل التحديث', 'error');
+      if (btn) btn.disabled = false;
+    }
+  } catch(e) {
+    showToast('❌ خطأ في الاتصال', 'error');
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function addPackage() {
+  const type = document.getElementById('new-plan-type').value;
+  const provider = document.getElementById('new-plan-provider').value.trim();
+  const providerAr = document.getElementById('new-plan-provider-ar').value.trim();
+  const plan = document.getElementById('new-plan-size').value.trim();
+  const price = document.getElementById('new-plan-price').value.trim();
+  const logo = document.getElementById('new-plan-logo').value.trim();
+
+  if (!provider || !price) {
+    showToast('⚠️ الرجاء إدخال اسم الشركة والسعر على الأقل', 'error');
+    return;
+  }
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=add_price` +
+      `&type=${encodeURIComponent(type)}` +
+      `&provider=${encodeURIComponent(provider)}` +
+      `&providerAr=${encodeURIComponent(providerAr)}` +
+      `&plan=${encodeURIComponent(plan)}` +
+      `&price=${encodeURIComponent(price)}` +
+      `&logo=${encodeURIComponent(logo)}` +
+      `&t=${Date.now()}`;
+    
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'success') {
+      showToast('✅ تم إضافة الباقة بنجاح', 'success');
+      // Clear fields
+      document.getElementById('new-plan-provider').value = '';
+      document.getElementById('new-plan-provider-ar').value = '';
+      document.getElementById('new-plan-size').value = '';
+      document.getElementById('new-plan-price').value = '';
+      document.getElementById('new-plan-logo').value = '';
+      
+      loadPrices();
+    } else {
+      showToast('❌ فشل إضافة الباقة', 'error');
     }
   } catch(e) {
     showToast('❌ خطأ في الاتصال', 'error');
   }
+}
 
-  input.disabled = false;
-  btn.disabled = false;
+async function deletePackage(id) {
+  if (!confirm('هل تريد حذف هذه الباقة نهائياً؟')) return;
+
+  try {
+    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=delete&sheet=الأسعار&id=${id}&t=${Date.now()}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.status === 'deleted') {
+      showToast('🗑️ تم حذف الباقة بنجاح', 'success');
+      loadPrices();
+    } else {
+      showToast('❌ فشل حذف الباقة', 'error');
+    }
+  } catch(e) {
+    showToast('❌ خطأ في الاتصال', 'error');
+  }
 }
 
 // ══════════════════════════════════════
