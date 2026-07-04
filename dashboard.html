@@ -1229,8 +1229,13 @@ function renderPricesEditor(priceData) {
   
   // Sort by type, then provider
   priceData.sort((a,b) => {
-    if (a.type !== b.type) return a.type.localeCompare(b.type);
-    return a.provider.localeCompare(b.provider);
+    const typeA = String(a.type || '');
+    const typeB = String(b.type || '');
+    if (typeA !== typeB) return typeA.localeCompare(typeB);
+    
+    const provA = String(a.provider || '');
+    const provB = String(b.provider || '');
+    return provA.localeCompare(provB);
   });
 
   let html = `
@@ -1254,7 +1259,7 @@ function renderPricesEditor(priceData) {
     const isUrl = (item.logo || '').trim().startsWith('http://') || (item.logo || '').trim().startsWith('https://') || (item.logo || '').trim().startsWith('data:image');
     const logoPreview = isUrl 
       ? `<img src="${item.logo}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px; border:1px solid var(--border);" />`
-      : `<div style="display:inline-block; padding:4px 8px; background:var(--bg3); border-radius:4px; font-size:.8rem; font-weight:700; color:var(--text-soft);">${item.logo.replace(/\\n/g, ' ')}</div>`;
+      : `<div style="display:inline-block; padding:4px 8px; background:var(--bg3); border-radius:4px; font-size:.8rem; font-weight:700; color:var(--text-soft);">${String(item.logo || '').replace(/\\n/g, ' ')}</div>`;
 
     html += `
       <tr id="price-row-${item.id}">
@@ -1266,17 +1271,17 @@ function renderPricesEditor(priceData) {
           </select>
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
-          <input type="text" id="edit-provider-${item.id}" class="search-input" style="width:110px; padding:4px 8px; height:34px; margin-bottom:4px;" value="${item.provider}" placeholder="English name" />
-          <input type="text" id="edit-providerAr-${item.id}" class="search-input" style="width:110px; padding:4px 8px; height:34px;" value="${item.providerAr}" placeholder="الاسم بالعربي" />
+          <input type="text" id="edit-provider-${item.id}" class="search-input" style="width:110px; padding:4px 8px; height:34px; margin-bottom:4px;" value="${item.provider || ''}" placeholder="English name" />
+          <input type="text" id="edit-providerAr-${item.id}" class="search-input" style="width:110px; padding:4px 8px; height:34px;" value="${item.providerAr || ''}" placeholder="الاسم بالعربي" />
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
-          <input type="text" id="edit-plan-${item.id}" class="search-input" style="width:90px; padding:4px 8px; height:34px;" value="${item.plan}" />
+          <input type="text" id="edit-plan-${item.id}" class="search-input" style="width:90px; padding:4px 8px; height:34px;" value="${item.plan || ''}" />
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
-          <input type="number" id="edit-price-${item.id}" class="search-input" style="width:80px; padding:4px 8px; height:34px; font-weight:700;" value="${item.price}" />
+          <input type="number" id="edit-price-${item.id}" class="search-input" style="width:80px; padding:4px 8px; height:34px; font-weight:700;" value="${item.price || ''}" />
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
-          <input type="text" id="edit-logo-${item.id}" class="search-input" style="width:200px; padding:4px 8px; height:34px;" value="${item.logo}" placeholder="رابط صورة أو نص الشعار" />
+          <input type="text" id="edit-logo-${item.id}" class="search-input" style="width:200px; padding:4px 8px; height:34px;" value="${item.logo || ''}" placeholder="رابط صورة أو نص الشعار" />
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); text-align:center; vertical-align:middle;">
           <button class="btn-icon btn-success" style="padding:6px 12px; font-size:.8rem; margin-bottom:4px;" id="btn-save-${item.id}" onclick="updatePackage('${item.id}')">💾 حفظ</button>
