@@ -372,6 +372,13 @@ function _json(obj) {
 // ── تهيئة وتحديث شيت الأسعار بالقيم الافتراضية ───────
 function _initPricesSheet(ss) {
   var sheet = ss.getSheetByName('الأسعار');
+  if (sheet) {
+    var cols = sheet.getLastColumn();
+    if (cols < 7) {
+      ss.deleteSheet(sheet);
+      sheet = null;
+    }
+  }
   if (!sheet) {
     sheet = ss.insertSheet('الأسعار');
     sheet.appendRow(['معرف الباقة', 'النوع', 'الشركة', 'الشركة بالعربية', 'الباقة', 'السعر', 'الشعار']);
