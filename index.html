@@ -1755,7 +1755,7 @@ async function submitRenew() {
 setLang('en');
 
 async function fetchPrices() {
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzD-iRPwvnTj-Ge2XJVj0p5ZJuSaex-r_kwib-LP7poz7Xo7doR2oLrOwv5eNK2eMQ/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdy9wxOzyGxy91XL4qUvPM6ktTNwrg1STzYZFa4IPYi0-Qh_Bwi53Iz13bwob-L0jK/exec';
   try {
     const res = await fetch(SCRIPT_URL + '?action=get_prices&t=' + Date.now());
     const json = await res.json();
