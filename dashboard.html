@@ -1308,7 +1308,7 @@ function renderPricesEditor(priceData) {
   `;
 
   priceData.forEach(item => {
-    const isUrl = (item.logo || '').trim().startsWith('http://') || (item.logo || '').trim().startsWith('https://') || (item.logo || '').trim().startsWith('data:image');
+    const isUrl = String(item.logo || '').trim().startsWith('http://') || String(item.logo || '').trim().startsWith('https://') || String(item.logo || '').trim().startsWith('data:image');
     const logoPreview = isUrl 
       ? `<img src="${item.logo}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px; border:1px solid var(--border);" />`
       : `<div style="display:inline-block; padding:4px 8px; background:var(--bg3); border-radius:4px; font-size:.8rem; font-weight:700; color:var(--text-soft);">${String(item.logo || '').replace(/\\n/g, ' ')}</div>`;

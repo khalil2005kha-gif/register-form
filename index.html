@@ -1324,21 +1324,59 @@ function goToProviderPage() {
   const container = document.getElementById('provider-list-container');
   let html = '';
 
-  for (const key in PROVIDERS) {
-    const p = PROVIDERS[key];
-    const logoStyle = p.logoStyle || '';
+  // Filter plans by type (esim or sim)
+  const filteredPlans = ALL_PLANS.filter(p => p.type === selectedServiceType);
+
+  // Group by provider name
+  const groups = {};
+  filteredPlans.forEach(plan => {
+    const providerKey = String(plan.provider || '').toLowerCase().trim();
+    if (!groups[providerKey]) {
+      groups[providerKey] = {
+        providerName: plan.provider,
+        providerNameAr: plan.providerAr,
+        logo: plan.logo,
+        plans: []
+      };
+    }
+    groups[providerKey].plans.push(plan);
+  });
+
+  // Render each provider group
+  for (const key in groups) {
+    const g = groups[key];
+    
+    // Logo rendering (URL vs Text fallback)
+    let logoHtml = '';
+    const logoStr = String(g.logo || '').trim();
+    if (logoStr.startsWith('http://') || logoStr.startsWith('https://') || logoStr.startsWith('data:image')) {
+      logoHtml = `<img src="${logoStr}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:6px;" alt="${g.providerName}" />`;
+    } else {
+      logoHtml = logoStr.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+    }
+
+    // Determine font styling for text logos based on length
+    let logoStyleAttr = '';
+    if (!logoStr.startsWith('http://') && !logoStr.startsWith('https://') && !logoStr.startsWith('data:image')) {
+      if (logoStr.length < 5) {
+        logoStyleAttr = 'style="font-size:1.2rem; font-family:Outfit,sans-serif; font-weight:800;"';
+      }
+    }
 
     if (isEsim) {
-      // eSIM: multiple plans, clicks to Page 4 (openProvider)
-      const planChips = p.plans.map(plan => `
-        <div class="plan-chip"><span class="plan-gb">${plan.gb} GB</span><span class="plan-price">${plan.price}₪</span></div>
+      // eSIM: multiple plans, clicks to open details page (Page 4)
+      const planChips = g.plans.map(plan => `
+        <div class="plan-chip">
+          <span class="plan-gb">${plan.plan}</span>
+          <span class="plan-price">${plan.price}₪</span>
+        </div>
       `).join('');
 
       html += `
         <div class="provider-row" onclick="openProvider('${key}')">
-          <div class="provider-logo" style="${logoStyle}">${p.logo.replace('\\n', '<br>')}</div>
+          <div class="provider-logo" ${logoStyleAttr}>${logoHtml}</div>
           <div class="provider-info">
-            <div class="provider-name">${p.name[lang]}</div>
+            <div class="provider-name">${lang === 'ar' ? g.providerNameAr : g.providerName}</div>
             <div class="provider-tagline">${translations[lang].tagline}</div>
           </div>
           <div class="provider-plans">${planChips}</div>
@@ -1346,22 +1384,32 @@ function goToProviderPage() {
         </div>
       `;
     } else {
-      // SIM: single 400GB plan, clicks directly to orderModal
-      const price = SIM_PRICES[key];
-      html += `
-        <div class="provider-row" onclick="confirmPlan('${p.name.en}', '400 GB', '${price}')">
-          <div class="provider-logo" style="${logoStyle}">${p.logo.replace('\\n', '<br>')}</div>
-          <div class="provider-info">
-            <div class="provider-name">${p.name[lang]}</div>
-            <div class="provider-tagline">${translations[lang].tagline}</div>
+      // SIM: render each plan card in the group
+      g.plans.forEach(plan => {
+        html += `
+          <div class="provider-row" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}', '${plan.plan}', '${plan.price}₪')">
+            <div class="provider-logo" ${logoStyleAttr}>${logoHtml}</div>
+            <div class="provider-info">
+              <div class="provider-name">${lang === 'ar' ? plan.providerAr : plan.provider}</div>
+              <div class="provider-tagline">${translations[lang].tagline}</div>
+            </div>
+            <div class="provider-plans">
+              <div class="plan-chip">
+                <span class="plan-gb">${plan.plan}</span>
+                <span class="plan-price">${plan.price}₪</span>
+              </div>
+            </div>
+            <div class="provider-arrow">›</div>
           </div>
-          <div class="provider-plans">
-            <div class="plan-chip"><span class="plan-gb">400 GB</span><span class="plan-price">${price}</span></div>
-          </div>
-          <div class="provider-arrow">›</div>
-        </div>
-      `;
+        `;
+      });
     }
+  }
+
+  if (html === '') {
+    html = `<div style="text-align:center; padding: 32px 16px; color: white; font-weight:600; font-family:Outfit,sans-serif;">
+      ${lang === 'ar' ? 'لا توجد باقات متاحة حالياً.' : 'No packages available at the moment.'}
+    </div>`;
   }
 
   container.innerHTML = html;
@@ -1374,100 +1422,30 @@ function goToProviderPage() {
   window.scrollTo(0, 0);
 }
 
-/* ═══════════════════════════════════════
-   PROVIDERS DATA & PRICES
-═══════════════════════════════════════ */
-let SIM_PRICES = {
-  cellcom: '70₪',
-  hotmobile: '180₪',
-  pelephone: '180₪',
-  partner: '150₪',
-  we: '80₪',
-  '019': '150₪'
-};
-
-const PROVIDERS = {
-  cellcom: {
-    key: 'cellcom',
-    logo: 'Cell\ncom',
-    name: { en: 'Cellcom', ar: 'سيلكوم' },
-    plans: [
-      { gb: '400', price: '65', popular: false,
-        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
-      { gb: '500', price: '70', popular: true,
-        features: { en: ['Unlimited calls','5G ready','Hotspot + Roaming'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال + تجوال'] } }
-    ]
-  },
-  hotmobile: {
-    key: 'hotmobile',
-    logo: 'Hot\nMob',
-    name: { en: 'Hot Mobile', ar: 'هوت موبايل' },
-    plans: [
-      { gb: '150', price: '55', popular: false,
-        features: { en: ['Unlimited calls','4G LTE','Basic hotspot'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال أساسية'] } },
-      { gb: '500', price: '75', popular: true,
-        features: { en: ['Unlimited calls','5G ready','Hotspot + Roaming'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال + تجوال'] } }
-    ]
-  },
-  pelephone: {
-    key: 'pelephone',
-    logo: 'Pele\nphone',
-    name: { en: 'Pelephone', ar: 'بيليفون' },
-    plans: [
-      { gb: '150', price: '50', popular: false,
-        features: { en: ['Unlimited calls','4G LTE','SMS unlimited'], ar: ['مكالمات غير محدودة','4G LTE','رسائل غير محدودة'] } },
-      { gb: '300', price: '65', popular: true,
-        features: { en: ['Unlimited calls','5G ready','Hotspot included'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال مجانية'] } }
-    ]
-  },
-  partner: {
-    key: 'partner',
-    logo: 'Part\nner',
-    name: { en: 'Partner', ar: 'بارتنر' },
-    plans: [
-      { gb: '400', price: '65', popular: false,
-        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
-      { gb: '500', price: '70', popular: true,
-        features: { en: ['Unlimited calls','5G ready','Hotspot + Roaming'], ar: ['مكالمات غير محدودة','5G جاهز','نقطة اتصال + تجوال'] } }
-    ]
-  },
-  we: {
-    key: 'we',
-    logo: 'we',
-    logoStyle: 'font-size:1.4rem;font-family:Outfit,sans-serif;font-weight:300;',
-    name: { en: 'we', ar: 'we' },
-    plans: [
-      { gb: '500', price: '65', popular: false,
-        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } },
-      { gb: '∞', price: '80', popular: true,
-        features: { en: ['Unlimited calls','5G ready','Unlimited data'], ar: ['مكالمات غير محدودة','5G جاهز','بيانات غير محدودة'] } }
-    ]
-  },
-  '019': {
-    key: '019',
-    logo: '019',
-    logoStyle: 'font-size:1.2rem;font-family:Outfit,sans-serif;font-weight:800;',
-    name: { en: '019', ar: '019' },
-    plans: [
-      { gb: '100', price: '45', popular: false,
-        features: { en: ['Unlimited calls','4G LTE','Basic plan'], ar: ['مكالمات غير محدودة','4G LTE','خطة أساسية'] } },
-      { gb: '250', price: '60', popular: true,
-        features: { en: ['Unlimited calls','4G LTE','Hotspot included'], ar: ['مكالمات غير محدودة','4G LTE','نقطة اتصال مجانية'] } }
-    ]
-  }
-};
-
 function openProvider(key) {
-  const p = PROVIDERS[key];
-  if (!p) return;
+  const filteredPlans = ALL_PLANS.filter(p => p.type === 'esim' && String(p.provider || '').toLowerCase().trim() === key);
+  if (filteredPlans.length === 0) return;
 
+  const firstPlan = filteredPlans[0];
   const lang = currentLang;
 
   const logoEl = document.getElementById('p4-logo');
-  logoEl.textContent = p.logo.replace('\\n', '\n');
-  if (p.logoStyle) logoEl.style.cssText += p.logoStyle;
+  logoEl.innerHTML = '';
+  logoEl.style.cssText = ''; // clear old styles
+  
+  const logoStr = String(firstPlan.logo || '').trim();
+  if (logoStr.startsWith('http://') || logoStr.startsWith('https://') || logoStr.startsWith('data:image')) {
+    logoEl.innerHTML = `<img src="${logoStr}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;" alt="${firstPlan.provider}" />`;
+  } else {
+    logoEl.innerHTML = logoStr.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+    if (logoStr.length < 5) {
+      logoEl.style.fontSize = '1.4rem';
+      logoEl.style.fontFamily = 'Outfit,sans-serif';
+      logoEl.style.fontWeight = '800';
+    }
+  }
 
-  document.getElementById('p4-name').textContent = p.name[lang];
+  document.getElementById('p4-name').textContent = lang === 'ar' ? firstPlan.providerAr : firstPlan.provider;
   document.getElementById('p4-sub').textContent  = translations[lang].tagline;
   document.getElementById('displayUsername4').textContent = document.getElementById('displayUsername').textContent;
 
@@ -1476,20 +1454,42 @@ function openProvider(key) {
   const chooseTxt = lang === 'ar' ? 'اختر الخطة' : 'Choose Plan';
   const popularTxt = lang === 'ar' ? 'الأكثر طلباً' : 'Popular';
 
-  grid.innerHTML = p.plans.map(plan => `
-    <div class="pkg-card${plan.popular ? ' popular' : ''}" onclick="confirmPlan('${p.name.en}','${plan.gb} GB','${plan.price}₪')">
-      ${plan.popular ? `<div class="popular-badge">${popularTxt}</div>` : ''}
-      <div class="pkg-gb">${plan.gb}</div>
-      <div class="pkg-unit">GB</div>
-      <div class="pkg-divider"></div>
-      <div class="pkg-price">${plan.price}₪</div>
-      <div class="pkg-period">${perMonth}</div>
-      <ul class="pkg-features">
-        ${plan.features[lang].map(f => `<li>${f}</li>`).join('')}
-      </ul>
-      <button class="btn-choose">${chooseTxt}</button>
-    </div>
-  `).join('');
+  grid.innerHTML = filteredPlans.map((plan, index) => {
+    const popular = index === 1; // Make second plan popular by default
+    return `
+      <div class="pkg-card${popular ? ' popular' : ''}" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}','${plan.plan}','${plan.price}₪')">
+        ${popular ? `<div class="popular-badge">${popularTxt}</div>` : ''}
+        <div class="pkg-gb">${plan.plan.replace(/\s*GB/i, '')}</div>
+        <div class="pkg-unit">GB</div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-price">${plan.price}₪</div>
+        <div class="pkg-period">${perMonth}</div>
+        
+        <ul class="pkg-features">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>${lang === 'ar' ? 'مكالمات غير محدودة' : 'Unlimited calls'}</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>${lang === 'ar' ? 'بيانات فائقة السرعة' : 'High-speed data'}</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>${lang === 'ar' ? 'نقطة اتصال مجانية' : 'Hotspot included'}</span>
+          </li>
+        </ul>
+
+        <button class="btn-choose">${chooseTxt}</button>
+      </div>
+    `;
+  }).join('');
 
   document.getElementById('page3').classList.add('hidden');
   document.getElementById('page4').classList.remove('hidden');
@@ -1497,6 +1497,31 @@ function openProvider(key) {
   void document.getElementById('page4').offsetWidth;
   window.scrollTo(0, 0);
 }
+
+/* ═══════════════════════════════════════
+   PROVIDERS DATA & FALLBACK PLANS
+═══════════════════════════════════════ */
+let ALL_PLANS = [
+  { id: 'esim_cellcom_400', type: 'esim', provider: 'Cellcom', providerAr: 'سيلكوم', plan: '400 GB', price: '65', logo: 'Cell\ncom' },
+  { id: 'esim_cellcom_500', type: 'esim', provider: 'Cellcom', providerAr: 'سيلكوم', plan: '500 GB', price: '70', logo: 'Cell\ncom' },
+  { id: 'esim_hotmobile_150', type: 'esim', provider: 'Hot Mobile', providerAr: 'هوت موبايل', plan: '150 GB', price: '55', logo: 'Hot\nMob' },
+  { id: 'esim_hotmobile_500', type: 'esim', provider: 'Hot Mobile', providerAr: 'هوت موبايل', plan: '500 GB', price: '75', logo: 'Hot\nMob' },
+  { id: 'esim_pelephone_150', type: 'esim', provider: 'Pelephone', providerAr: 'بيليفون', plan: '150 GB', price: '50', logo: 'Pele\nphone' },
+  { id: 'esim_pelephone_300', type: 'esim', provider: 'Pelephone', providerAr: 'بيليفون', plan: '300 GB', price: '65', logo: 'Pele\nphone' },
+  { id: 'esim_partner_400', type: 'esim', provider: 'Partner', providerAr: 'بارتنر', plan: '400 GB', price: '65', logo: 'Part\nner' },
+  { id: 'esim_partner_500', type: 'esim', provider: 'Partner', providerAr: 'بارتنر', plan: '500 GB', price: '70', logo: 'Part\nner' },
+  { id: 'esim_we_500', type: 'esim', provider: 'we', providerAr: 'we', plan: '500 GB', price: '65', logo: 'we' },
+  { id: 'esim_we_inf', type: 'esim', provider: 'we', providerAr: 'we', plan: '∞ GB', price: '80', logo: 'we' },
+  { id: 'esim_019_100', type: 'esim', provider: '019', providerAr: '019', plan: '100 GB', price: '45', logo: '019' },
+  { id: 'esim_019_250', type: 'esim', provider: '019', providerAr: '019', plan: '250 GB', price: '60', logo: '019' },
+  
+  { id: 'sim_cellcom_400', type: 'sim', provider: 'Cellcom', providerAr: 'سيلكوم', plan: '400 GB', price: '70', logo: 'Cell\ncom' },
+  { id: 'sim_hotmobile_400', type: 'sim', provider: 'Hot Mobile', providerAr: 'هوت موبايل', plan: '400 GB', price: '180', logo: 'Hot\nMob' },
+  { id: 'sim_pelephone_400', type: 'sim', provider: 'Pelephone', providerAr: 'بيليفون', plan: '400 GB', price: '180', logo: 'Pele\nphone' },
+  { id: 'sim_partner_400', type: 'sim', provider: 'Partner', providerAr: 'بارتنر', plan: '400 GB', price: '150', logo: 'Part\nner' },
+  { id: 'sim_we_400', type: 'sim', provider: 'we', providerAr: 'we', plan: '400 GB', price: '80', logo: 'we' },
+  { id: 'sim_019_400', type: 'sim', provider: '019', providerAr: '019', plan: '400 GB', price: '150', logo: '019' }
+];
 
 /* ═══════════════════════════════════════
    MODAL
