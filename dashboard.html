@@ -910,8 +910,16 @@
               <input type="number" id="new-plan-price" class="search-input" style="width:100%; height:42px;" placeholder="مثال: 70" />
             </div>
             <div class="form-group" style="grid-column: span 2;">
-              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">شعار الشركة (نصي أو رابط صورة مباشر)</label>
-              <input type="text" id="new-plan-logo" class="search-input" style="width:100%; height:42px;" placeholder="مثال: Cell\ncom أو https://example.com/logo.png" />
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">شعار الشركة (تحميل صورة أو شعار نصي)</label>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <input type="file" id="new-plan-logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(this, 'new-plan-logo-preview', 'new-plan-logo-data')" />
+                <button type="button" class="btn-icon" style="height:42px; margin:0;" onclick="document.getElementById('new-plan-logo-file').click()">📁 تحميل صورة</button>
+                <div id="new-plan-logo-preview" style="width:40px; height:40px; border-radius:6px; border:1.5px dashed var(--border); display:flex; align-items:center; justify-content:center; overflow:hidden; background:#fff;">
+                  <span style="color:#aaa; font-size:12px;">—</span>
+                </div>
+                <input type="hidden" id="new-plan-logo-data" value="" />
+                <input type="text" id="new-plan-logo-text" class="search-input" style="width:180px; height:42px; margin:0;" placeholder="أو اكتب شعار نصي" onchange="if(this.value.trim()){document.getElementById('new-plan-logo-data').value=this.value; document.getElementById('new-plan-logo-preview').innerHTML='<span style=\'color:#2ec4b6; font-size:11px;\'>نصي</span>'}" />
+              </div>
             </div>
             <div style="display:flex; align-items:flex-end;">
               <button class="btn-icon btn-success" style="width:100%; height:42px; justify-content:center; gap:8px;" onclick="addPackage()">
@@ -945,6 +953,50 @@
 // ══════════════════════════════════════
 const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbzdy9wxOzyGxy91XL4qUvPM6ktTNwrg1STzYZFa4IPYi0-Qh_Bwi53Iz13bwob-L0jK/exec';
 const DASHBOARD_SECRET = 'admin2024';  // ← نفس كلمة السر في Apps Script
+
+function handleLogoUpload(input, previewId, hiddenInputId) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 120;
+      const MAX_HEIGHT = 120;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const dataUrl = canvas.toDataURL('image/png');
+      document.getElementById(hiddenInputId).value = dataUrl;
+
+      const preview = document.getElementById(previewId);
+      if (preview) {
+        preview.innerHTML = `<img src="${dataUrl}" style="max-width:100%; max-height:100%; object-fit:contain;" />`;
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
 
 // ══════════════════════════════════════
 //  STATE
@@ -1248,7 +1300,7 @@ function renderPricesEditor(priceData) {
             <th style="padding:12px; border-bottom:2px solid var(--border)">الشركة (EN/AR)</th>
             <th style="padding:12px; border-bottom:2px solid var(--border)">الباقة</th>
             <th style="padding:12px; border-bottom:2px solid var(--border)">السعر (₪)</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">رابط الشعار / النص</th>
+            <th style="padding:12px; border-bottom:2px solid var(--border)">تحميل صورة الشعار / الاسم</th>
             <th style="padding:12px; border-bottom:2px solid var(--border); text-align:center">العمليات</th>
           </tr>
         </thead>
@@ -1281,7 +1333,13 @@ function renderPricesEditor(priceData) {
           <input type="number" id="edit-price-${item.id}" class="search-input" style="width:80px; padding:4px 8px; height:34px; font-weight:700;" value="${item.price || ''}" />
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
-          <input type="text" id="edit-logo-${item.id}" class="search-input" style="width:200px; padding:4px 8px; height:34px;" value="${item.logo || ''}" placeholder="رابط صورة أو نص الشعار" />
+          <div style="display:flex; gap:6px; align-items:center;">
+            <input type="file" id="edit-logo-file-${item.id}" accept="image/*" style="display:none" onchange="handleLogoUpload(this, 'edit-logo-preview-badge-${item.id}', 'edit-logo-data-${item.id}')" />
+            <button type="button" class="btn-icon" style="padding:4px 10px; font-size:.78rem; margin:0; height:34px; line-height:1;" onclick="document.getElementById('edit-logo-file-${item.id}').click()">📁 صورة</button>
+            <div id="edit-logo-preview-badge-${item.id}" style="display:none;"></div>
+            <input type="hidden" id="edit-logo-data-${item.id}" value="${item.logo || ''}" />
+            <input type="text" id="edit-logo-text-${item.id}" class="search-input" style="width:100px; padding:4px 8px; height:34px; margin:0;" value="${isUrl ? '' : (item.logo || '')}" placeholder="أو نص" onchange="document.getElementById('edit-logo-data-${item.id}').value = this.value" />
+          </div>
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); text-align:center; vertical-align:middle;">
           <button class="btn-icon btn-success" style="padding:6px 12px; font-size:.8rem; margin-bottom:4px;" id="btn-save-${item.id}" onclick="updatePackage('${item.id}')">💾 حفظ</button>
@@ -1301,7 +1359,7 @@ function renderPricesEditor(priceData) {
 
 async function updatePackage(id) {
   const price = document.getElementById('edit-price-' + id).value.trim();
-  const logo = document.getElementById('edit-logo-' + id).value.trim();
+  const logo = document.getElementById('edit-logo-data-' + id).value.trim();
   const provider = document.getElementById('edit-provider-' + id).value.trim();
   const providerAr = document.getElementById('edit-providerAr-' + id).value.trim();
   const plan = document.getElementById('edit-plan-' + id).value.trim();
@@ -1342,7 +1400,9 @@ async function addPackage() {
   const providerAr = document.getElementById('new-plan-provider-ar').value.trim();
   const plan = document.getElementById('new-plan-size').value.trim();
   const price = document.getElementById('new-plan-price').value.trim();
-  const logo = document.getElementById('new-plan-logo').value.trim();
+  const logoFile = document.getElementById('new-plan-logo-data').value;
+  const logoText = document.getElementById('new-plan-logo-text').value.trim();
+  const logo = logoFile || logoText;
 
   if (!provider || !price) {
     showToast('⚠️ الرجاء إدخال اسم الشركة والسعر على الأقل', 'error');
@@ -1369,7 +1429,9 @@ async function addPackage() {
       document.getElementById('new-plan-provider-ar').value = '';
       document.getElementById('new-plan-size').value = '';
       document.getElementById('new-plan-price').value = '';
-      document.getElementById('new-plan-logo').value = '';
+      document.getElementById('new-plan-logo-data').value = '';
+      document.getElementById('new-plan-logo-text').value = '';
+      document.getElementById('new-plan-logo-preview').innerHTML = '<span style="color:#aaa; font-size:12px;">—</span>';
       
       loadPrices();
     } else {
