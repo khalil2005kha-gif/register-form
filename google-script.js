@@ -373,8 +373,8 @@ function _json(obj) {
 function _initPricesSheet(ss) {
   var sheet = ss.getSheetByName('الأسعار');
   if (sheet) {
-    var cols = sheet.getLastColumn();
-    if (cols < 7) {
+    var headers = sheet.getRange(1, 1, 1, Math.max(1, sheet.getLastColumn())).getValues()[0];
+    if (headers.indexOf('الشركة بالعربية') === -1) {
       ss.deleteSheet(sheet);
       sheet = null;
     }
