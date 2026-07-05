@@ -655,9 +655,103 @@
 
     /* Responsive */
     @media (max-width: 900px) {
-      .stats-grid { grid-template-columns: repeat(2,1fr); }
-      .sidebar { display: none; }
-      .main { margin-right: 0; padding: 20px; }
+      .layout { flex-direction: column; }
+      
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 16px;
+        border-left: none;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg2);
+      }
+      
+      .sidebar-logo { display: none; }
+      
+      .sidebar nav {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+        flex-grow: 1;
+        scrollbar-width: none; /* Firefox */
+      }
+      .sidebar nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+      
+      .nav-item {
+        margin-bottom: 0;
+        white-space: nowrap;
+        padding: 8px 12px;
+        font-size: .82rem;
+        gap: 8px;
+      }
+      
+      .sidebar-footer {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        margin-right: auto; /* Push logout to the left in RTL */
+      }
+      
+      .sidebar-footer .nav-item {
+        padding: 8px 12px;
+      }
+      
+      .main {
+        margin-right: 0;
+        padding: 16px;
+      }
+      
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      
+      .topbar-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      
+      .stat-card {
+        padding: 16px;
+      }
+      
+      .stat-value {
+        font-size: 1.6rem;
+      }
+      
+      .section-header {
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      
+      .search-input {
+        width: 100%;
+      }
+      
+      /* Form responsive grid */
+      .section-card div[style*="display: grid"] {
+        grid-template-columns: 1fr !important;
+        padding: 16px !important;
+      }
+      
+      .form-group[style*="grid-column: span 2"] {
+        grid-column: span 1 !important;
+      }
     }
   </style>
 </head>
