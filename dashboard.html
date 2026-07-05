@@ -1070,6 +1070,23 @@ function switchTab(section) {
 }
 
 // ══════════════════════════════════════
+//  API CLIENT (POST based to support large payloads like base64 images)
+// ══════════════════════════════════════
+async function callApi(action, params = {}) {
+  const payload = {
+    secret: DASHBOARD_SECRET,
+    action: action,
+    ...params
+  };
+
+  const res = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+  return await res.json();
+}
+
+// ══════════════════════════════════════
 //  LOAD REGISTRATION DATA
 // ══════════════════════════════════════
 async function loadData() {
@@ -1077,9 +1094,7 @@ async function loadData() {
   document.getElementById('tableContent').innerHTML = '<div class="spinner"></div>';
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=list&t=${Date.now()}`;
-    const res = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('list');
 
     if (json.status === 'unauthorized') {
       showToast('❌ رمز الوصول خاطئ', 'error'); return;
@@ -1210,9 +1225,7 @@ async function deleteRow(id) {
   if (row) row.style.opacity = '.3';
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=delete&id=${id}&t=${Date.now()}`;
-    const res  = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('delete', { id: id });
 
     if (json.status === 'deleted') {
       allData  = allData.filter(r => r.id !== id);
@@ -1258,9 +1271,7 @@ async function loadPrices() {
   container.innerHTML = '<div class="spinner"></div>';
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=list_prices&t=${Date.now()}`;
-    const res = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('list_prices');
 
     if (json.status === 'success') {
       renderPricesEditor(json.data);
@@ -1369,17 +1380,9 @@ async function updatePackage(id) {
   if (btn) btn.disabled = true;
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=update_price&id=${id}` +
-      `&price=${encodeURIComponent(price)}` +
-      `&logo=${encodeURIComponent(logo)}` +
-      `&provider=${encodeURIComponent(provider)}` +
-      `&providerAr=${encodeURIComponent(providerAr)}` +
-      `&plan=${encodeURIComponent(plan)}` +
-      `&type=${encodeURIComponent(type)}` +
-      `&t=${Date.now()}`;
-    
-    const res = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('update_price', {
+      id, price, logo, provider, providerAr, plan, type
+    });
 
     if (json.status === 'success') {
       showToast('✅ تم تحديث الباقة بنجاح', 'success');
@@ -1410,17 +1413,9 @@ async function addPackage() {
   }
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=add_price` +
-      `&type=${encodeURIComponent(type)}` +
-      `&provider=${encodeURIComponent(provider)}` +
-      `&providerAr=${encodeURIComponent(providerAr)}` +
-      `&plan=${encodeURIComponent(plan)}` +
-      `&price=${encodeURIComponent(price)}` +
-      `&logo=${encodeURIComponent(logo)}` +
-      `&t=${Date.now()}`;
-    
-    const res = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('add_price', {
+      type, provider, providerAr, plan, price, logo
+    });
 
     if (json.status === 'success') {
       showToast('✅ تم إضافة الباقة بنجاح', 'success');
@@ -1446,11 +1441,9 @@ async function deletePackage(id) {
   if (!confirm('هل تريد حذف هذه الباقة نهائياً؟')) return;
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=delete&sheet=الأسعار&id=${id}&t=${Date.now()}`;
-    const res = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('delete', { sheet: 'الأسعار', id: id });
 
-    if (json.status === 'deleted') {
+    if (json.status === 'deleted' || json.status === 'success') {
       showToast('🗑️ تم حذف الباقة بنجاح', 'success');
       loadPrices();
     } else {
@@ -1474,9 +1467,7 @@ async function loadRenewals() {
   document.getElementById('renewalsTableContent').innerHTML = '<div class="spinner"></div>';
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=list_renewals&t=${Date.now()}`;
-    const res = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('list_renewals');
 
     if (json.status === 'unauthorized') {
       showToast('❌ رمز الوصول خاطئ', 'error'); return;
@@ -1563,6 +1554,9 @@ function renderRenewalsTable() {
 
 function goRenewPage(p) { currentRenewPage = p; renderRenewalsTable(); }
 
+// ══════════════════════════════════════
+//  FILTER RENEWALS TABLE
+// ══════════════════════════════════════
 function filterRenewalsTable() {
   const q = document.getElementById('searchRenewInput').value.trim().toLowerCase();
   filteredRenewals = q
@@ -1581,11 +1575,9 @@ async function deleteRenewRow(id) {
   if (row) row.style.opacity = '.3';
 
   try {
-    const url = `${SCRIPT_URL}?secret=${DASHBOARD_SECRET}&action=delete&sheet=التجديدات&id=${id}&t=${Date.now()}`;
-    const res  = await fetch(url);
-    const json = await res.json();
+    const json = await callApi('delete', { sheet: 'التجديدات', id: id });
 
-    if (json.status === 'deleted') {
+    if (json.status === 'deleted' || json.status === 'success') {
       allRenewals  = allRenewals.filter(r => r.id !== id);
       filteredRenewals = filteredRenewals.filter(r => r.id !== id);
       document.getElementById('statRenewTotal').textContent = allRenewals.length;

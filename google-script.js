@@ -12,6 +12,11 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
 
+    // --- لوحة التحكم (التحقق من وجود إجراء) ---
+    if (data.action) {
+      return _handleDashboardPost(data);
+    }
+
     // --- طلب e-SIM أو SIM (order) ---
     if (data.type === 'order') {
       _saveOrder(data);
@@ -411,4 +416,144 @@ function _initPricesSheet(ss) {
     }
   }
   return sheet;
+}
+
+// ── معالجة طلبات لوحة التحكم القادمة عبر POST (لتجنب قيود حجم الـ URL للصور) ──
+function _handleDashboardPost(params) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var action = params.action;
+  
+  if (action === 'get_prices') {
+    var sheet = _initPricesSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+    var list = [];
+    for (var i = 1; i < rows.length; i++) {
+      list.push({
+        id:         rows[i][0],
+        type:       rows[i][1],
+        provider:   rows[i][2],
+        providerAr: rows[i][3] || rows[i][2],
+        plan:       rows[i][4],
+        price:      rows[i][5],
+        logo:       rows[i][6] || ''
+      });
+    }
+    return _json({ status: 'success', data: list });
+  }
+
+  if (params.secret !== DASHBOARD_SECRET) {
+    return _json({ status: 'unauthorized' });
+  }
+
+  if (action === 'list') {
+    var sheet = ss.getSheetByName('الطلبات');
+    var data = [];
+    if (sheet && sheet.getLastRow() > 1) {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        data.push({
+          id:       rows[i][0],
+          fullname: rows[i][1],
+          phone:    rows[i][2],
+          provider: rows[i][3],
+          plan:     rows[i][4],
+          price:    rows[i][5],
+          date:     rows[i][6]
+        });
+      }
+    }
+    var today      = new Date().toLocaleDateString('ar-SA');
+    var todayCount = data.filter(function(r) {
+      return r.date && r.date.toString().indexOf(today) !== -1;
+    }).length;
+
+    return _json({
+      status:     'success',
+      total:      data.length,
+      todayCount: todayCount,
+      data:       data
+    });
+  }
+
+  if (action === 'list_renewals') {
+    var sheet = ss.getSheetByName('التجديدات');
+    var data  = [];
+    if (sheet && sheet.getLastRow() > 1) {
+      var rows = sheet.getDataRange().getValues();
+      for (var i = 1; i < rows.length; i++) {
+        data.push({
+          id:     rows[i][0],
+          serial: rows[i][1],
+          phone:  rows[i][2],
+          date:   rows[i][3]
+        });
+      }
+    }
+    return _json({ status: 'success', data: data });
+  }
+
+  if (action === 'delete' && params.id) {
+    var sheetName = params.sheet || 'الطلبات';
+    var s = ss.getSheetByName(sheetName);
+    if (!s) return _json({ status: 'not_found' });
+    var rows2 = s.getDataRange().getValues();
+    for (var j = 1; j < rows2.length; j++) {
+      if (rows2[j][0] === params.id) {
+        s.deleteRow(j + 1);
+        return _json({ status: 'deleted' });
+      }
+    }
+    return _json({ status: 'not_found' });
+  }
+
+  if (action === 'list_prices') {
+    var sheet = _initPricesSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+    var list = [];
+    for (var i = 1; i < rows.length; i++) {
+      list.push({
+        id:         rows[i][0],
+        type:       rows[i][1],
+        provider:   rows[i][2],
+        providerAr: rows[i][3] || rows[i][2],
+        plan:       rows[i][4],
+        price:      rows[i][5],
+        logo:       rows[i][6] || ''
+      });
+    }
+    return _json({ status: 'success', data: list });
+  }
+
+  if (action === 'add_price') {
+    var sheet = _initPricesSheet(ss);
+    var id = 'pkg_' + Utilities.getUuid().substring(0, 8);
+    var type = params.type || 'sim';
+    var provider = params.provider || 'New Provider';
+    var providerAr = params.providerAr || provider;
+    var plan = params.plan || '400 GB';
+    var price = params.price || '100';
+    var logo = params.logo || '';
+    
+    sheet.appendRow([id, type, provider, providerAr, plan, price, logo]);
+    return _json({ status: 'success', id: id });
+  }
+
+  if (action === 'update_price' && params.id) {
+    var sheet = _initPricesSheet(ss);
+    var rows = sheet.getDataRange().getValues();
+    for (var k = 1; k < rows.length; k++) {
+      if (rows[k][0] === params.id) {
+        if (params.price !== undefined) sheet.getRange(k + 1, 6).setValue(params.price);
+        if (params.logo !== undefined) sheet.getRange(k + 1, 7).setValue(params.logo);
+        if (params.provider !== undefined) sheet.getRange(k + 1, 3).setValue(params.provider);
+        if (params.providerAr !== undefined) sheet.getRange(k + 1, 4).setValue(params.providerAr);
+        if (params.plan !== undefined) sheet.getRange(k + 1, 5).setValue(params.plan);
+        if (params.type !== undefined) sheet.getRange(k + 1, 2).setValue(params.type);
+        return _json({ status: 'success' });
+      }
+    }
+    return _json({ status: 'not_found' });
+  }
+
+  return _json({ status: 'error', message: 'Unknown action' });
 }
