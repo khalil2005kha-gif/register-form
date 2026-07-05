@@ -1602,7 +1602,7 @@ async function submitOrder() {
   submitBtn.disabled = true;
   submitBtn.textContent = isAr ? 'جارٍ الإرسال...' : 'Sending...';
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBdzD0WDjnobGH8FkCO8JMyAkK1V14_VxXZDDL9vak2ol5wqXntjDbSXTFoQVqB7_k/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
   const serviceLabel = selectedServiceType === 'sim' ? 'SIM' : 'e-SIM';
 
   try {
@@ -1734,7 +1734,7 @@ async function submitRenew() {
   submitBtn.disabled = true;
   submitBtn.textContent = isAr ? 'جاري الإرسال...' : 'Sending...';
 
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBdzD0WDjnobGH8FkCO8JMyAkK1V14_VxXZDDL9vak2ol5wqXntjDbSXTFoQVqB7_k/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
 
   try {
     await fetch(SCRIPT_URL, {
@@ -1780,7 +1780,7 @@ async function submitRenew() {
 setLang('en');
 
 async function fetchPrices() {
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdy9wxOzyGxy91XL4qUvPM6ktTNwrg1STzYZFa4IPYi0-Qh_Bwi53Iz13bwob-L0jK/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
   try {
     const res = await fetch(SCRIPT_URL + '?action=get_prices&t=' + Date.now());
     const json = await res.json();
