@@ -1383,42 +1383,71 @@ function renderPricesEditor(priceData) {
     container.innerHTML = `<div class="empty-state"><h3>لا توجد باقات حالية</h3><p>أضف باقة جديدة باستخدام النموذج أعلاه.</p></div>`;
     return;
   }
-  
-  // Sort by type, then provider
-  priceData.sort((a,b) => {
-    const typeA = String(a.type || '');
-    const typeB = String(b.type || '');
-    if (typeA !== typeB) return typeA.localeCompare(typeB);
-    
-    const provA = String(a.provider || '');
-    const provB = String(b.provider || '');
-    return provA.localeCompare(provB);
-  });
+
+  // Separate into SIM and e-SIM
+  const simItems  = priceData.filter(i => String(i.type || '').toLowerCase() === 'sim');
+  const esimItems = priceData.filter(i => String(i.type || '').toLowerCase() === 'esim');
+
+  // Sort each group by provider
+  const sortByProvider = (a, b) => String(a.provider || '').localeCompare(String(b.provider || ''));
+  simItems.sort(sortByProvider);
+  esimItems.sort(sortByProvider);
+
+  function buildTable(items) {
+    if (!items.length) return `<div class="empty-state" style="padding:30px 20px"><p style="color:var(--text-soft)">لا توجد باقات في هذه الفئة.</p></div>`;
+    let t = `
+      <div class="table-wrap">
+        <table class="data-table" style="width:100%; text-align:right; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">الشعار</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">النوع</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">الشركة (EN/AR)</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">الباقة</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">السعر (₪)</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">تحميل صورة الشعار / الاسم</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border); text-align:center">العمليات</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+    items.forEach(item => { t += buildRow(item); });
+    t += `</tbody></table></div>`;
+    return t;
+  }
 
   let html = `
-    <div class="table-wrap">
-      <table class="data-table" style="width:100%; text-align:right; border-collapse:collapse;">
-        <thead>
-          <tr>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">الشعار</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">النوع</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">الشركة (EN/AR)</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">الباقة</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">السعر (₪)</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border)">تحميل صورة الشعار / الاسم</th>
-            <th style="padding:12px; border-bottom:2px solid var(--border); text-align:center">العمليات</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div style="display:flex; flex-direction:column; gap:28px; padding:20px 0;">
+
+      <!-- SIM Section -->
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(59,130,246,0.3); margin-bottom:0;">
+          <span style="font-size:1.1rem; font-weight:700; color:var(--blue);">📱 شرائح SIM</span>
+          <span style="background:rgba(59,130,246,0.12); color:var(--blue); font-size:.78rem; font-weight:600; padding:3px 10px; border-radius:20px;">${simItems.length} باقة</span>
+        </div>
+        ${buildTable(simItems)}
+      </div>
+
+      <!-- e-SIM Section -->
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(34,197,94,0.3); margin-bottom:0;">
+          <span style="font-size:1.1rem; font-weight:700; color:var(--green);">🌐 شرائح e-SIM</span>
+          <span style="background:rgba(34,197,94,0.12); color:var(--green); font-size:.78rem; font-weight:600; padding:3px 10px; border-radius:20px;">${esimItems.length} باقة</span>
+        </div>
+        ${buildTable(esimItems)}
+      </div>
+
+    </div>
   `;
 
-  priceData.forEach(item => {
+  // Build rows from items (kept as a local function)
+  function buildRow(item) {
     const isUrl = String(item.logo || '').trim().startsWith('http://') || String(item.logo || '').trim().startsWith('https://') || String(item.logo || '').trim().startsWith('data:image');
     const logoPreview = isUrl 
       ? `<img src="${item.logo}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px; border:1px solid var(--border);" />`
       : `<div style="display:inline-block; padding:4px 8px; background:var(--bg3); border-radius:4px; font-size:.8rem; font-weight:700; color:var(--text-soft);">${String(item.logo || '').replace(/\\n/g, ' ')}</div>`;
 
-    html += `
+    return `
       <tr id="price-row-${item.id}">
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">${logoPreview}</td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
@@ -1452,13 +1481,28 @@ function renderPricesEditor(priceData) {
         </td>
       </tr>
     `;
-  });
+  }
 
-  html += `
-        </tbody>
-      </table>
+  // Re-build html now that buildRow is defined (hoist workaround)
+  html = `
+    <div style="display:flex; flex-direction:column; gap:28px; padding:20px 0;">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(59,130,246,0.3); margin-bottom:0;">
+          <span style="font-size:1.1rem; font-weight:700; color:var(--blue);">📱 شرائح SIM</span>
+          <span style="background:rgba(59,130,246,0.12); color:var(--blue); font-size:.78rem; font-weight:600; padding:3px 10px; border-radius:20px;">${simItems.length} باقة</span>
+        </div>
+        ${buildTable(simItems)}
+      </div>
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(34,197,94,0.3); margin-bottom:0;">
+          <span style="font-size:1.1rem; font-weight:700; color:var(--green);">🌐 شرائح e-SIM</span>
+          <span style="background:rgba(34,197,94,0.12); color:var(--green); font-size:.78rem; font-weight:600; padding:3px 10px; border-radius:20px;">${esimItems.length} باقة</span>
+        </div>
+        ${buildTable(esimItems)}
+      </div>
     </div>
   `;
+
   container.innerHTML = html;
 }
 
