@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot">
+<html lang="ar" dir="rtl" id="htmlRoot" class="notranslate" translate="no">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="google" content="notranslate"/>
+  <meta name="googlebot" content="notranslate"/>
   <title>شرائح SIM ,E-SIM</title>
   <link rel="icon" type="image/png" href="logo.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -2109,6 +2111,42 @@
 /* ═══════════════════════════════════════
    TRANSLATIONS
 ═══════════════════════════════════════ */
+
+/* ═══════════════════════════════════════
+   OFFICIAL TELECOM PROVIDERS METADATA (AR & EN)
+═══════════════════════════════════════ */
+const PROVIDER_METADATA = {
+  'cellcom':    { en: 'Cellcom',    ar: 'سلكوم',       logo: 'logos/cellcom.jpg' },
+  'partner':    { en: 'Partner',    ar: 'بارتنر',      logo: 'logos/partner.jpg' },
+  'hotmobile':  { en: 'HOT Mobile', ar: 'هوت موبايل',  logo: 'logos/hot.jpg' },
+  'hot mobile': { en: 'HOT Mobile', ar: 'هوت موبايل',  logo: 'logos/hot.jpg' },
+  'hot':        { en: 'HOT Mobile', ar: 'هوت موبايل',  logo: 'logos/hot.jpg' },
+  'pelephone':  { en: 'Pelephone',  ar: 'بيليفون',     logo: 'logos/pelephone.jpg' },
+  '019':        { en: '019 Mobile', ar: '019 موبايل',  logo: 'logos/019.jpg' },
+  '19':         { en: '019 Mobile', ar: '019 موبايل',  logo: 'logos/019.jpg' },
+  '019 mobile': { en: '019 Mobile', ar: '019 موبايل',  logo: 'logos/019.jpg' },
+  'we':         { en: 'Wecom',      ar: 'ويكوم',       logo: 'logos/wecom.jpg' },
+  'wecom':      { en: 'Wecom',      ar: 'ويكوم',       logo: 'logos/wecom.jpg' },
+  'jawwal':     { en: 'Jawwal',     ar: 'جوال',        logo: 'logos/jawwal.jpg' },
+  'ooredoo':    { en: 'Ooredoo',    ar: 'أوريدو',      logo: 'logos/ooredoo.png' },
+  'ramilevy':   { en: 'Rami Levy',  ar: 'رامي ليفي',   logo: 'logos/rami-levy.jpg' },
+  'rami levy':  { en: 'Rami Levy',  ar: 'رامي ليفي',   logo: 'logos/rami-levy.jpg' }
+};
+
+function getProviderInfo(rawKey, rawName, rawNameAr) {
+  const norm = String(rawKey || rawName || '').toLowerCase().trim().replace(/[\s_-]+/g, '');
+  for (const k in PROVIDER_METADATA) {
+    if (k.replace(/[\s_-]+/g, '') === norm) {
+      return PROVIDER_METADATA[k];
+    }
+  }
+  return {
+    en: rawName || 'Telecom',
+    ar: rawNameAr || rawName || 'شركة اتصالات',
+    logo: ''
+  };
+}
+
 const translations = {
   ar: {
     // Landing page
@@ -2147,8 +2185,8 @@ const translations = {
     esimTitle:   'خطط e-SIM',
     esimDesc:    'اختر خطة e-SIM الذكية وقم بتثبيتها فورياً بدون بطاقة فعلية.',
     simTitle:    'شرائح SIM',
-    simDesc:     'شرائح SIM جديدة مع باقة 400 جيجابايت.',
-    tagline:     'شريحة تعمل في كل مكان.',
+    simDesc:     'شرائح اتصال فيزيائية أصلية لجميع الهواتف مع تغطية شاملة.',
+    tagline:     'شريحة اتصال مميزة مع تغطية شاملة وسرعات فائقة.',
     renewTitle:  'تجديد اشتراكات الشريحة',
     cardRenewTitle: 'تجديد اشتراكات الشريحة',
     cardRenewSub: 'Renew your current plans and manage subscriptions',
@@ -2202,8 +2240,8 @@ const translations = {
     esimTitle:   'e-SIM Plans',
     esimDesc:    'Choose a smart e-SIM plan and install it instantly with no physical card.',
     simTitle:    'SIM',
-    simDesc:     'New SIM cards with a 400GB package.',
-    tagline:     'A SIM card that works everywhere.',
+    simDesc:     'High-speed physical SIM cards with generous data packages.',
+    tagline:     'High-speed premium connection with full coverage.',
     renewTitle:  'Renew SIM Subscriptions',
     cardRenewTitle: 'Renewing SIM Subscriptions',
     cardRenewSub: 'Renew your current plans and manage subscriptions',
@@ -2227,11 +2265,21 @@ let selectedServiceType = 'esim'; // esim or sim
 
 function setLang(lang) {
   currentLang = lang;
+  localStorage.setItem('user_lang', lang);
   const t = translations[lang];
 
-  // Direction
+  // Direction and Language attribute
+  document.documentElement.setAttribute('dir', t.dir);
+  document.documentElement.setAttribute('lang', t.lang);
   document.getElementById('htmlRoot').setAttribute('dir', t.dir);
   document.getElementById('htmlRoot').setAttribute('lang', t.lang);
+
+  // Update User Chip text
+  const userTxt = lang === 'ar' ? 'زائر' : 'Guest';
+  ['displayUsername','displayUsername3','displayUsername4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = userTxt;
+  });
 
   // ── Landing page (page 1) ──
   const setTxt = (id, v) => { const el = document.getElementById(id); if (el && v !== undefined) el.textContent = v; };
@@ -2279,6 +2327,9 @@ function setLang(lang) {
 
   // Page 4
   setTxt('t-back3', t.back);
+  if (!document.getElementById('page4').classList.contains('hidden') && window._currentProviderKey) {
+    openProvider(window._currentProviderKey);
+  }
 
   // Page 5
   setTxt('t-renew-title',     t.renewTitle);
@@ -2412,82 +2463,84 @@ function goToProviderPage() {
   // Filter plans by type (esim or sim)
   const filteredPlans = ALL_PLANS.filter(p => p.type === selectedServiceType);
 
-  // Group by provider name
+  // Group by normalized provider
   const groups = {};
   filteredPlans.forEach(plan => {
-    const providerKey = String(plan.provider || '').toLowerCase().trim();
-    if (!groups[providerKey]) {
-      groups[providerKey] = {
-        providerName: plan.provider,
-        providerNameAr: plan.providerAr,
-        logo: plan.logo,
+    const rawKey = String(plan.provider || '').toLowerCase().trim();
+    const info = getProviderInfo(rawKey, plan.provider, plan.providerAr);
+    const groupKey = info.en.toLowerCase();
+
+    if (!groups[groupKey]) {
+      groups[groupKey] = {
+        key: groupKey,
+        providerName: info.en,
+        providerNameAr: info.ar,
+        logo: info.logo || plan.logo,
         plans: []
       };
     }
-    groups[providerKey].plans.push(plan);
+    groups[groupKey].plans.push(plan);
   });
 
   // Render each provider group
   for (const key in groups) {
     const g = groups[key];
     
-    // Logo rendering (URL vs Text fallback)
+    // Logo rendering (Image vs Text fallback)
     let logoHtml = '';
     const logoStr = String(g.logo || '').trim();
-    if (logoStr.startsWith('http://') || logoStr.startsWith('https://') || logoStr.startsWith('data:image')) {
-      logoHtml = `<img src="${logoStr}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:6px;" alt="${g.providerName}" />`;
+    if (logoStr.startsWith('http://') || logoStr.startsWith('https://') || logoStr.startsWith('data:image') || logoStr.endsWith('.jpg') || logoStr.endsWith('.png')) {
+      logoHtml = `<img src="${logoStr}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;" alt="${g.providerName}" />`;
     } else {
-      logoHtml = logoStr.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+      logoHtml = (lang === 'ar' ? g.providerNameAr : g.providerName);
     }
 
-    // Determine font styling for text logos based on length
-    let logoStyleAttr = '';
-    if (!logoStr.startsWith('http://') && !logoStr.startsWith('https://') && !logoStr.startsWith('data:image')) {
-      if (logoStr.length < 5) {
-        logoStyleAttr = 'style="font-size:1.2rem; font-family:Outfit,sans-serif; font-weight:800;"';
-      }
-    }
+    const displayName = (lang === 'ar' ? g.providerNameAr : g.providerName);
 
     if (isEsim) {
       // eSIM: multiple plans, clicks to open details page (Page 4)
-      const planChips = g.plans.map(plan => `
-        <div class="plan-chip">
-          <span class="plan-gb">${plan.plan}</span>
-          <span class="plan-price">${plan.price}₪</span>
-        </div>
-      `).join('');
+      const planChips = g.plans.map(plan => {
+        const gbLabel = lang === 'ar' ? plan.plan.replace(/GB/i, 'جيجابايت') : plan.plan;
+        return `
+          <div class="plan-chip">
+            <span class="plan-gb">${gbLabel}</span>
+            <span class="plan-price">${plan.price} ₪</span>
+          </div>
+        `;
+      }).join('');
 
       html += `
         <div class="provider-row" onclick="openProvider('${key}')">
-          <div class="provider-logo" ${logoStyleAttr}>${logoHtml}</div>
+          <div class="provider-logo">${logoHtml}</div>
           <div class="provider-info">
-            <div class="provider-name">${lang === 'ar' ? g.providerNameAr : g.providerName}</div>
+            <div class="provider-name">${displayName}</div>
             <div class="provider-tagline">${translations[lang].tagline}</div>
           </div>
           <div class="provider-plans">${planChips}</div>
-          <div class="provider-arrow">›</div>
+          <div class="provider-arrow">${lang === 'ar' ? '‹' : '›'}</div>
         </div>
       `;
     } else {
       // SIM: render each plan card in the group
       g.plans.forEach(plan => {
-        const dur = plan.duration || 'شهري';
-        const planWithDur = `${plan.plan} (${dur})`;
+        const dur = plan.duration || (lang === 'ar' ? 'شهري' : 'monthly');
+        const gbLabel = lang === 'ar' ? plan.plan.replace(/GB/i, 'جيجابايت') : plan.plan;
+        const planWithDur = `${gbLabel} (${dur})`;
         html += `
-          <div class="provider-row" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}', '${planWithDur}', '${plan.price}₪', '${dur}')">
-            <div class="provider-logo" ${logoStyleAttr}>${logoHtml}</div>
+          <div class="provider-row" onclick="confirmPlan('${displayName}', '${planWithDur}', '${plan.price} ₪', '${dur}')">
+            <div class="provider-logo">${logoHtml}</div>
             <div class="provider-info">
-              <div class="provider-name">${lang === 'ar' ? plan.providerAr : plan.provider}</div>
+              <div class="provider-name">${displayName}</div>
               <div class="provider-tagline">${translations[lang].tagline}</div>
             </div>
             <div class="provider-plans">
               <div class="plan-chip">
-                <span class="plan-gb">${plan.plan}</span>
-                <span class="plan-price">${plan.price}₪</span>
-                <span style="font-size:0.75rem; background:rgba(46,196,182,0.15); color:var(--teal); padding:2px 8px; border-radius:12px; margin-right:4px; font-weight:700;">${dur}</span>
+                <span class="plan-gb">${gbLabel}</span>
+                <span class="plan-price">${plan.price} ₪</span>
+                <span style="font-size:0.75rem; background:rgba(0,194,255,0.12); color:var(--teal); padding:2px 8px; border-radius:12px; margin-inline-start:4px; font-weight:700;">${dur}</span>
               </div>
             </div>
-            <div class="provider-arrow">›</div>
+            <div class="provider-arrow">${lang === 'ar' ? '‹' : '›'}</div>
           </div>
         `;
       });
@@ -2512,49 +2565,53 @@ function goToProviderPage() {
 }
 
 function openProvider(key) {
-  const filteredPlans = ALL_PLANS.filter(p => p.type === 'esim' && String(p.provider || '').toLowerCase().trim() === key);
+  window._currentProviderKey = key;
+  const filteredPlans = ALL_PLANS.filter(p => {
+    if (p.type !== 'esim') return false;
+    const rawKey = String(p.provider || '').toLowerCase().trim();
+    const info = getProviderInfo(rawKey, p.provider, p.providerAr);
+    return info.en.toLowerCase() === key.toLowerCase() || rawKey === key.toLowerCase();
+  });
   if (filteredPlans.length === 0) return;
 
   const firstPlan = filteredPlans[0];
   const lang = currentLang;
+  const rawKey = String(firstPlan.provider || '').toLowerCase().trim();
+  const info = getProviderInfo(rawKey, firstPlan.provider, firstPlan.providerAr);
 
   const logoEl = document.getElementById('p4-logo');
   logoEl.innerHTML = '';
-  logoEl.style.cssText = ''; // clear old styles
+  logoEl.style.cssText = '';
   
-  const logoStr = String(firstPlan.logo || '').trim();
-  if (logoStr.startsWith('http://') || logoStr.startsWith('https://') || logoStr.startsWith('data:image')) {
-    logoEl.innerHTML = `<img src="${logoStr}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:8px;" alt="${firstPlan.provider}" />`;
+  const logoStr = String(info.logo || firstPlan.logo || '').trim();
+  if (logoStr.startsWith('http://') || logoStr.startsWith('https://') || logoStr.startsWith('data:image') || logoStr.endsWith('.jpg') || logoStr.endsWith('.png')) {
+    logoEl.innerHTML = `<img src="${logoStr}" style="max-width:100%; max-height:100%; object-fit:contain; border-radius:10px;" alt="${info.en}" />`;
   } else {
-    logoEl.innerHTML = logoStr.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
-    if (logoStr.length < 5) {
-      logoEl.style.fontSize = '1.4rem';
-      logoEl.style.fontFamily = 'Outfit,sans-serif';
-      logoEl.style.fontWeight = '800';
-    }
+    logoEl.innerHTML = (lang === 'ar' ? info.ar : info.en);
   }
 
-  document.getElementById('p4-name').textContent = lang === 'ar' ? firstPlan.providerAr : firstPlan.provider;
+  const displayName = (lang === 'ar' ? info.ar : info.en);
+  document.getElementById('p4-name').textContent = displayName;
   document.getElementById('p4-sub').textContent  = translations[lang].tagline;
-  document.getElementById('displayUsername4').textContent = document.getElementById('displayUsername').textContent;
+  document.getElementById('displayUsername4').textContent = (lang === 'ar' ? 'زائر' : 'Guest');
 
   const grid = document.getElementById('pkg-grid');
-  const perMonth = lang === 'ar' ? '/ شهرياً' : '/ month';
-  const chooseTxt = lang === 'ar' ? 'اختر الخطة' : 'Choose Plan';
+  const chooseTxt = lang === 'ar' ? 'اختيار هذه الباقة' : 'Select Plan';
   const popularTxt = lang === 'ar' ? 'الأكثر طلباً' : 'Popular';
 
   grid.innerHTML = filteredPlans.map((plan, index) => {
-    const popular = index === 1; // Make second plan popular by default
-    const dur = plan.duration || (lang === 'ar' ? 'شهرياً' : 'month');
+    const popular = index === 1;
+    const dur = plan.duration || (lang === 'ar' ? 'شهرياً' : 'monthly');
     const periodDisplay = dur.startsWith('/') ? dur : `/ ${dur}`;
-    const planWithDur = plan.duration ? `${plan.plan} (${plan.duration})` : plan.plan;
+    const gbLabel = lang === 'ar' ? plan.plan.replace(/GB/i, 'جيجابايت') : plan.plan;
+    const planWithDur = `${gbLabel} (${dur})`;
     return `
-      <div class="pkg-card${popular ? ' popular' : ''}" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}','${planWithDur}','${plan.price}₪', '${plan.duration || ''}')">
+      <div class="pkg-card${popular ? ' popular' : ''}" onclick="confirmPlan('${displayName}','${planWithDur}','${plan.price} ₪', '${plan.duration || ''}')">
         ${popular ? `<div class="popular-badge">${popularTxt}</div>` : ''}
         <div class="pkg-gb">${plan.plan.replace(/\s*GB/i, '')}</div>
-        <div class="pkg-unit">GB</div>
+        <div class="pkg-unit">${lang === 'ar' ? 'جيجابايت GB' : 'GB'}</div>
         <div class="pkg-divider"></div>
-        <div class="pkg-price">${plan.price}₪</div>
+        <div class="pkg-price">${plan.price} ₪</div>
         <div class="pkg-period">${periodDisplay}</div>
         
         <ul class="pkg-features">
@@ -2568,13 +2625,13 @@ function openProvider(key) {
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            <span>${lang === 'ar' ? 'بيانات فائقة السرعة' : 'High-speed data'}</span>
+            <span>${lang === 'ar' ? 'إنترنت فائق السرعة 5G' : 'High-speed 5G data'}</span>
           </li>
           <li>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            <span>${lang === 'ar' ? 'نقطة اتصال مجانية' : 'Hotspot included'}</span>
+            <span>${lang === 'ar' ? 'تفعيل فوري خلال دقائق' : 'Instant activation in minutes'}</span>
           </li>
         </ul>
 
@@ -2910,8 +2967,9 @@ function toggleTheme() {
   });
 })();
 
-// Default language: English
-setLang('en');
+// Default language: Arabic (persisted if user toggles)
+const initialLang = localStorage.getItem('user_lang') || 'ar';
+setLang(initialLang);
 
 async function fetchPrices() {
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
