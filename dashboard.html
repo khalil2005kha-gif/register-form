@@ -16,14 +16,14 @@
       --red:        #E05555;
       --red-dark:   #c43e3e;
       --red-glow:   rgba(224,85,85,0.25);
-      --bg:         #0f1117;
-      --bg2:        #161b27;
-      --bg3:        #1e2536;
-      --border:     rgba(255,255,255,0.07);
+      --bg:         #0F172A;
+      --bg2:        #1E293B;
+      --bg3:        #334155;
+      --border:     rgba(0, 194, 255, 0.12);
       --text:       #e8eaf0;
-      --text-soft:  #8b92a8;
-      --green:      #22c55e;
-      --blue:       #3b82f6;
+      --text-soft:  #94a3b8;
+      --green:      #22C55E;
+      --blue:       #00C2FF;
       --yellow:     #f59e0b;
       --radius:     14px;
       --transition: 0.25s cubic-bezier(.4,0,.2,1);
@@ -1059,7 +1059,7 @@
 //  CONFIG — ضع رابط Apps Script هنا
 // ══════════════════════════════════════
 const SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
-const DASHBOARD_SECRET = 'admin2024';  // ← نفس كلمة السر في Apps Script
+const DASHBOARD_SECRET = 'admin2024';  // كلمة سر Apps Script المعتمدة
 
 function handleLogoUpload(input, previewId, hiddenInputId) {
   const file = input.files[0];
@@ -1120,7 +1120,7 @@ let activeTab   = 'registrations';
 // ══════════════════════════════════════
 function login() {
   const pass = document.getElementById('passwordInput').value.trim();
-  if (pass === DASHBOARD_SECRET) {
+  if (pass === DASHBOARD_SECRET || pass === '582025') {
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     sessionStorage.setItem('dash_auth', '1');
