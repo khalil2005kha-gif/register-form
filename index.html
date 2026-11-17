@@ -12,117 +12,128 @@
 
     :root {
       /* ══════════════════════════════════════════════
-         EXACT PALETTE FROM USER IMAGE:
-         1. #1A120E — Deep Espresso (Darkest Background)
-         2. #3A2418 — Roasted Coffee (Deep Surface)
-         3. #6B4A2E — Warm Bronze / Saddle Brown
-         4. #A88462 — Caramel / Golden Tan
-         5. #D5C4AE — Almond Cream / Soft Sand
-         6. #4A4A46 — Charcoal / Warm Slate
+         CUSTOM PALETTE:
+         الأساسي: كحلي غامق #0F172A
+         الثانوي: سماوي / أزرق كهربائي #00C2FF
+         الخلفية: أبيض #FFFFFF
+         زر الشراء: أخضر #22C55E
          ══════════════════════════════════════════════ */
-      --c1: #1A120E;
-      --c2: #3A2418;
-      --c3: #6B4A2E;
-      --c4: #A88462;
-      --c5: #D5C4AE;
-      --c6: #4A4A46;
+      --c1: #0F172A; /* كحلي غامق */
+      --c2: #1E293B; /* كحلي أغمق للكروت في الوضع الداكن */
+      --c3: #0284C7; /* أزرق داكن متناسق */
+      --c4: #00C2FF; /* سماوي كهربائي */
+      --c5: #64748B; /* رمادي سلايت ناعم */
+      --c6: #E2E8F0; /* حدود ناعمة */
 
       /* Unified Theme Tokens */
-      --gold:        #A88462;
-      --gold-light:  #D5C4AE;
-      --gold-dark:   #6B4A2E;
-      --dark:        #1A120E;
-      --dark2:       #241711;
-      --dark3:       #3A2418;
-      --dark4:       #4A4A46;
-      --surface:     #251812;
-      --surface2:    #322119;
-      --text:        #F5EFEB;
-      --text-muted:  #D5C4AE;
-      --border:      rgba(168, 132, 98, 0.25);
-      --shadow-gold: 0 0 30px rgba(168, 132, 98, 0.2);
+      --primary:     #0F172A;
+      --secondary:   #00C2FF;
+      --bg:          #FFFFFF;
+      --buy:         #22C55E;
+      --buy-hover:   #16A34A;
+      --buy-glow:    rgba(34, 197, 94, 0.35);
 
-      --teal:        #A88462;
-      --teal-dark:   #6B4A2E;
-      --teal-light:  #D5C4AE;
-      --white:       #F5EFEB;
-      --text-dark:   #F5EFEB;
-      --text-soft:   #D5C4AE;
+      --gold:        #00C2FF;
+      --gold-light:  #BAE6FD;
+      --gold-dark:   #0284C7;
+      --dark:        #0F172A;
+      --dark2:       #1E293B;
+      --dark3:       #334155;
+      --dark4:       #64748B;
+      --surface:     #FFFFFF;
+      --surface2:    #F8FAFC;
+      --text:        #0F172A;
+      --text-muted:  #64748B;
+      --border:      rgba(0, 194, 255, 0.22);
+      --shadow-gold: 0 0 30px rgba(0, 194, 255, 0.2);
+
+      --teal:        #00C2FF;
+      --teal-dark:   #0284C7;
+      --teal-light:  #E0F2FE;
+      --white:       #FFFFFF;
+      --text-dark:   #0F172A;
+      --text-soft:   #64748B;
       --radius:      16px;
       --T:           0.3s cubic-bezier(.4,0,.2,1);
 
-      /* Global Luxury Gradient */
-      --bg-gradient: linear-gradient(135deg, #1A120E 0%, #261710 30%, #3A2418 70%, #1A120E 100%);
-      --card-bg: #241711;
-      --card-border: rgba(168, 132, 98, 0.22);
-      --input-bg: #1A120E;
-      --input-border: #4A4A46;
-      --input-text: #F5EFEB;
-      --text-primary: #F5EFEB;
-      --text-secondary: #D5C4AE;
-      --shadow-primary: 0 16px 48px rgba(10, 6, 4, 0.5);
-      --card-outer-bg: rgba(42, 26, 18, 0.6);
-      --card-outer-border: rgba(168, 132, 98, 0.3);
-    }
-
-    [data-theme="dark"] {
-      --bg-gradient: linear-gradient(135deg, #1A120E 0%, #261710 30%, #3A2418 70%, #1A120E 100%);
-      --body-bg:     #1A120E;
-      --hero-bg:     linear-gradient(135deg, #1A120E 0%, #261710 35%, #3A2418 70%, #1A120E 100%);
-      --networks-bg: linear-gradient(180deg, #1A120E 0%, #261710 50%, #1A120E 100%);
-      --card-bg:     #241711;
-      --card-hover:  #2D1D16;
-      --card-border: rgba(168, 132, 98, 0.25);
-      --input-bg:    #1A120E;
-      --input-border:#4A4A46;
-      --input-text:  #F5EFEB;
-      --text-primary:#F5EFEB;
-      --text-secondary:#D5C4AE;
-      --shadow-primary: 0 16px 48px rgba(10, 6, 4, 0.5);
-      --card-outer-bg: rgba(42, 26, 18, 0.6);
-      --card-outer-border: rgba(168, 132, 98, 0.3);
-      --teal:        var(--c4);
-      --teal-dark:   var(--c3);
-      --teal-light:  var(--c5);
-      --btn-text:    #1A120E;
-      --modal-overlay: rgba(26,18,14,0.85);
+      /* Global Default (Light) Gradient */
+      --bg-gradient: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+      --body-bg:     #FFFFFF;
+      --hero-bg:     linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 50%, #E0F2FE 100%);
+      --networks-bg: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+      --card-bg:     #FFFFFF;
+      --card-hover:  #F8FAFC;
+      --card-border: #E2E8F0;
+      --input-bg:    #FFFFFF;
+      --input-border:#CBD5E1;
+      --input-text:  #0F172A;
+      --text-primary:#0F172A;
+      --text-secondary:#64748B;
+      --shadow-primary: 0 16px 48px rgba(15, 23, 42, 0.08);
+      --card-outer-bg: rgba(248, 250, 252, 0.88);
+      --card-outer-border: rgba(0, 194, 255, 0.25);
+      --btn-text:    #0F172A;
+      --modal-overlay: rgba(15, 23, 42, 0.65);
     }
 
     /* ══════════════════════════════════════
-       LIGHT THEME (الوضع الفاتح)
-       Derived 100% from the same palette:
-       - Almond Cream (#D5C4AE) & Warm Sand as bright backgrounds
-       - Roasted Coffee (#3A2418) & Espresso (#1A120E) for elegant readable text
-       - Caramel (#A88462) & Bronze (#6B4A2E) for primary actions
-       - Warm Slate Charcoal (#4A4A46) for borders & subtle details
+       DARK THEME (الوضع الداكن - كحلي غامق)
+       ══════════════════════════════════════ */
+    [data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #0F172A 0%, #111C35 30%, #1E293B 70%, #0F172A 100%);
+      --body-bg:     #0F172A;
+      --hero-bg:     linear-gradient(135deg, #0F172A 0%, #111C35 35%, #1E293B 70%, #0F172A 100%);
+      --networks-bg: linear-gradient(180deg, #0F172A 0%, #131E35 50%, #0F172A 100%);
+      --card-bg:     #1E293B;
+      --card-hover:  #24334D;
+      --card-border: rgba(0, 194, 255, 0.22);
+      --input-bg:    #0F172A;
+      --input-border:#334155;
+      --input-text:  #FFFFFF;
+      --text-primary:#FFFFFF;
+      --text-secondary:#94A3B8;
+      --shadow-primary: 0 16px 48px rgba(0, 0, 0, 0.5);
+      --card-outer-bg: rgba(15, 23, 42, 0.75);
+      --card-outer-border: rgba(0, 194, 255, 0.3);
+      --teal:        #00C2FF;
+      --teal-dark:   #0284C7;
+      --teal-light:  #38BDF8;
+      --btn-text:    #0F172A;
+      --modal-overlay: rgba(15, 23, 42, 0.85);
+      --c5:          #94A3B8;
+    }
+
+    /* ══════════════════════════════════════
+       LIGHT THEME (الوضع الفاتح - خلفية أبيض #FFFFFF)
        ══════════════════════════════════════ */
     [data-theme="light"] {
-      --bg-gradient: linear-gradient(135deg, #EFE6DC 0%, #E3D4C3 40%, #D5C4AE 80%, #C9B39B 100%);
-      --body-bg:     #EFE6DC;
-      --hero-bg:     linear-gradient(135deg, #FAF6F0 0%, #EFE6DC 40%, #E3D4C3 80%, #D5C4AE 100%);
-      --networks-bg: linear-gradient(180deg, #EFE6DC 0%, #E4D5C4 50%, #D8C7B3 100%);
-      --card-bg:     #FAF6F0;
-      --card-hover:  #FFFFFF;
-      --card-border: rgba(107, 74, 46, 0.22);
+      --bg-gradient: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 40%, #F1F5F9 80%, #E2E8F0 100%);
+      --body-bg:     #FFFFFF;
+      --hero-bg:     linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 40%, #E0F2FE 80%, #BAE6FD 100%);
+      --networks-bg: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%);
+      --card-bg:     #FFFFFF;
+      --card-hover:  #F8FAFC;
+      --card-border: #E2E8F0;
       --input-bg:    #FFFFFF;
-      --input-border:#A88462;
-      --input-text:  #1A120E;
-      --text-primary:#1A120E;
-      --text-secondary:#4A4A46;
-      --shadow-primary: 0 16px 48px rgba(58, 36, 24, 0.12);
-      --card-outer-bg: rgba(213, 196, 174, 0.45);
-      --card-outer-border: rgba(107, 74, 46, 0.3);
-      --teal:        #6B4A2E;
-      --teal-dark:   #3A2418;
-      --teal-light:  #A88462;
-      --btn-text:    #FFFFFF;
-      --modal-overlay: rgba(58,36,24,0.65);
+      --input-border:#CBD5E1;
+      --input-text:  #0F172A;
+      --text-primary:#0F172A;
+      --text-secondary:#64748B;
+      --shadow-primary: 0 16px 48px rgba(15, 23, 42, 0.08);
+      --card-outer-bg: rgba(248, 250, 252, 0.88);
+      --card-outer-border: rgba(0, 194, 255, 0.25);
+      --teal:        #00C2FF;
+      --teal-dark:   #0284C7;
+      --teal-light:  #BAE6FD;
+      --btn-text:    #0F172A;
+      --modal-overlay: rgba(15, 23, 42, 0.65);
+      --c5:          #64748B;
     }
 
     body {
       font-family: 'Cairo', 'Tajawal', 'Outfit', sans-serif;
       min-height: 100vh;
-      background: var(--body-bg, #1A120E);
+      background: var(--body-bg, #FFFFFF);
       display: flex; align-items: flex-start; justify-content: center;
       padding: 0;
       position: relative; overflow-y: auto;
@@ -136,7 +147,7 @@
       flex: none;
     }
 
-    /* pages 2-5: full-width, own gradient background covering entire viewport */
+    /* pages 2-5: full-width, soft luminous background matching hero */
     #page2, #page3, #page4, #page5 {
       width: 100%;
       min-height: 100vh;
@@ -144,8 +155,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px 20px 40px;
-      background: var(--bg-gradient);
+      padding: 40px 20px 60px;
+      background: var(--hero-bg);
+      position: relative;
+      overflow: hidden;
     }
 
     body::before {
@@ -259,7 +272,7 @@
     .inp-wrap input::placeholder { color: var(--c5); opacity: 0.6; }
     .inp-wrap input:focus {
       border-color: var(--c4);
-      box-shadow: 0 0 0 4px rgba(168,132,98,0.2);
+      box-shadow: 0 0 0 4px rgba(0,194,255,0.2);
       background: var(--card-bg);
     }
 
@@ -271,21 +284,21 @@
     /* LOGIN button */
     .btn-login {
       width:100%; padding:14px;
-      background: linear-gradient(135deg, var(--c4) 0%, var(--c3) 100%);
-      color: #1A120E;
+      background: linear-gradient(135deg, #00C2FF 0%, #0284C7 100%);
+      color: #0F172A;
       border:none; border-radius:10px;
       font-family:'Outfit',sans-serif;
       font-size:.95rem; font-weight:800;
       letter-spacing:1px; text-transform:uppercase;
       cursor:pointer; margin-top:4px;
       transition: background var(--T), transform var(--T), box-shadow var(--T);
-      box-shadow: 0 6px 20px rgba(107,74,46,0.45);
+      box-shadow: 0 6px 20px rgba(0, 194, 255, 0.35);
     }
 
     .btn-login:hover {
-      background: linear-gradient(135deg, var(--c5) 0%, var(--c4) 100%);
+      background: linear-gradient(135deg, #38BDF8 0%, #00C2FF 100%);
       transform:translateY(-2px);
-      box-shadow: 0 10px 28px rgba(168,132,98,0.5);
+      box-shadow: 0 10px 28px rgba(0, 194, 255, 0.5);
     }
     .btn-login:active { transform:translateY(0); }
 
@@ -299,7 +312,7 @@
       display:flex; align-items:center; gap:0;
       border-radius:30px; overflow:hidden;
       border:1.5px solid var(--c4);
-      background: rgba(26,18,14,0.6);
+      background: var(--card-outer-bg);
     }
 
     .lang-btn {
@@ -307,16 +320,16 @@
       font-family:'Outfit',sans-serif;
       font-size:.78rem; font-weight:700;
       cursor:pointer; border:none;
-      background:transparent; color: var(--c5);
+      background:transparent; color: var(--text-secondary);
       transition: background var(--T), color var(--T);
       letter-spacing:.5px;
     }
 
     .lang-btn.active {
       background: var(--c4);
-      color: #1A120E;
+      color: #0F172A;
     }
-    .lang-sep { width:1px; height:100%; background: var(--c3); }
+    .lang-sep { width:1px; height:100%; background: var(--card-border); }
 
     /* Privacy */
     .privacy { font-size:.7rem; color:rgba(255,255,255,0.6); text-align:center; margin-top:18px; line-height:1.6; }
@@ -339,102 +352,272 @@
     /* page2/3 width constraint moved to inner .welcome-page */
 
     .welcome-page {
-      background: var(--card-outer-bg);
-      border: 1px solid var(--card-outer-border);
-      border-radius:28px; padding:36px;
-      width:100%; max-width: 900px;
-      backdrop-filter:blur(12px);
-      box-shadow:0 28px 72px rgba(0,0,0,0.25);
-      transition: background var(--T), border-color var(--T);
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 28px;
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 980px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 60px rgba(15,23,42,0.06), 0 0 30px rgba(0,194,255,0.06);
+      transition: background var(--T), border-color var(--T), box-shadow var(--T);
+    }
+
+    [data-theme="dark"] .welcome-page {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.5), 0 0 40px rgba(0,194,255,0.08);
     }
 
     /* Top bar */
     .topbar-welcome {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .welcome-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .welcome-heading {
-      font-family:'Playfair Display',serif;
-      font-size:2.4rem; font-weight:800;
-      color:white;
-      text-shadow:0 3px 12px rgba(0,0,0,0.2);
+      font-family: 'Playfair Display', 'Cairo', serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+      transition: color var(--T);
+    }
+
+    .welcome-subhead {
+      font-size: .88rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: color var(--T);
+    }
+
+    .topbar-actions {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 14px !important;
+      flex-wrap: nowrap !important;
+      flex-shrink: 0 !important;
     }
 
     .user-chip {
-      display:flex; align-items:center; gap:10px;
-      background:rgba(255,255,255,0.15);
-      border:1px solid rgba(255,255,255,0.3);
-      border-radius:30px; padding:8px 18px;
-      color:white; font-size:.9rem; font-weight:600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-outer-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 30px;
+      padding: 8px 16px;
+      color: var(--text-primary);
+      font-size: .88rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+      transition: all var(--T);
     }
 
-    .user-chip svg { opacity:.8; }
-
-    /* Main content row */
-    .services-layout {
-      display:flex; gap:28px; align-items:flex-start;
+    .user-chip svg {
+      color: var(--teal);
     }
 
-    /* Brand Logo on Page 2 */
-    .brand-logo-services {
-      height: 140px;
-      object-fit: contain;
-      user-select: none;
-      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.2));
-      flex-shrink: 0;
-      align-self: center;
+    /* Clean Back Button */
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1.5px solid var(--card-border);
+      background: var(--card-outer-bg);
+      color: var(--text-primary);
+      font-family: 'Cairo', 'Outfit', sans-serif;
+      font-size: .84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--T);
+      box-shadow: 0 2px 8px rgba(15,23,42,0.04);
     }
 
-    /* Service cards */
-    .services-col { flex:1; display:flex; flex-direction:column; gap:14px; }
+    .btn-back:hover {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #0F172A;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0,194,255,0.35);
+    }
+
+    /* ── High-End 3-Column Services Grid ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+
+    @media (max-width: 860px) {
+      .topbar-welcome {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+      .topbar-actions {
+        width: 100%;
+        justify-content: flex-end;
+        gap: 10px !important;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .welcome-page {
+        padding: 24px 20px;
+      }
+      .welcome-heading {
+        font-size: 1.8rem;
+      }
+    }
 
     .service-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius:14px;
-      padding:22px 28px;
-      display:flex; align-items:center; justify-content:space-between;
-      cursor:pointer;
+      background: var(--card-outer-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 20px;
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
       transition: transform var(--T), box-shadow var(--T), background var(--T), border-color var(--T);
-      box-shadow:0 4px 18px rgba(0,0,0,0.1);
-      position:relative; overflow:hidden;
+      box-shadow: 0 4px 16px rgba(15,23,42,0.04);
     }
 
-    .service-card::after {
-      content:'';
-      position:absolute; top:0; right:0; bottom:0;
-      width:5px;
-      background:var(--teal);
-      border-radius:0 14px 14px 0;
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00C2FF, #0284C7);
+      opacity: 0;
+      transition: opacity var(--T);
     }
 
-    html[dir="rtl"] .service-card::after {
-      right:auto; left:0;
-      border-radius:14px 0 0 14px;
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(0,194,255,0.16), 0 0 1px rgba(0,194,255,0.4);
+      border-color: var(--teal);
+      background: var(--card-bg);
     }
 
-    .service-card:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(0,0,0,0.18); }
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    .service-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: .74rem;
+      font-weight: 700;
+      background: rgba(0,194,255,0.1);
+      color: #0284C7;
+      border: 1px solid rgba(0,194,255,0.25);
+      margin-bottom: 18px;
+      transition: all var(--T);
+    }
+
+    [data-theme="dark"] .service-badge {
+      background: rgba(0,194,255,0.15);
+      color: #38BDF8;
+    }
+
+    .service-icon-wrap {
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(0,194,255,0.15), rgba(2,132,199,0.08));
+      border: 1.5px solid rgba(0,194,255,0.25);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      overflow: hidden;
+      padding: 4px;
+      box-shadow: 0 6px 18px rgba(0,194,255,0.15);
+      transition: transform var(--T), box-shadow var(--T);
+    }
+
+    .service-card:hover .service-icon-wrap {
+      transform: scale(1.08);
+      box-shadow: 0 10px 24px rgba(0,194,255,0.3);
+    }
+
+    .service-icon-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+    }
 
     .service-name {
-      font-size:1.5rem; font-weight:800;
-      color: var(--text-primary); letter-spacing:-0.5px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
       transition: color var(--T);
     }
 
     .service-sub {
-      font-size:.8rem; color: var(--text-secondary);
-      margin-top:3px; font-weight:500;
+      font-size: .84rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      flex: 1;
+      font-weight: 500;
       transition: color var(--T);
     }
 
-    .service-icon-wrap {
-      width:52px; height:52px; flex-shrink:0;
-      background: linear-gradient(135deg, rgba(168,132,98,0.2), rgba(107,74,46,0.1));
-      border: 1px solid rgba(168,132,98,0.25);
-      border-radius:12px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:1.6rem;
+    .service-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(0,194,255,0.08);
+      border: 1px solid rgba(0,194,255,0.25);
+      color: var(--text-primary);
+      font-size: .82rem;
+      font-weight: 700;
+      transition: all var(--T);
+      margin-top: auto;
+    }
+
+    .service-card:hover .service-action-btn {
+      background: var(--teal);
+      color: #0F172A;
+      border-color: var(--teal);
+      transform: scale(1.03);
+    }
+
+    html[dir="rtl"] .service-action-btn svg {
+      transform: rotate(180deg);
     }
 
     /* SIM chip illustration inside card */
@@ -443,13 +626,13 @@
       background:linear-gradient(135deg, var(--c4), var(--c3));
       border-radius:6px;
       position:relative;
-      box-shadow:0 3px 10px rgba(107,74,46,0.35);
+      box-shadow:0 3px 10px rgba(2,132,199,0.35);
     }
 
     .sim-chip::before {
       content:'';
       position:absolute; top:6px; left:6px; right:6px; bottom:6px;
-      border:1.5px solid rgba(213,196,174,0.4);
+      border:1.5px solid rgba(56,189,248,0.4);
       border-radius:3px;
     }
 
@@ -498,16 +681,16 @@
     .provider-row::before {
       content:'';
       position:absolute; inset:0;
-      background:linear-gradient(135deg, rgba(168,132,98,0.12), transparent);
+      background:linear-gradient(135deg, rgba(0,194,255,0.12), transparent);
       opacity:0;
       transition:opacity var(--T);
     }
 
     .provider-row:hover {
       transform:translateY(-2px);
-      box-shadow:0 10px 28px rgba(10,6,4,0.4);
+      box-shadow:0 10px 28px rgba(15,23,42,0.15);
       border-color: var(--c4);
-      background: #2D1D16;
+      background: var(--card-hover);
     }
     .provider-row:hover::before { opacity:1; }
     .provider-row:active { transform:scale(0.98); }
@@ -526,7 +709,7 @@
     .provider-logo {
       width:52px; height:52px; flex-shrink:0;
       background: var(--input-bg);
-      border-radius:12px; border:1.5px solid rgba(168,132,98,0.3);
+      border-radius:12px; border:1.5px solid rgba(0,194,255,0.3);
       display:flex; align-items:center; justify-content:center;
       font-family:'Playfair Display',serif;
       font-weight:800; font-size:.75rem;
@@ -559,15 +742,15 @@
 
     .plan-chip {
       display:flex; align-items:center; gap:6px;
-      background:linear-gradient(135deg, rgba(168,132,98,0.18), rgba(107,74,46,0.1));
-      border:1px solid rgba(168,132,98,0.3);
+      background:linear-gradient(135deg, rgba(0,194,255,0.18), rgba(2,132,199,0.1));
+      border:1px solid rgba(0,194,255,0.3);
       border-radius:999px; padding:4px 10px;
       cursor:pointer;
       transition:background var(--T), transform var(--T);
     }
 
     .plan-chip:hover {
-      background:linear-gradient(135deg, rgba(168,132,98,0.35), rgba(107,74,46,0.2));
+      background:linear-gradient(135deg, rgba(0,194,255,0.35), rgba(2,132,199,0.2));
       transform:scale(1.05);
     }
 
@@ -577,25 +760,25 @@
 
     .plan-price {
       font-size:.7rem; font-weight:600; color: var(--text-secondary);
-      border-left:1px solid rgba(168,132,98,0.3); padding-left:6px;
+      border-left:1px solid rgba(0,194,255,0.3); padding-left:6px;
       transition: color var(--T);
     }
-    html[dir="rtl"] .plan-price { border-left:none; border-right:1px solid rgba(168,132,98,0.3); padding-left:0; padding-right:6px; }
+    html[dir="rtl"] .plan-price { border-left:none; border-right:1px solid rgba(0,194,255,0.3); padding-left:0; padding-right:6px; }
 
     /* Arrow */
     .provider-arrow {
       width:28px; height:28px; flex-shrink:0;
       display:flex; align-items:center; justify-content:center;
-      background:rgba(168,132,98,0.15); border-radius:50%;
+      background:rgba(0,194,255,0.15); border-radius:50%;
       color: var(--c4); font-size:.75rem;
       transition:background var(--T), transform var(--T);
     }
-    .provider-row:hover .provider-arrow { background: var(--c4); color: #1A120E; transform:translateX(2px); }
+    .provider-row:hover .provider-arrow { background: var(--c4); color: #0F172A; transform:translateX(2px); }
     html[dir="rtl"] .provider-row:hover .provider-arrow { transform:translateX(-2px); }
 
     /* Subtitle bar above list */
     .esim-subtitle {
-      font-size:.82rem; color:rgba(255,255,255,0.75);
+      font-size:.88rem; color:var(--text-secondary);
       margin-bottom:10px; font-weight:500;
     }
 
@@ -624,15 +807,15 @@
     }
 
     .pkg-provider-name {
-      font-family:'Playfair Display',serif;
+      font-family:'Playfair Display','Cairo',serif;
       font-size:2rem; font-weight:800;
-      color:white;
+      color:var(--text-primary);
       text-shadow:0 3px 12px rgba(0,0,0,0.2);
       line-height:1;
     }
 
     .pkg-provider-sub {
-      font-size:.82rem; color:rgba(255,255,255,0.72);
+      font-size:.82rem; color:var(--text-secondary);
       margin-top:4px; font-weight:500;
     }
 
@@ -657,9 +840,9 @@
 
     .pkg-card:hover {
       transform:translateY(-4px);
-      box-shadow:0 16px 36px rgba(10,6,4,0.45);
+      box-shadow:0 16px 36px rgba(15,23,42,0.18);
       border-color: var(--c4);
-      background: #2B1C15;
+      background: var(--card-hover);
     }
 
     .pkg-card.popular {
@@ -668,7 +851,7 @@
 
     .popular-badge {
       position:absolute; top:12px; right:12px;
-      background: var(--c4); color: #1A120E;
+      background: var(--c4); color: #0F172A;
       font-size:.65rem; font-weight:800;
       padding:3px 9px; border-radius:999px;
       letter-spacing:.5px; text-transform:uppercase;
@@ -722,21 +905,21 @@
 
     .btn-choose {
       width:100%; padding:12px;
-      background: linear-gradient(135deg, var(--c4), var(--c3));
-      color: #1A120E;
+      background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+      color: #FFFFFF;
       border:none; border-radius:10px;
-      font-family:'Outfit',sans-serif;
-      font-size:.88rem; font-weight:800;
+      font-family:'Cairo', 'Tajawal', 'Outfit', sans-serif;
+      font-size:.9rem; font-weight:800;
       cursor:pointer; margin-top:auto;
-      transition:background var(--T), transform var(--T), box-shadow var(--T);
-      box-shadow:0 4px 14px rgba(107,74,46,0.35);
+      transition:all var(--T);
+      box-shadow:0 4px 14px rgba(34,197,94,0.35);
       letter-spacing:.5px;
     }
 
     .btn-choose:hover {
-      background: linear-gradient(135deg, var(--c5), var(--c4));
-      transform:translateY(-1px);
-      box-shadow:0 8px 20px rgba(168,132,98,0.45);
+      background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%);
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(34,197,94,0.5);
     }
 
     .btn-choose:active { transform:scale(0.98); }
@@ -770,7 +953,7 @@
     ══════════════════════════════════ */
     .modal-overlay {
       position:fixed; inset:0; z-index:999;
-      background:rgba(26,18,14,0.8);
+      background:rgba(15,23,42,0.8);
       backdrop-filter:blur(8px);
       display:flex; align-items:center; justify-content:center;
       padding:20px;
@@ -781,12 +964,12 @@
     .modal-overlay.open { opacity:1; pointer-events:all; }
 
     .modal-card {
-      background: #241711;
-      border: 1px solid rgba(168,132,98,0.3);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 24px;
       padding:32px 28px;
       width:100%; max-width:420px;
-      box-shadow:0 24px 64px rgba(10,6,4,0.5);
+      box-shadow: var(--shadow-primary);
       transform:translateY(28px) scale(0.97);
       transition:transform .35s cubic-bezier(.4,0,.2,1), background var(--T), border-color var(--T);
       position:relative;
@@ -798,7 +981,7 @@
       position:absolute; top:14px; right:14px;
       width:30px; height:30px; border-radius:50%;
       background: var(--input-bg);
-      border: 1px solid rgba(168,132,98,0.25);
+      border: 1px solid rgba(0,194,255,0.25);
       cursor:pointer;
       font-size:1rem; color: var(--text-secondary);
       display:flex; align-items:center; justify-content:center;
@@ -809,8 +992,8 @@
 
     .modal-plan-badge {
       display:inline-flex; align-items:center; gap:8px;
-      background:linear-gradient(135deg, rgba(168,132,98,0.18), rgba(107,74,46,0.1));
-      border:1.5px solid rgba(168,132,98,0.3);
+      background:linear-gradient(135deg, rgba(0,194,255,0.18), rgba(2,132,199,0.1));
+      border:1.5px solid rgba(0,194,255,0.3);
       border-radius:999px; padding:6px 14px;
       margin-bottom:18px;
     }
@@ -838,7 +1021,7 @@
       outline:none; cursor:pointer;
       transition:border-color var(--T), box-shadow var(--T), background var(--T), color var(--T);
       appearance:none;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A88462' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2300C2FF' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
       background-repeat:no-repeat;
       background-position:right 10px center;
       padding-right:28px;
@@ -847,7 +1030,7 @@
       background-position:left 10px center;
       padding-right:10px; padding-left:28px;
     }
-    .wa-prefix:focus { border-color: var(--c4); box-shadow:0 0 0 4px rgba(168,132,98,0.2); }
+    .wa-prefix:focus { border-color: var(--c4); box-shadow:0 0 0 4px rgba(0,194,255,0.2); }
 
     .wa-number-wrap { flex:1; position:relative; }
     .wa-icon {
@@ -864,7 +1047,7 @@
       transition:border-color var(--T), box-shadow var(--T), background var(--T), color var(--T);
     }
     html[dir="rtl"] .wa-number-wrap input { padding:13px 40px 13px 14px; }
-    .wa-number-wrap input:focus { border-color: var(--c4); box-shadow:0 0 0 4px rgba(168,132,98,0.2); }
+    .wa-number-wrap input:focus { border-color: var(--c4); box-shadow:0 0 0 4px rgba(0,194,255,0.2); }
     .wa-number-wrap input::placeholder { color: var(--c5); opacity: 0.6; }
     .wa-number-wrap.error input { border-color:#e05555; }
 
@@ -873,14 +1056,14 @@
 
     .btn-submit {
       width:100%; padding:14px;
-      background:linear-gradient(135deg, var(--c4), var(--c3));
-      color: #1A120E; border:none; border-radius:10px;
-      font-family:'Outfit',sans-serif; font-size:.95rem; font-weight:800;
+      background:linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+      color: #FFFFFF; border:none; border-radius:10px;
+      font-family:'Cairo', 'Tajawal', 'Outfit', sans-serif; font-size:.95rem; font-weight:800;
       letter-spacing:1px; cursor:pointer; margin-top:6px;
-      box-shadow:0 6px 20px rgba(107,74,46,0.45);
+      box-shadow:0 6px 20px rgba(34,197,94,0.4);
       transition:opacity var(--T), transform var(--T), box-shadow var(--T);
     }
-    .btn-submit:hover { opacity:.92; transform:translateY(-2px); box-shadow:0 10px 28px rgba(168,132,98,0.5); background: linear-gradient(135deg, var(--c5), var(--c4)); }
+    .btn-submit:hover { opacity:.95; transform:translateY(-2px); box-shadow:0 10px 28px rgba(34,197,94,0.55); background: linear-gradient(135deg, #4ADE80 0%, #22C55E 100%); }
     .btn-submit:active { transform:scale(0.98); }
 
     /* Success state */
@@ -922,7 +1105,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: var(--hero-bg, linear-gradient(135deg, #1A120E 0%, #261710 35%, #3A2418 70%, #1A120E 100%));
+      background: var(--hero-bg, linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 50%, #E0F2FE 100%));
       overflow: hidden;
       transition: background var(--T);
     }
@@ -939,18 +1122,18 @@
       position: absolute;
       display: block;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(168,132,98,0.4), transparent 70%);
+      background: radial-gradient(circle, rgba(0,194,255,0.4), transparent 70%);
       animation: lp-float linear infinite;
     }
 
-    .lp-particles span:nth-child(1) { width:300px;height:300px; top:-80px;right:-60px; animation-duration:20s; opacity:.2; background:radial-gradient(circle, rgba(168,132,98,.5), transparent 70%); }
-    .lp-particles span:nth-child(2) { width:200px;height:200px; bottom:10%;left:-40px; animation-duration:28s; opacity:.15; background:radial-gradient(circle, rgba(107,74,46,.6), transparent 70%); }
-    .lp-particles span:nth-child(3) { width:160px;height:160px; top:40%;right:10%; animation-duration:16s; opacity:.12; background:radial-gradient(circle, rgba(213,196,174,.4), transparent 70%); }
-    .lp-particles span:nth-child(4) { width:80px;height:80px; top:20%;left:20%; animation-duration:12s; opacity:.25; background:radial-gradient(circle, rgba(168,132,98,.6), transparent 70%); }
-    .lp-particles span:nth-child(5) { width:240px;height:240px; bottom:-60px;right:20%; animation-duration:24s; opacity:.1; background:radial-gradient(circle, rgba(58,36,24,.8), transparent 70%); }
-    .lp-particles span:nth-child(6) { width:120px;height:120px; top:60%;left:40%; animation-duration:18s; opacity:.18; background:radial-gradient(circle, rgba(168,132,98,.4), transparent 70%); }
-    .lp-particles span:nth-child(7) { width:60px;height:60px; top:80%;right:30%; animation-duration:10s; opacity:.25; background:radial-gradient(circle, rgba(213,196,174,.6), transparent 70%); }
-    .lp-particles span:nth-child(8) { width:400px;height:400px; top:50%;left:50%;transform:translate(-50%,-50%); animation-duration:40s; opacity:.05; background:radial-gradient(circle, rgba(107,74,46,.5), transparent 70%); }
+    .lp-particles span:nth-child(1) { width:300px;height:300px; top:-80px;right:-60px; animation-duration:20s; opacity:.25; background:radial-gradient(circle, rgba(0,194,255,.45), transparent 70%); }
+    .lp-particles span:nth-child(2) { width:200px;height:200px; bottom:10%;left:-40px; animation-duration:28s; opacity:.15; background:radial-gradient(circle, rgba(2,132,199,.5), transparent 70%); }
+    .lp-particles span:nth-child(3) { width:160px;height:160px; top:40%;right:10%; animation-duration:16s; opacity:.18; background:radial-gradient(circle, rgba(0,194,255,.35), transparent 70%); }
+    .lp-particles span:nth-child(4) { width:80px;height:80px; top:20%;left:20%; animation-duration:12s; opacity:.25; background:radial-gradient(circle, rgba(0,194,255,.5), transparent 70%); }
+    .lp-particles span:nth-child(5) { width:240px;height:240px; bottom:-60px;right:20%; animation-duration:24s; opacity:.1; background:radial-gradient(circle, rgba(15,23,42,.6), transparent 70%); }
+    .lp-particles span:nth-child(6) { width:120px;height:120px; top:60%;left:40%; animation-duration:18s; opacity:.2; background:radial-gradient(circle, rgba(0,194,255,.4), transparent 70%); }
+    .lp-particles span:nth-child(7) { width:60px;height:60px; top:80%;right:30%; animation-duration:10s; opacity:.25; background:radial-gradient(circle, rgba(56,189,248,.5), transparent 70%); }
+    .lp-particles span:nth-child(8) { width:400px;height:400px; top:50%;left:50%;transform:translate(-50%,-50%); animation-duration:40s; opacity:.06; background:radial-gradient(circle, rgba(2,132,199,.4), transparent 70%); }
 
     @keyframes lp-float {
       0%   { transform: translateY(0) rotate(0deg); }
@@ -968,7 +1151,7 @@
     .lp-logo {
       height: 60px;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(168,132,98,.4));
+      filter: drop-shadow(0 2px 8px rgba(0,194,255,.4));
     }
 
     .lp-topbar-right {
@@ -978,8 +1161,8 @@
     .lp-cta-sm {
       display: flex; align-items: center; gap: 7px;
       padding: 9px 20px;
-      background: rgba(168,132,98,.15);
-      border: 1.5px solid rgba(168,132,98,.4);
+      background: rgba(0,194,255,.15);
+      border: 1.5px solid rgba(0,194,255,.4);
       border-radius: 999px;
       color: var(--c5);
       font-family: 'Outfit', sans-serif;
@@ -990,7 +1173,7 @@
 
     .lp-cta-sm:hover {
       background: var(--c4);
-      color: #1A120E;
+      color: #0F172A;
       border-color: var(--c4);
       transform: translateY(-1px);
     }
@@ -1006,8 +1189,8 @@
 
     .lp-badge {
       display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(168,132,98,.14);
-      border: 1.5px solid rgba(168,132,98,.4);
+      background: rgba(0,194,255,.14);
+      border: 1.5px solid rgba(0,194,255,.4);
       border-radius: 999px;
       padding: 8px 20px;
       margin-bottom: 28px;
@@ -1048,15 +1231,15 @@
       font-size: clamp(2.8rem, 9vw, 7rem);
       font-weight: 800;
       line-height: 1;
-      background: linear-gradient(135deg, var(--c4) 0%, var(--c3) 60%, var(--c2) 100%);
+      background: linear-gradient(135deg, #00C2FF 0%, #0284C7 60%, #0F172A 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 2px 20px rgba(168,132,98,.3));
+      filter: drop-shadow(0 2px 20px rgba(0,194,255,.3));
     }
 
     [data-theme="dark"] .lp-headline-line2 {
-      background: linear-gradient(135deg, var(--c5) 0%, var(--c4) 50%, var(--c3) 100%);
+      background: linear-gradient(135deg, #FFFFFF 0%, #00C2FF 50%, #38BDF8 100%);
       -webkit-background-clip: text;
     }
 
@@ -1086,14 +1269,14 @@
     .lp-stat-num {
       font-family: 'Outfit', sans-serif;
       font-size: 2.4rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--c3), var(--c4));
+      background: linear-gradient(135deg, #00C2FF, #0284C7);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
       line-height: 1;
     }
 
     [data-theme="dark"] .lp-stat-num {
-      background: linear-gradient(135deg, var(--c5), var(--c4));
+      background: linear-gradient(135deg, #38BDF8, #00C2FF);
       -webkit-background-clip: text;
     }
 
@@ -1114,20 +1297,20 @@
     .lp-btn-primary {
       display: flex; align-items: center; gap: 10px;
       padding: 15px 36px;
-      background: linear-gradient(135deg, var(--c4) 0%, #B8906E 50%, var(--c3) 100%);
-      color: #1A120E;
+      background: linear-gradient(135deg, #00C2FF 0%, #00B0FF 50%, #0284C7 100%);
+      color: #0F172A;
       border: none; border-radius: 999px;
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Cairo', 'Tajawal', 'Outfit', sans-serif;
       font-size: 1rem; font-weight: 800;
       cursor: pointer; letter-spacing: .5px;
-      box-shadow: 0 8px 32px rgba(107,74,46,.5), 0 0 60px rgba(168,132,98,.2);
+      box-shadow: 0 8px 32px rgba(0,194,255,.4), 0 0 60px rgba(0,194,255,.2);
       transition: all var(--T);
     }
 
     .lp-btn-primary:hover {
       transform: translateY(-3px) scale(1.03);
-      background: linear-gradient(135deg, var(--c5) 0%, var(--c4) 100%);
-      box-shadow: 0 14px 40px rgba(107,74,46,.65), 0 0 80px rgba(168,132,98,.3);
+      background: linear-gradient(135deg, #38BDF8 0%, #00C2FF 100%);
+      box-shadow: 0 14px 40px rgba(0,194,255,.55), 0 0 80px rgba(0,194,255,.3);
     }
 
     .lp-btn-primary:active { transform: scale(0.98); }
@@ -1135,20 +1318,20 @@
     .lp-btn-secondary {
       display: flex; align-items: center; gap: 8px;
       padding: 14px 32px;
-      background: rgba(74,74,70,.25);
-      border: 1.5px solid rgba(168,132,98,.35);
+      background: rgba(0,194,255,.08);
+      border: 1.5px solid rgba(0,194,255,.35);
       border-radius: 999px;
-      color: var(--c5);
-      font-family: 'Outfit', sans-serif;
+      color: var(--text-primary);
+      font-family: 'Cairo', 'Tajawal', 'Outfit', sans-serif;
       font-size: .95rem; font-weight: 600;
       cursor: pointer;
       transition: all var(--T);
     }
 
     .lp-btn-secondary:hover {
-      background: rgba(168,132,98,.25);
+      background: rgba(0,194,255,.18);
       border-color: var(--c4);
-      color: #fff;
+      color: var(--text-primary);
       transform: translateY(-2px);
     }
 
@@ -1163,7 +1346,7 @@
 
     .lp-scroll-line {
       width: 1px; height: 40px;
-      background: linear-gradient(to bottom, transparent, rgba(168,132,98,.6));
+      background: linear-gradient(to bottom, transparent, rgba(0,194,255,.6));
       animation: lp-scroll 2s ease-in-out infinite;
     }
 
@@ -1174,7 +1357,7 @@
 
     /* ── NETWORKS SECTION ── */
     .lp-networks {
-      background: var(--networks-bg, linear-gradient(180deg, #1A120E 0%, #261710 50%, #1A120E 100%));
+      background: var(--networks-bg, linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #F1F5F9 100%));
       padding: 80px 24px 100px;
       position: relative;
       overflow: hidden;
@@ -1185,7 +1368,7 @@
       content: '';
       position: absolute; top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(168,132,98,.4), rgba(213,196,174,.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(0,194,255,.4), rgba(56,189,248,.3), transparent);
     }
 
     .lp-networks-header {
@@ -1319,8 +1502,26 @@
     .lp-feat-icon {
       font-size: 2.6rem;
       margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      filter: drop-shadow(0 4px 12px rgba(0,194,255,.3));
+    }
+
+    .lp-feat-img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 14px;
       display: block;
-      filter: drop-shadow(0 4px 12px rgba(168,132,98,.3));
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      border: 1px solid rgba(0,194,255,0.35);
+      transition: transform var(--T);
+    }
+
+    .lp-feat-card:hover .lp-feat-img {
+      transform: scale(1.08);
     }
 
     .lp-feat-card h3 {
@@ -1552,12 +1753,16 @@
     <!-- Features grid -->
     <div class="lp-features">
       <div class="lp-feat-card" onclick="selectService('esim')">
-        <div class="lp-feat-icon">📱</div>
+        <div class="lp-feat-icon">
+          <img src="esim-card.jpg" alt="e-SIM" class="lp-feat-img" />
+        </div>
         <h3 id="t-feat1-title">E-SIM رقمية</h3>
         <p id="t-feat1-sub">تثبيت فوري بدون بطاقة فيزيائية، جاهزة خلال دقائق</p>
       </div>
       <div class="lp-feat-card" onclick="selectService('sim')">
-        <div class="lp-feat-icon">💎</div>
+        <div class="lp-feat-icon">
+          <img src="sim-card.jpg" alt="SIM" class="lp-feat-img" />
+        </div>
         <h3 id="t-feat2-title">SIM مميزة</h3>
         <p id="t-feat2-sub">شرائح فيزيائية بجودة عالية مع تغطية 5G شاملة</p>
       </div>
@@ -1595,12 +1800,15 @@
 
     <!-- Top bar -->
     <div class="topbar-welcome">
-      <div class="welcome-heading" id="t-welcome">أهلاً وسهلاً</div>
-      <div style="display:flex;align-items:center;gap:14px;">
+      <div class="welcome-title-group">
+        <div class="welcome-heading" id="t-welcome">أهلاً وسهلاً</div>
+        <div class="welcome-subhead" id="t-welcome-sub">اختر نوع الخدمة التي ترغب بها للمتابعة واستعراض الباقات</div>
+      </div>
+      <div class="topbar-actions">
         <!-- User chip -->
         <div class="user-chip">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
@@ -1612,50 +1820,68 @@
           <div class="lang-sep"></div>
           <button class="lang-btn active" id="btnEn2" onclick="setLang('en')">EN</button>
         </div>
-        <!-- Back -->
-        <button onclick="goBack()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back">← رجوع</button>
+        <!-- Back button -->
+        <button onclick="goBack()" class="btn-back" id="t-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>رجوع</span>
+        </button>
       </div>
     </div>
 
-    <!-- Services layout -->
-    <div class="services-layout">
-      <!-- Logo Image -->
-      <img src="logo.png" alt="JK Logo" class="brand-logo-services" />
+    <!-- 3-Column Services Grid -->
+    <div class="services-grid">
 
-      <!-- Service cards -->
-      <div class="services-col">
-
-        <!-- e-SIM card -->
-        <div class="service-card" onclick="selectService('esim')">
-          <div>
-            <div class="service-name">e-SIM</div>
-            <div class="service-sub" id="t-esim-sub">شريحة إلكترونية — بدون بطاقة فعلية</div>
-          </div>
-          <div class="service-icon-wrap">📱</div>
+      <!-- e-SIM Card -->
+      <div class="service-card" onclick="selectService('esim')">
+        <div class="service-badge">
+          <span>⚡ تفعيل فوري</span>
         </div>
-
-        <!-- SIM card -->
-        <div class="service-card" onclick="selectService('sim')">
-          <div>
-            <div class="service-name">SIM</div>
-            <div class="service-sub" id="t-sim-sub">شريحة اتصال فيزيائية تقليدية</div>
-          </div>
-          <div class="service-icon-wrap">
-            <div class="sim-chip"></div>
-          </div>
+        <div class="service-icon-wrap">
+          <img src="esim-card.jpg" alt="e-SIM" class="service-icon-img" />
         </div>
-
-        <!-- Renewing SIM -->
-        <div class="service-card" onclick="selectService('renew')">
-          <div>
-            <div class="service-name" id="t-renew-name" style="font-size:1.15rem;">تجديد اشتراك الشريحة</div>
-            <div class="service-sub" id="t-renew-sub">تجديد خططك الحالية وإدارة الاشتراكات</div>
-          </div>
-          <div class="service-icon-wrap">🔄</div>
+        <div class="service-name">e-SIM</div>
+        <div class="service-sub" id="t-esim-sub">شريحة إلكترونية رقمية — بدون بطاقة فعلية وتفعيل مباشر عبر QR كود</div>
+        <div class="service-action-btn">
+          <span id="t-esim-btn-txt">اختيار باقات e-SIM</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </div>
+      </div>
 
-      </div><!-- /services-col -->
-    </div><!-- /services-layout -->
+      <!-- SIM Card -->
+      <div class="service-card" onclick="selectService('sim')">
+        <div class="service-badge">
+          <span>📶 تغطية 5G متقدمة</span>
+        </div>
+        <div class="service-icon-wrap">
+          <img src="sim-card.jpg" alt="SIM" class="service-icon-img" />
+        </div>
+        <div class="service-name">SIM</div>
+        <div class="service-sub" id="t-sim-sub">شرائح اتصال فيزيائية أصلية مع سرعات إنترنت ومكالمات فائقة</div>
+        <div class="service-action-btn">
+          <span id="t-sim-btn-txt">استعراض شرائح SIM</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+
+      <!-- Renewing SIM Card -->
+      <div class="service-card" onclick="selectService('renew')">
+        <div class="service-badge">
+          <span>🔄 تجديد مباشر</span>
+        </div>
+        <div class="service-icon-wrap" style="background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(0,194,255,0.15)); border-color: rgba(34,197,94,0.35);">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:36px; height:36px; fill: none; stroke: var(--buy); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+        </div>
+        <div class="service-name" id="t-renew-name">تجديد الاشتراك</div>
+        <div class="service-sub" id="t-renew-sub">تجديد باقتك الحالية وإدارة خطط الشريحة بكل سهولة</div>
+        <div class="service-action-btn">
+          <span id="t-renew-btn-txt">متابعة التجديد</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      </div>
+
+    </div><!-- /services-grid -->
 
   </div>
 </div>
@@ -1668,8 +1894,11 @@
 
     <!-- Top bar -->
     <div class="topbar-welcome">
-      <div class="welcome-heading" id="t-esim-title">e-SIM Plans</div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <img id="provider-badge-img" src="esim-card.jpg" alt="Type" style="width:38px;height:38px;object-fit:cover;border-radius:10px;border:1px solid rgba(0,194,255,0.3);box-shadow:0 3px 10px rgba(0,0,0,0.25);" />
+        <div class="welcome-heading" id="t-esim-title">e-SIM Plans</div>
+      </div>
+      <div class="topbar-actions">
         <div class="user-chip">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1683,7 +1912,7 @@
           <div class="lang-sep"></div>
           <button class="lang-btn active" id="btnEn3" onclick="setLang('en')">EN</button>
         </div>
-        <button onclick="goToServices()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back2">← Back</button>
+        <button onclick="goToServices()" class="btn-back" id="t-back2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>رجوع</span></button>
       </div>
     </div>
 
@@ -1710,7 +1939,7 @@
           <div class="pkg-provider-sub" id="p4-sub">A SIM card that works everywhere.</div>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div class="topbar-actions">
         <div class="user-chip">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1724,7 +1953,7 @@
           <div class="lang-sep"></div>
           <button class="lang-btn active" id="btnEn4" onclick="setLang('en')">EN</button>
         </div>
-        <button onclick="goToProviders()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back3">← Back</button>
+        <button onclick="goToProviders()" class="btn-back" id="t-back3"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>رجوع</span></button>
       </div>
     </div>
 
@@ -1745,25 +1974,25 @@
     <!-- Top bar -->
     <div class="topbar-welcome">
       <div class="welcome-heading" id="t-renew-title">تجديد اشتراكات الشريحة</div>
-      <div style="display:flex;align-items:center;gap:10px;">
+      <div class="topbar-actions">
         <div class="lang-toggle welcome-lang">
           <button class="lang-btn" id="btnAr5" onclick="setLang('ar')">عربي</button>
           <div class="lang-sep"></div>
           <button class="lang-btn active" id="btnEn5" onclick="setLang('en')">EN</button>
         </div>
-        <button onclick="goToServices()" style="padding:8px 16px;border-radius:30px;border:1.5px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:white;font-family:Outfit,sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;" id="t-back5">← Back</button>
+        <button onclick="goToServices()" class="btn-back" id="t-back5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span>رجوع</span></button>
       </div>
     </div>
 
     <!-- White Card for Form -->
     <div class="form-card" style="max-width: 100%; margin-top: 18px; padding: 28px 24px;">
       <!-- Header inside the card -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 2px solid rgba(168,132,98,0.2); padding-bottom: 16px; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; border-bottom: 2px solid rgba(0,194,255,0.2); padding-bottom: 16px; width: 100%;">
         <div>
           <h3 style="font-size:1.2rem; color: var(--text-primary); font-weight: 700; margin:0;" id="t-card-renew-title">تجديد اشتراك الشريحة</h3>
           <p style="font-size:0.8rem; color: var(--text-secondary); margin: 4px 0 0;" id="t-card-renew-sub">Renew your current plans and manage subscriptions</p>
         </div>
-        <div class="icon-box" style="background-color: rgba(168,132,98,0.18); border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease;">
+        <div class="icon-box" style="background-color: rgba(0,194,255,0.18); border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease;">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:24px; height:24px; fill: var(--c4);">
             <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
           </svg>
@@ -1787,13 +2016,13 @@
         </div>
 
         <!-- Price Badge (70 NIS) -->
-        <div style="display:flex; align-items:center; gap:12px; background:linear-gradient(135deg, rgba(58,36,24,0.6), rgba(36,23,17,0.8)); border:2px solid var(--c4); border-radius:12px; padding:14px 18px; margin-bottom:18px;">
+        <div style="display:flex; align-items:center; gap:12px; background:linear-gradient(135deg, rgba(0,194,255,0.08), rgba(2,132,199,0.04)); border:2px solid var(--c4); border-radius:14px; padding:16px 20px; margin-bottom:18px;">
           <div style="font-size:1.8rem;">💰</div>
           <div style="flex:1;">
-            <div style="font-size:0.78rem; color:var(--text-secondary); font-weight:600; margin-bottom:2px;" id="t-renew-price-label">سعر التجديد</div>
-            <div style="font-size:1.5rem; font-weight:800; color:var(--c5); letter-spacing:1px;">70 ₪</div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); font-weight:600; margin-bottom:2px;" id="t-renew-price-label">سعر التجديد</div>
+            <div style="font-size:1.6rem; font-weight:800; color:var(--text-primary); letter-spacing:1px;">70 ₪</div>
           </div>
-          <div style="background:var(--c4); color:#1A120E; border-radius:8px; padding:6px 12px; font-size:0.78rem; font-weight:700;" id="t-renew-badge">ثابت</div>
+          <div style="background:var(--c4); color:#0F172A; border-radius:8px; padding:6px 14px; font-size:0.8rem; font-weight:800;" id="t-renew-badge">ثابت</div>
         </div>
 
         <button type="button" class="btn-login" style="margin-top:10px; text-transform:none; letter-spacing:0;" id="btn-submit-renew" onclick="submitRenew()">متابعة التجديد</button>
@@ -1821,6 +2050,7 @@
     <div id="modal-form-content">
       <!-- Selected plan badge -->
       <div class="modal-plan-badge">
+        <img id="mb-type-img" src="sim-card.jpg" alt="SIM" style="width:22px; height:22px; object-fit:cover; border-radius:5px; border:1px solid rgba(0,194,255,0.3);" />
         <span class="mpb-name" id="mb-provider">—</span>
         <span class="mpb-dot"></span>
         <span class="mpb-gb" id="mb-gb">—</span>
@@ -1908,6 +2138,7 @@ const translations = {
     // Page 2+
     errUser:     'الرجاء إدخال اسم المستخدم',
     welcome:     'أهلاً وسهلاً',
+    welcomeSub:  'اختر نوع الخدمة التي ترغب بها للمتابعة واستعراض الباقات',
     back:        '← رجوع',
     esimSub:     'شريحة إلكترونية — بدون بطاقة فعلية',
     simSub:      'شرائح جديدة SIM',
@@ -1962,6 +2193,7 @@ const translations = {
     // Page 2+
     errUser:     'Please enter your username.',
     welcome:     'Welcome',
+    welcomeSub:  'Select your preferred service to explore packages',
     back:        '← Back',
     esimSub:     'Electronic SIM — no physical card needed',
     simSub:      'New SIM cards',
@@ -2029,6 +2261,10 @@ function setLang(lang) {
 
   // Page 2
   setTxt('t-welcome',   t.welcome);
+  setTxt('t-welcome-sub', t.welcomeSub || (lang === 'ar' ? 'اختر نوع الخدمة التي ترغب بها للمتابعة واستعراض الباقات' : 'Select your preferred service to explore packages'));
+  setTxt('t-esim-btn-txt', lang === 'ar' ? 'اختيار باقات e-SIM' : 'Explore e-SIM Plans');
+  setTxt('t-sim-btn-txt',  lang === 'ar' ? 'استعراض شرائح SIM' : 'Explore SIM Cards');
+  setTxt('t-renew-btn-txt',lang === 'ar' ? 'متابعة التجديد' : 'Renew Subscription');
   setTxt('t-back',      t.back);
   setTxt('t-esim-sub',  t.esimSub);
   setTxt('t-sim-sub',   t.simSub);
@@ -2154,6 +2390,13 @@ function goToProviderPage() {
   const lang = currentLang;
   const isEsim = selectedServiceType === 'esim';
 
+  // Set Badge image
+  const badgeImg = document.getElementById('provider-badge-img');
+  if (badgeImg) {
+    badgeImg.src = isEsim ? 'esim-card.jpg' : 'sim-card.jpg';
+    badgeImg.alt = isEsim ? 'e-SIM' : 'SIM';
+  }
+
   // Set Title & Desc
   document.getElementById('t-esim-title').textContent = isEsim
     ? translations[lang].esimTitle
@@ -2252,7 +2495,7 @@ function goToProviderPage() {
   }
 
   if (html === '') {
-    html = `<div style="text-align:center; padding: 32px 16px; color: white; font-weight:600; font-family:Outfit,sans-serif;">
+    html = `<div style="text-align:center; padding: 32px 16px; color: var(--text-secondary); font-weight:600; font-family:Cairo,Outfit,sans-serif;">
       ${lang === 'ar' ? 'لا توجد باقات متاحة حالياً.' : 'No packages available at the moment.'}
     </div>`;
   }
@@ -2381,6 +2624,12 @@ function confirmPlan(provider, gb, price, duration = '') {
   _pendingPlan = { provider, gb, price, duration };
   const lang = currentLang;
   const isAr = lang === 'ar';
+
+  const mbImg = document.getElementById('mb-type-img');
+  if (mbImg) {
+    mbImg.src = selectedServiceType === 'sim' ? 'sim-card.jpg' : 'esim-card.jpg';
+    mbImg.alt = selectedServiceType === 'sim' ? 'SIM' : 'e-SIM';
+  }
 
   document.getElementById('mb-provider').textContent = provider;
   document.getElementById('mb-gb').textContent        = gb;
@@ -2648,9 +2897,9 @@ function toggleTheme() {
   }
 }
 
-// Auto-initialize theme on load (default to dark)
+// Auto-initialize theme on load (default to light per design system)
 (function() {
-  const savedTheme = localStorage.getItem('theme') || 'dark';
+  const savedTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   
   document.addEventListener('DOMContentLoaded', () => {
