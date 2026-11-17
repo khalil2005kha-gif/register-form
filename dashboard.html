@@ -1000,6 +1000,19 @@
               <input type="text" id="new-plan-size" class="search-input" style="width:100%; height:42px;" placeholder="مثال: 400 GB" />
             </div>
             <div class="form-group">
+              <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">المدة / الصلاحية</label>
+              <div style="display:flex; gap:6px;">
+                <select id="new-plan-duration" class="search-input" style="width:100%; height:42px; background:var(--bg3); border-color:var(--border); color:var(--text); padding:0 12px; outline:none; border-radius:10px;" onchange="if(this.value==='custom'){document.getElementById('new-plan-duration-custom').style.display='block';document.getElementById('new-plan-duration-custom').focus();}else{document.getElementById('new-plan-duration-custom').style.display='none';}">
+                  <option value="شهري">شهري (شهر واحد)</option>
+                  <option value="3 شهور">3 شهور</option>
+                  <option value="6 شهور">6 شهور</option>
+                  <option value="سنة">سنة كاملة</option>
+                  <option value="custom">✏️ كتابة مدة أخرى...</option>
+                </select>
+                <input type="text" id="new-plan-duration-custom" class="search-input" style="display:none; width:130px; height:42px;" placeholder="اكتب المدة..." />
+              </div>
+            </div>
+            <div class="form-group">
               <label style="display:block; margin-bottom:8px; font-size:.85rem; color:var(--text-soft)">السعر (شيكل)</label>
               <input type="number" id="new-plan-price" class="search-input" style="width:100%; height:42px;" placeholder="مثال: 70" />
             </div>
@@ -1393,59 +1406,13 @@ function renderPricesEditor(priceData) {
   simItems.sort(sortByProvider);
   esimItems.sort(sortByProvider);
 
-  function buildTable(items) {
-    if (!items.length) return `<div class="empty-state" style="padding:30px 20px"><p style="color:var(--text-soft)">لا توجد باقات في هذه الفئة.</p></div>`;
-    let t = `
-      <div class="table-wrap">
-        <table class="data-table" style="width:100%; text-align:right; border-collapse:collapse;">
-          <thead>
-            <tr>
-              <th style="padding:12px; border-bottom:2px solid var(--border)">الشعار</th>
-              <th style="padding:12px; border-bottom:2px solid var(--border)">النوع</th>
-              <th style="padding:12px; border-bottom:2px solid var(--border)">الشركة (EN/AR)</th>
-              <th style="padding:12px; border-bottom:2px solid var(--border)">الباقة</th>
-              <th style="padding:12px; border-bottom:2px solid var(--border)">السعر (₪)</th>
-              <th style="padding:12px; border-bottom:2px solid var(--border)">تحميل صورة الشعار / الاسم</th>
-              <th style="padding:12px; border-bottom:2px solid var(--border); text-align:center">العمليات</th>
-            </tr>
-          </thead>
-          <tbody>
-    `;
-    items.forEach(item => { t += buildRow(item); });
-    t += `</tbody></table></div>`;
-    return t;
-  }
-
-  let html = `
-    <div style="display:flex; flex-direction:column; gap:28px; padding:20px 0;">
-
-      <!-- SIM Section -->
-      <div>
-        <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(59,130,246,0.3); margin-bottom:0;">
-          <span style="font-size:1.1rem; font-weight:700; color:var(--blue);">📱 شرائح SIM</span>
-          <span style="background:rgba(59,130,246,0.12); color:var(--blue); font-size:.78rem; font-weight:600; padding:3px 10px; border-radius:20px;">${simItems.length} باقة</span>
-        </div>
-        ${buildTable(simItems)}
-      </div>
-
-      <!-- e-SIM Section -->
-      <div>
-        <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(34,197,94,0.3); margin-bottom:0;">
-          <span style="font-size:1.1rem; font-weight:700; color:var(--green);">🌐 شرائح e-SIM</span>
-          <span style="background:rgba(34,197,94,0.12); color:var(--green); font-size:.78rem; font-weight:600; padding:3px 10px; border-radius:20px;">${esimItems.length} باقة</span>
-        </div>
-        ${buildTable(esimItems)}
-      </div>
-
-    </div>
-  `;
-
-  // Build rows from items (kept as a local function)
   function buildRow(item) {
     const isUrl = String(item.logo || '').trim().startsWith('http://') || String(item.logo || '').trim().startsWith('https://') || String(item.logo || '').trim().startsWith('data:image');
     const logoPreview = isUrl 
       ? `<img src="${item.logo}" style="width:40px; height:40px; object-fit:contain; border-radius:6px; background:#fff; padding:2px; border:1px solid var(--border);" />`
       : `<div style="display:inline-block; padding:4px 8px; background:var(--bg3); border-radius:4px; font-size:.8rem; font-weight:700; color:var(--text-soft);">${String(item.logo || '').replace(/\\n/g, ' ')}</div>`;
+
+    const isCustomDuration = item.duration && !['شهري', 'شهر واحد', 'شهر', '3 شهور', '6 شهور', 'سنة'].includes(item.duration);
 
     return `
       <tr id="price-row-${item.id}">
@@ -1462,6 +1429,18 @@ function renderPricesEditor(priceData) {
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
           <input type="text" id="edit-plan-${item.id}" class="search-input" style="width:90px; padding:4px 8px; height:34px;" value="${item.plan || ''}" />
+        </td>
+        <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <select id="edit-duration-${item.id}" class="search-input" style="width:115px; padding:4px 6px; height:34px; background:var(--bg3); border-color:var(--border); color:var(--text); border-radius:6px;" onchange="if(this.value==='custom'){document.getElementById('edit-duration-custom-${item.id}').style.display='block';document.getElementById('edit-duration-custom-${item.id}').focus();}else{document.getElementById('edit-duration-custom-${item.id}').style.display='none';}">
+              <option value="شهري" ${(!item.duration || item.duration === 'شهري' || item.duration === 'شهر واحد' || item.duration === 'شهر') ? 'selected' : ''}>شهري</option>
+              <option value="3 شهور" ${item.duration === '3 شهور' ? 'selected' : ''}>3 شهور</option>
+              <option value="6 شهور" ${item.duration === '6 شهور' ? 'selected' : ''}>6 شهور</option>
+              <option value="سنة" ${item.duration === 'سنة' ? 'selected' : ''}>سنة</option>
+              <option value="custom" ${isCustomDuration ? 'selected' : ''}>أخرى...</option>
+            </select>
+            <input type="text" id="edit-duration-custom-${item.id}" class="search-input" style="width:115px; padding:4px 6px; height:30px; font-size:.8rem; ${isCustomDuration ? 'display:block;' : 'display:none;'}" value="${isCustomDuration ? esc(item.duration) : ''}" placeholder="اكتب المدة..." />
+          </div>
         </td>
         <td style="padding:12px; border-bottom:1px solid var(--border); vertical-align:middle;">
           <input type="number" id="edit-price-${item.id}" class="search-input" style="width:80px; padding:4px 8px; height:34px; font-weight:700;" value="${item.price || ''}" />
@@ -1483,8 +1462,31 @@ function renderPricesEditor(priceData) {
     `;
   }
 
-  // Re-build html now that buildRow is defined (hoist workaround)
-  html = `
+  function buildTable(items) {
+    if (!items.length) return `<div class="empty-state" style="padding:30px 20px"><p style="color:var(--text-soft)">لا توجد باقات في هذه الفئة.</p></div>`;
+    let t = `
+      <div class="table-wrap">
+        <table class="data-table" style="width:100%; text-align:right; border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">الشعار</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">النوع</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">الشركة (EN/AR)</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">الباقة</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">المدة / الصلاحية</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">السعر (₪)</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border)">تحميل صورة الشعار / الاسم</th>
+              <th style="padding:12px; border-bottom:2px solid var(--border); text-align:center">العمليات</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+    items.forEach(item => { t += buildRow(item); });
+    t += `</tbody></table></div>`;
+    return t;
+  }
+
+  const html = `
     <div style="display:flex; flex-direction:column; gap:28px; padding:20px 0;">
       <div>
         <div style="display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:2px solid rgba(59,130,246,0.3); margin-bottom:0;">
@@ -1514,12 +1516,17 @@ async function updatePackage(id) {
   const plan = document.getElementById('edit-plan-' + id).value.trim();
   const type = document.getElementById('edit-type-' + id).value;
 
+  let duration = document.getElementById('edit-duration-' + id).value;
+  if (duration === 'custom') {
+    duration = document.getElementById('edit-duration-custom-' + id).value.trim() || 'شهري';
+  }
+
   const btn = document.getElementById('btn-save-' + id);
   if (btn) btn.disabled = true;
 
   try {
     const json = await callApi('update_price', {
-      id, price, logo, provider, providerAr, plan, type
+      id, price, logo, provider, providerAr, plan, type, duration
     });
 
     if (json.status === 'success') {
@@ -1545,6 +1552,11 @@ async function addPackage() {
   const logoText = document.getElementById('new-plan-logo-text').value.trim();
   const logo = logoFile || logoText;
 
+  let duration = document.getElementById('new-plan-duration').value;
+  if (duration === 'custom') {
+    duration = document.getElementById('new-plan-duration-custom').value.trim() || 'شهري';
+  }
+
   if (!provider || !price) {
     showToast('⚠️ الرجاء إدخال اسم الشركة والسعر على الأقل', 'error');
     return;
@@ -1552,7 +1564,7 @@ async function addPackage() {
 
   try {
     const json = await callApi('add_price', {
-      type, provider, providerAr, plan, price, logo
+      type, provider, providerAr, plan, price, logo, duration
     });
 
     if (json.status === 'success') {
@@ -1564,6 +1576,9 @@ async function addPackage() {
       document.getElementById('new-plan-price').value = '';
       document.getElementById('new-plan-logo-data').value = '';
       document.getElementById('new-plan-logo-text').value = '';
+      document.getElementById('new-plan-duration').value = 'شهري';
+      document.getElementById('new-plan-duration-custom').value = '';
+      document.getElementById('new-plan-duration-custom').style.display = 'none';
       document.getElementById('new-plan-logo-preview').innerHTML = '<span style="color:#aaa; font-size:12px;">—</span>';
       
       loadPrices();

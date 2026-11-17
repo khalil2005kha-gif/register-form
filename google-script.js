@@ -4,7 +4,7 @@
 
 // ── الإعدادات ────────────────────────────────────────
 var DASHBOARD_SECRET   = 'admin2024';       // كلمة سر لوحة التحكم
-var OWNER_WHATSAPP     = '972593425031';    // رقم واتساب صاحب الموقع (بدون +)
+var OWNER_WHATSAPP     = '970593425031';    // رقم واتساب صاحب الموقع (بدون +)
 var CALLMEBOT_API_KEY  = 'PASTE_YOUR_CALLMEBOT_KEY_HERE'; 
 
 // ── استقبال البيانات (POST) ──────────────────────────
@@ -176,7 +176,8 @@ function doGet(e) {
         providerAr: rows[i][3] || rows[i][2],
         plan:       rows[i][4],
         price:      rows[i][5],
-        logo:       rows[i][6] || ''
+        logo:       rows[i][6] || '',
+        duration:   rows[i][7] || 'شهري'
       });
     }
     return _json({ status: 'success', data: list });
@@ -271,7 +272,8 @@ function doGet(e) {
         providerAr: rows[i][3] || rows[i][2],
         plan:       rows[i][4],
         price:      rows[i][5],
-        logo:       rows[i][6] || ''
+        logo:       rows[i][6] || '',
+        duration:   rows[i][7] || 'شهري'
       });
     }
     return _json({ status: 'success', data: list });
@@ -287,8 +289,9 @@ function doGet(e) {
     var plan = params.plan || '400 GB';
     var price = params.price || '100';
     var logo = params.logo || '';
+    var duration = params.duration || 'شهري';
     
-    sheet.appendRow([id, type, provider, providerAr, plan, price, logo]);
+    sheet.appendRow([id, type, provider, providerAr, plan, price, logo, duration]);
     return _json({ status: 'success', id: id });
   }
 
@@ -304,6 +307,7 @@ function doGet(e) {
         if (params.providerAr !== undefined) sheet.getRange(k + 1, 4).setValue(params.providerAr);
         if (params.plan !== undefined) sheet.getRange(k + 1, 5).setValue(params.plan);
         if (params.type !== undefined) sheet.getRange(k + 1, 2).setValue(params.type);
+        if (params.duration !== undefined) sheet.getRange(k + 1, 8).setValue(params.duration);
         return _json({ status: 'success' });
       }
     }
@@ -435,7 +439,8 @@ function _handleDashboardPost(params) {
         providerAr: rows[i][3] || rows[i][2],
         plan:       rows[i][4],
         price:      rows[i][5],
-        logo:       rows[i][6] || ''
+        logo:       rows[i][6] || '',
+        duration:   rows[i][7] || 'شهري'
       });
     }
     return _json({ status: 'success', data: list });
@@ -518,7 +523,8 @@ function _handleDashboardPost(params) {
         providerAr: rows[i][3] || rows[i][2],
         plan:       rows[i][4],
         price:      rows[i][5],
-        logo:       rows[i][6] || ''
+        logo:       rows[i][6] || '',
+        duration:   rows[i][7] || 'شهري'
       });
     }
     return _json({ status: 'success', data: list });
@@ -533,8 +539,9 @@ function _handleDashboardPost(params) {
     var plan = params.plan || '400 GB';
     var price = params.price || '100';
     var logo = params.logo || '';
+    var duration = params.duration || 'شهري';
     
-    sheet.appendRow([id, type, provider, providerAr, plan, price, logo]);
+    sheet.appendRow([id, type, provider, providerAr, plan, price, logo, duration]);
     return _json({ status: 'success', id: id });
   }
 
@@ -549,6 +556,7 @@ function _handleDashboardPost(params) {
         if (params.providerAr !== undefined) sheet.getRange(k + 1, 4).setValue(params.providerAr);
         if (params.plan !== undefined) sheet.getRange(k + 1, 5).setValue(params.plan);
         if (params.type !== undefined) sheet.getRange(k + 1, 2).setValue(params.type);
+        if (params.duration !== undefined) sheet.getRange(k + 1, 8).setValue(params.duration);
         return _json({ status: 'success' });
       }
     }

@@ -1849,16 +1849,6 @@
         <select class="wa-prefix" id="waPrefix">
           <option value="+970">🇵🇸 +970</option>
           <option value="+972">🇮🇱 +972</option>
-          <option value="+962">🇯🇴 +962</option>
-          <option value="+961">🇱🇧 +961</option>
-          <option value="+963">🇸🇾 +963</option>
-          <option value="+964">🇮🇶 +964</option>
-          <option value="+966">🇸🇦 +966</option>
-          <option value="+971">🇦🇪 +971</option>
-          <option value="+965">🇰🇼 +965</option>
-          <option value="+20"> 🇪🇬 +20</option>
-          <option value="+212">🇲🇦 +212</option>
-          <option value="+216">🇹🇳 +216</option>
         </select>
         <div class="wa-number-wrap" id="grp-wanum">
           <span class="wa-icon">
@@ -2238,8 +2228,10 @@ function goToProviderPage() {
     } else {
       // SIM: render each plan card in the group
       g.plans.forEach(plan => {
+        const dur = plan.duration || 'شهري';
+        const planWithDur = `${plan.plan} (${dur})`;
         html += `
-          <div class="provider-row" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}', '${plan.plan}', '${plan.price}₪')">
+          <div class="provider-row" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}', '${planWithDur}', '${plan.price}₪', '${dur}')">
             <div class="provider-logo" ${logoStyleAttr}>${logoHtml}</div>
             <div class="provider-info">
               <div class="provider-name">${lang === 'ar' ? plan.providerAr : plan.provider}</div>
@@ -2249,6 +2241,7 @@ function goToProviderPage() {
               <div class="plan-chip">
                 <span class="plan-gb">${plan.plan}</span>
                 <span class="plan-price">${plan.price}₪</span>
+                <span style="font-size:0.75rem; background:rgba(46,196,182,0.15); color:var(--teal); padding:2px 8px; border-radius:12px; margin-right:4px; font-weight:700;">${dur}</span>
               </div>
             </div>
             <div class="provider-arrow">›</div>
@@ -2309,14 +2302,17 @@ function openProvider(key) {
 
   grid.innerHTML = filteredPlans.map((plan, index) => {
     const popular = index === 1; // Make second plan popular by default
+    const dur = plan.duration || (lang === 'ar' ? 'شهرياً' : 'month');
+    const periodDisplay = dur.startsWith('/') ? dur : `/ ${dur}`;
+    const planWithDur = plan.duration ? `${plan.plan} (${plan.duration})` : plan.plan;
     return `
-      <div class="pkg-card${popular ? ' popular' : ''}" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}','${plan.plan}','${plan.price}₪')">
+      <div class="pkg-card${popular ? ' popular' : ''}" onclick="confirmPlan('${lang === 'ar' ? plan.providerAr : plan.provider}','${planWithDur}','${plan.price}₪', '${plan.duration || ''}')">
         ${popular ? `<div class="popular-badge">${popularTxt}</div>` : ''}
         <div class="pkg-gb">${plan.plan.replace(/\s*GB/i, '')}</div>
         <div class="pkg-unit">GB</div>
         <div class="pkg-divider"></div>
         <div class="pkg-price">${plan.price}₪</div>
-        <div class="pkg-period">${perMonth}</div>
+        <div class="pkg-period">${periodDisplay}</div>
         
         <ul class="pkg-features">
           <li>
@@ -2381,8 +2377,8 @@ let ALL_PLANS = [
 ═══════════════════════════════════════ */
 let _pendingPlan = {};
 
-function confirmPlan(provider, gb, price) {
-  _pendingPlan = { provider, gb, price };
+function confirmPlan(provider, gb, price, duration = '') {
+  _pendingPlan = { provider, gb, price, duration };
   const lang = currentLang;
   const isAr = lang === 'ar';
 
@@ -2475,7 +2471,8 @@ async function submitOrder() {
     });
   } catch(e) { /* no-cors */ }
 
-  const ownerPhone = '972593425031';
+  const ownerPhone = '970593425031';
+  const durLine = _pendingPlan.duration ? '⏱️ *المدة:* ' + _pendingPlan.duration + '\n' : '';
   const waMsg =
     '🔔 *طلب جديد – KhalilOrders*\n' +
     '━━━━━━━━━━━━━━\n' +
@@ -2484,6 +2481,7 @@ async function submitOrder() {
     '📶 *نوع الخدمة:* ' + serviceLabel + '\n' +
     '🏢 *الشركة:* ' + _pendingPlan.provider + '\n' +
     '💾 *الباقة:* ' + _pendingPlan.gb + '\n' +
+    durLine +
     '💰 *السعر:* ' + _pendingPlan.price + '\n' +
     '━━━━━━━━━━━━━━\n' +
     '✅ أرجو التواصل لتفعيل الشريحة';
@@ -2611,7 +2609,7 @@ async function submitRenew() {
     });
   } catch(e) { /* no-cors */ }
 
-  const ownerPhone = '972593425031';
+  const ownerPhone = '970593425031';
   const waMsg =
     '🔄 *طلب تجديد اشتراك الشريحة*\n' +
     '━━━━━━━━━━━━━━\n' +
