@@ -2670,37 +2670,27 @@
       <div class="sky-footer">Sky Telecom 2025</div>
     </div>
 
-    <!-- Loading state -->
-    <div class="sky-loading-box" id="sky-loading-box">
-      <div class="sky-spinner"></div>
-      <div class="sky-loading-title" id="t-sky-loading-title">جاري تحديث الرقم...</div>
-      <div class="sky-loading-sub" id="t-sky-loading-sub">
-        يتم الاتصال بمزود Sky وتحديث الحزمة تلقائياً<br>
-        <span style="font-size:0.8rem;color:#94a3b8;">قد يستغرق الرد من 15 إلى 45 ثانية</span>
-      </div>
-    </div>
-
-    <!-- Result state -->
+    <!-- Result / Smart Redirect state -->
     <div class="sky-result-box" id="sky-result-box">
       <div class="sky-result-icon success" id="sky-result-icon">✓</div>
-      <div class="sky-result-title" id="sky-result-title">تم التحديث بنجاح</div>
-      <div class="sky-result-msg success" id="sky-result-msg">تم تحديث حزمة التصفح بنجاح</div>
+      <div class="sky-result-title" id="sky-result-title">تم نسخ الرقم بنجاح!</div>
+      
+      <div class="sky-result-msg success" id="sky-result-msg" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">
+        📱 الرقم: <strong id="sky-copied-number" style="font-size:1.15rem;letter-spacing:1px;direction:ltr;display:inline-block;color:#0052cc;">05XXXXXXXX</strong><br>
+        <span style="font-size:0.85rem;color:#475569;display:block;margin-top:6px;">
+          تم نسخ الرقم إلى الحافظة تلقائياً ✅<br>
+          سيفتح موقع التحديث الآن، فقط الصق الرقم واضغط <strong>تحديث</strong>.
+        </span>
+      </div>
       
       <div class="sky-result-actions">
-        <button class="sky-action-btn primary" onclick="resetSkyModal()">تحديث رقم آخر</button>
-        <a id="sky-whatsapp-action" class="sky-action-btn whatsapp" href="#" target="_blank" style="display:none;">
-          <span>📱</span> تواصل مع الدعم عبر واتساب
+        <a id="sky-direct-open-btn" class="sky-action-btn primary" href="https://www.refreshsims.net/" target="_blank" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span>🚀</span> فتح صفحة التحديث الآن
         </a>
-        <button class="sky-action-btn secondary" onclick="closeSkyModal()">إغلاق</button>
-      </div>
-    </div>
-
-    <!-- Legacy Success state (fallback) -->
-    <div class="sky-success-box" id="sky-success-box">
-      <div class="sky-success-icon">✓</div>
-      <div class="sky-success-title" id="t-sky-success-title">تم استلام طلب التحديث!</div>
-      <div class="sky-success-sub" id="t-sky-success-sub">
-        <span style="color:#16a34a;font-weight:700;">📱 سيفتح واتساب الآن — اضغط إرسال لإتمام طلبك</span>
+        <a id="sky-whatsapp-action" class="sky-action-btn whatsapp" href="#" target="_blank">
+          <span>💬</span> طلب التحديث عبر واتساب
+        </a>
+        <button class="sky-action-btn secondary" onclick="resetSkyModal()">تحديث رقم آخر</button>
       </div>
     </div>
   </div>
@@ -3469,27 +3459,20 @@ async function submitOrder() {
 
 
 /* ══════════════════════════════════
-   SKY UPDATE MODAL LOGIC (AUTO-REFRESH BOT)
+   SKY UPDATE MODAL LOGIC (SMART DIRECT FLOW)
 ══════════════════════════════════ */
-
-// 🌐 رابط سيرفر التحديث الآلي السحابي الحي
-const SKY_REFRESH_API_URL = 'https://sky-refresh-api.onrender.com/api/refresh';
 
 function resetSkyModal() {
   const input = document.getElementById('skyPhoneInput');
   const formBox = document.getElementById('sky-form-content');
-  const loadingBox = document.getElementById('sky-loading-box');
   const resultBox = document.getElementById('sky-result-box');
-  const successBox = document.getElementById('sky-success-box');
   const errWrap = document.getElementById('grp-sky-phone');
   const submitBtn = document.getElementById('sky-btn-submit');
 
   if (input) input.value = '';
   if (errWrap) errWrap.classList.remove('error');
   if (formBox) formBox.style.display = 'block';
-  if (loadingBox) loadingBox.style.display = 'none';
   if (resultBox) resultBox.style.display = 'none';
-  if (successBox) successBox.style.display = 'none';
   if (submitBtn) {
     submitBtn.disabled = false;
     const isAr = currentLang === 'ar';
@@ -3522,10 +3505,10 @@ async function submitSkyUpdate() {
   const phoneInput = document.getElementById('skyPhoneInput');
   const phone = phoneInput ? phoneInput.value.trim() : '';
   const errWrap = document.getElementById('grp-sky-phone');
-  const submitBtn = document.getElementById('sky-btn-submit');
   const formBox = document.getElementById('sky-form-content');
-  const loadingBox = document.getElementById('sky-loading-box');
   const resultBox = document.getElementById('sky-result-box');
+  const numDisplay = document.getElementById('sky-copied-number');
+  const waBtn = document.getElementById('sky-whatsapp-action');
 
   if (!phone || phone.length !== 10 || !phone.startsWith('0')) {
     if (errWrap) errWrap.classList.add('error');
@@ -3533,12 +3516,39 @@ async function submitSkyUpdate() {
   }
   if (errWrap) errWrap.classList.remove('error');
 
-  // تحويل الشاشة إلى وضع التحميل
-  if (formBox) formBox.style.display = 'none';
-  if (loadingBox) loadingBox.style.display = 'flex';
-  if (resultBox) resultBox.style.display = 'none';
+  // 1. نسخ الرقم تلقائياً إلى الحافظة
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(phone).catch(() => {});
+  } else {
+    try {
+      const tempInp = document.createElement('input');
+      tempInp.value = phone;
+      document.body.appendChild(tempInp);
+      tempInp.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInp);
+    } catch(e) {}
+  }
 
-  // حفظ نسخة من الطلب في Google Script في الخلفية
+  // 2. إظهار رقم الهاتف المنسوخ وإعداد زر واتساب
+  if (numDisplay) numDisplay.textContent = phone;
+  
+  const ownerPhone = '970593425031';
+  const waMsg = 
+    '🔄 *طلب مساعدة في تحديث رقم Sky Telecom*\n' +
+    '📱 رقم الهاتف: ' + phone + '\n' +
+    'أرجو المساعدة في تحديث الرقم.';
+  if (waBtn) waBtn.href = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
+
+  // 3. التبديل لشاشة الإرشاد الذكية
+  if (formBox) formBox.style.display = 'none';
+  if (resultBox) resultBox.style.display = 'flex';
+
+  // 4. فتح صفحة التحديث مباشرة في لسان جديد
+  const refreshUrl = 'https://www.refreshsims.net/';
+  window.open(refreshUrl, '_blank');
+
+  // 5. حفظ نسخة في Google Sheet في الخلفية
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
   try {
     fetch(SCRIPT_URL, {
@@ -3552,76 +3562,6 @@ async function submitSkyUpdate() {
       })
     }).catch(() => {});
   } catch(e) { /* ignore */ }
-
-  let updateResult = null;
-
-  try {
-    // الاتصال بمحرك التحديث التلقائي
-    const response = await fetch(SKY_REFRESH_API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: phone })
-    });
-
-    updateResult = await response.json();
-  } catch (err) {
-    console.warn('API Connection failed, using fallback notice:', err);
-    updateResult = {
-      success: false,
-      title: isAr ? 'تعذر الاتصال التلقائي' : 'Connection Error',
-      message: isAr 
-        ? 'لم نتمكن من الوصول لخادم التحديث الآن، يمكنك طلب التحديث مباشرة عبر واتساب.' 
-        : 'Could not connect to update server, you can request via WhatsApp.'
-    };
-  }
-
-  // إخفاء التحميل وإظهار النتيجة
-  if (loadingBox) loadingBox.style.display = 'none';
-  if (resultBox) resultBox.style.display = 'flex';
-
-  const iconEl = document.getElementById('sky-result-icon');
-  const titleEl = document.getElementById('sky-result-title');
-  const msgEl = document.getElementById('sky-result-msg');
-  const waBtn = document.getElementById('sky-whatsapp-action');
-
-  if (updateResult && updateResult.success) {
-    if (iconEl) {
-      iconEl.className = 'sky-result-icon success';
-      iconEl.textContent = '✓';
-    }
-    if (titleEl) {
-      titleEl.textContent = updateResult.title || (isAr ? 'تم التحديث بنجاح' : 'Updated Successfully');
-      titleEl.style.color = '#15803d';
-    }
-    if (msgEl) {
-      msgEl.className = 'sky-result-msg success';
-      msgEl.textContent = updateResult.message || (isAr ? 'تم تحديث حزمة التصفح بنجاح' : 'Package refreshed');
-    }
-    if (waBtn) waBtn.style.display = 'none';
-  } else {
-    if (iconEl) {
-      iconEl.className = 'sky-result-icon error';
-      iconEl.textContent = '✕';
-    }
-    if (titleEl) {
-      titleEl.textContent = updateResult.title || (isAr ? 'تعذر التحديث' : 'Update Failed');
-      titleEl.style.color = '#b91c1c';
-    }
-    if (msgEl) {
-      msgEl.className = 'sky-result-msg error';
-      msgEl.textContent = updateResult.message || (isAr ? 'حدث خطأ أثناء التحديث' : 'Error updating package');
-    }
-    if (waBtn) {
-      const ownerPhone = '970593425031';
-      const waMsg = 
-        '🔄 *مساعدة في تحديث رقم Sky Telecom*\n' +
-        '📱 الرقم: ' + phone + '\n' +
-        '⚠️ النتيجة: ' + (updateResult.message || 'فشل التحديث') + '\n' +
-        'أرجو المساعدة في تحديث الرقم.';
-      waBtn.href = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
-      waBtn.style.display = 'flex';
-    }
-  }
 }
 
 
