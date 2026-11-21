@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" id="htmlRoot" class="notranslate" translate="no">
 <head>
   <meta charset="UTF-8"/>
@@ -1011,6 +1011,529 @@
     /* Inputs reuse existing styles but slight override */
     .modal-card .inp-wrap { margin-bottom:14px; }
 
+    
+    /* ══════════════════════════════════
+       SKY TELECOM UPDATE MODAL
+    ══════════════════════════════════ */
+    .sky-modal-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 36px 30px 28px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 25px 65px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05);
+      transform: translateY(28px) scale(0.97);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      text-align: center;
+      box-sizing: border-box;
+      direction: rtl;
+    }
+    .modal-overlay.open .sky-modal-card {
+      transform: translateY(0) scale(1);
+    }
+    .sky-modal-close {
+      position: absolute;
+      top: 16px;
+      left: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.15);
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s ease;
+    }
+    html[dir="ltr"] .sky-modal-close {
+      left: auto;
+      right: 18px;
+    }
+    .sky-modal-close:hover {
+      background: rgba(148, 163, 184, 0.3);
+      color: #0f172a;
+    }
+    .sky-logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .sky-logo-img {
+      width: 95px;
+      height: auto;
+      max-height: 55px;
+      object-fit: contain;
+    }
+    .sky-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #1d72d6;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.3px;
+      font-family: inherit;
+    }
+    .sky-subtitle {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2563eb;
+      margin: 0 0 8px 0;
+    }
+    .sky-instruction {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: #5a7b9e;
+      margin: 0 0 24px 0;
+    }
+    .sky-input-wrap {
+      width: 100%;
+      margin-bottom: 14px;
+    }
+    .sky-input {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      border: 1.6px solid #3b82f6;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #1e293b;
+      background: #ffffff;
+      outline: none;
+      transition: all .2s ease;
+    }
+    .sky-input::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+    }
+    .sky-input:focus {
+      border-color: #1d4ed8;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16);
+    }
+    .sky-input-wrap.error .sky-input {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.14);
+    }
+    .sky-err-msg {
+      display: none;
+      color: #ef4444;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 6px;
+      text-align: center;
+    }
+    .sky-input-wrap.error .sky-err-msg {
+      display: block;
+    }
+    .sky-btn-submit {
+      width: 100%;
+      background: #1e40af;
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 20px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 22px -4px rgba(30, 64, 175, 0.42);
+      transition: all .2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+    .sky-btn-submit:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px -4px rgba(30, 64, 175, 0.52);
+    }
+    .sky-btn-submit:active {
+      transform: translateY(0);
+    }
+    .sky-btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .sky-footer {
+      margin-top: 24px;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+    .sky-success-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0 6px;
+    }
+    .sky-loading-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 8px;
+    }
+    .sky-spinner {
+      width: 54px;
+      height: 54px;
+      border: 4px solid #e2e8f0;
+      border-top: 4px solid #0052cc;
+      border-radius: 50%;
+      animation: skySpin 0.9s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes skySpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .sky-loading-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    .sky-loading-sub {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .sky-result-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0 6px;
+    }
+    .sky-result-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      animation: popInSky 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .sky-result-icon.success {
+      background: #22c55e;
+      box-shadow: 0 8px 24px -4px rgba(34, 197, 94, 0.45);
+    }
+    .sky-result-icon.error {
+      background: #ef4444;
+      box-shadow: 0 8px 24px -4px rgba(239, 68, 68, 0.45);
+    }
+    .sky-result-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    .sky-result-msg {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      word-break: break-word;
+    }
+    .sky-result-msg.success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      font-weight: 600;
+    }
+    .sky-result-msg.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      font-weight: 600;
+    }
+    .sky-result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .sky-action-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .sky-action-btn.primary {
+      background: #0052cc;
+      color: #fff;
+    }
+    .sky-action-btn.primary:hover {
+      background: #003e99;
+      transform: translateY(-1px);
+    }
+    .sky-action-btn.secondary {
+      background: #f1f5f9;
+      color: #475569;
+    }
+    .sky-action-btn.secondary:hover {
+      background: #e2e8f0;
+    }
+    .sky-action-btn.whatsapp {
+      background: #25d366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .sky-action-btn.whatsapp:hover {
+      background: #1ebd5a;
+    }
+    .sky-success-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #22c55e;
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px -4px rgba(34, 197, 94, 0.45);
+      animation: popInSky 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popInSky {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .sky-success-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .sky-success-sub {
+      font-size: 0.88rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    
+    /* ══════════════════════════════════
+       LAYAN TELLCOM UPDATE MODAL
+    ══════════════════════════════════ */
+    .layan-modal-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 36px 30px 30px;
+      width: 100%;
+      max-width: 390px;
+      box-shadow: 0 25px 65px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.05);
+      transform: translateY(28px) scale(0.97);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      position: relative;
+      text-align: center;
+      box-sizing: border-box;
+      direction: rtl;
+    }
+    .modal-overlay.open .layan-modal-card {
+      transform: translateY(0) scale(1);
+    }
+    .layan-modal-close {
+      position: absolute;
+      top: 16px;
+      left: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(148, 163, 184, 0.15);
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s ease;
+    }
+    html[dir="ltr"] .layan-modal-close {
+      left: auto;
+      right: 18px;
+    }
+    .layan-modal-close:hover {
+      background: rgba(148, 163, 184, 0.3);
+      color: #0f172a;
+    }
+    .layan-logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .layan-logo-img {
+      width: 135px;
+      height: auto;
+      max-height: 60px;
+      object-fit: contain;
+    }
+    .layan-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #2b3a4a;
+      margin: 0 0 6px 0;
+      font-family: inherit;
+    }
+    .layan-instruction {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #64748b;
+      margin: 0 0 24px 0;
+    }
+    .layan-input-wrap {
+      width: 100%;
+      margin-bottom: 6px;
+      text-align: right;
+    }
+    html[dir="ltr"] .layan-input-wrap {
+      text-align: left;
+    }
+    .layan-label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+    .layan-input {
+      width: 100%;
+      box-sizing: border-box;
+      text-align: right;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #1e293b;
+      background: #ffffff;
+      outline: none;
+      transition: all .2s ease;
+    }
+    html[dir="ltr"] .layan-input {
+      text-align: left;
+    }
+    .layan-input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+    .layan-input:focus {
+      border-color: #2698dc;
+      box-shadow: 0 0 0 3px rgba(38, 152, 220, 0.2);
+    }
+    .layan-input-wrap.error .layan-input {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.14);
+    }
+    .layan-err-msg {
+      display: none;
+      color: #ef4444;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 6px;
+      text-align: right;
+    }
+    html[dir="ltr"] .layan-err-msg {
+      text-align: left;
+    }
+    .layan-input-wrap.error .layan-err-msg {
+      display: block;
+    }
+    .layan-btn-submit {
+      width: 100%;
+      background: #2698dc;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 20px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 18px;
+      box-shadow: 0 6px 18px -3px rgba(38, 152, 220, 0.4);
+      transition: all .2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+    }
+    .layan-btn-submit:hover {
+      background: #1e87c6;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px -3px rgba(38, 152, 220, 0.5);
+    }
+    .layan-btn-submit:active {
+      transform: translateY(0);
+    }
+    .layan-btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .layan-success-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0 6px;
+    }
+    .layan-success-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #22c55e;
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px -4px rgba(34, 197, 94, 0.45);
+      animation: popInLayan 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popInLayan {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .layan-success-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+    .layan-success-sub {
+      font-size: 0.88rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
     /* WhatsApp row: prefix select + number input */
     .wa-row { display:flex; gap:8px; margin-bottom:14px; }
 
@@ -1768,15 +2291,19 @@
         <h3 id="t-feat2-title">SIM مميزة</h3>
         <p id="t-feat2-sub">شرائح فيزيائية بجودة عالية مع تغطية 5G شاملة</p>
       </div>
-      <div class="lp-feat-card" onclick="goToWelcome()">
-        <div class="lp-feat-icon">⚡</div>
-        <h3 id="t-feat3-title">تفعيل فوري</h3>
-        <p id="t-feat3-sub">خدمة سريعة على مدار الساعة عبر واتساب</p>
+      <div class="lp-feat-card" onclick="openSkyUpdateModal()">
+        <div class="lp-feat-icon" style="background:transparent;padding:0;">
+          <img src="sky-logo.png" alt="SKY" style="width:72px;height:auto;object-fit:contain;" />
+        </div>
+        <h3 id="t-feat3-title">تحديث سكاي</h3>
+        <p id="t-feat3-sub">تحديث أرقام سكاي بسهولة وسرعة عبر واتساب</p>
       </div>
-      <div class="lp-feat-card" onclick="goToWelcome()">
-        <div class="lp-feat-icon">🌐</div>
-        <h3 id="t-feat4-title">تغطية شاملة</h3>
-        <p id="t-feat4-sub">تغطية كاملة عبر أفضل شبكات الجيل الخامس</p>
+      <div class="lp-feat-card" onclick="openLayanUpdateModal()">
+        <div class="lp-feat-icon" style="background:transparent;padding:0;">
+          <img src="layan-logo.png" alt="Layan" style="width:85px;max-height:50px;object-fit:contain;" />
+        </div>
+        <h3 id="t-feat4-title">تحديث ليان</h3>
+        <p id="t-feat4-sub">تحديث أرقام ليان بسهولة وسرعة عبر واتساب</p>
       </div>
     </div>
 
@@ -2076,7 +2603,7 @@
         <div class="err-msg" id="fullname-err">Please enter your full name (3 words)</div>
       </div>
 
-      <!-- WhatsApp row -->
+<!-- WhatsApp row -->
       <div class="wa-row">
         <select class="wa-prefix" id="waPrefix">
           <option value="+970">🇵🇸 +970</option>
@@ -2104,6 +2631,122 @@
       <div class="success-sub" id="ms-sub">We'll contact you on WhatsApp shortly to activate your service.</div>
     </div>
 
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL – SKY TELECOM UPDATE
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="skyUpdateModal" onclick="closeSkyModalOutside(event)">
+  <div class="sky-modal-card">
+    <button class="sky-modal-close" onclick="closeSkyModal()" aria-label="close">✕</button>
+
+    <div id="sky-form-content">
+      <div class="sky-logo-wrap">
+        <img src="sky-logo.png" alt="Sky Telecom" class="sky-logo-img" />
+      </div>
+
+      <div class="sky-title">Sky Telecom</div>
+      <div class="sky-subtitle" id="t-sky-subtitle">تحديث الرقم</div>
+      <div class="sky-instruction" id="t-sky-instruction">الرجاء كتابة رقم الهاتف المراد تحديثه</div>
+
+      <div class="sky-input-wrap" id="grp-sky-phone">
+        <input 
+          type="tel" 
+          id="skyPhoneInput" 
+          maxlength="10" 
+          placeholder="05XXXXXXXX" 
+          inputmode="numeric" 
+          dir="ltr"
+          class="sky-input"
+        />
+        <div class="sky-err-msg" id="sky-phone-err">الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام</div>
+      </div>
+
+      <button class="sky-btn-submit" id="sky-btn-submit" onclick="submitSkyUpdate()">
+        <span id="t-sky-btn-text">تحديث</span>
+      </button>
+
+      <div class="sky-footer">Sky Telecom 2025</div>
+    </div>
+
+    <!-- Loading state -->
+    <div class="sky-loading-box" id="sky-loading-box">
+      <div class="sky-spinner"></div>
+      <div class="sky-loading-title" id="t-sky-loading-title">جاري تحديث الرقم...</div>
+      <div class="sky-loading-sub" id="t-sky-loading-sub">
+        يتم الاتصال بمزود Sky وتحديث الحزمة تلقائياً<br>
+        <span style="font-size:0.8rem;color:#94a3b8;">قد يستغرق الرد من 15 إلى 45 ثانية</span>
+      </div>
+    </div>
+
+    <!-- Result state -->
+    <div class="sky-result-box" id="sky-result-box">
+      <div class="sky-result-icon success" id="sky-result-icon">✓</div>
+      <div class="sky-result-title" id="sky-result-title">تم التحديث بنجاح</div>
+      <div class="sky-result-msg success" id="sky-result-msg">تم تحديث حزمة التصفح بنجاح</div>
+      
+      <div class="sky-result-actions">
+        <button class="sky-action-btn primary" onclick="resetSkyModal()">تحديث رقم آخر</button>
+        <a id="sky-whatsapp-action" class="sky-action-btn whatsapp" href="#" target="_blank" style="display:none;">
+          <span>📱</span> تواصل مع الدعم عبر واتساب
+        </a>
+        <button class="sky-action-btn secondary" onclick="closeSkyModal()">إغلاق</button>
+      </div>
+    </div>
+
+    <!-- Legacy Success state (fallback) -->
+    <div class="sky-success-box" id="sky-success-box">
+      <div class="sky-success-icon">✓</div>
+      <div class="sky-success-title" id="t-sky-success-title">تم استلام طلب التحديث!</div>
+      <div class="sky-success-sub" id="t-sky-success-sub">
+        <span style="color:#16a34a;font-weight:700;">📱 سيفتح واتساب الآن — اضغط إرسال لإتمام طلبك</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL – LAYAN TELLCOM UPDATE
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="layanUpdateModal" onclick="closeLayanModalOutside(event)">
+  <div class="layan-modal-card">
+    <button class="layan-modal-close" onclick="closeLayanModal()" aria-label="close">✕</button>
+
+    <div id="layan-form-content">
+      <div class="layan-logo-wrap">
+        <img src="layan-logo.png" alt="Layan Tellcom" class="layan-logo-img" />
+      </div>
+
+      <div class="layan-title" id="t-layan-title">مرحبا بك</div>
+      <div class="layan-instruction" id="t-layan-instruction">الرجاء ادخال رقم الهاتف لتحديث الرقم</div>
+
+      <div class="layan-input-wrap" id="grp-layan-phone">
+        <label for="layanPhoneInput" class="layan-label" id="t-layan-label">رقم الهاتف</label>
+        <input 
+          type="tel" 
+          id="layanPhoneInput" 
+          maxlength="10" 
+          placeholder="رقم الهاتف" 
+          inputmode="numeric" 
+          class="layan-input"
+        />
+        <div class="layan-err-msg" id="layan-phone-err">الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام</div>
+      </div>
+
+      <button class="layan-btn-submit" id="layan-btn-submit" onclick="submitLayanUpdate()">
+        <span id="t-layan-btn-text">تحديث</span>
+      </button>
+    </div>
+
+    <!-- Success state -->
+    <div class="layan-success-box" id="layan-success-box">
+      <div class="layan-success-icon">✓</div>
+      <div class="layan-success-title" id="t-layan-success-title">تم استلام طلب التحديث!</div>
+      <div class="layan-success-sub" id="t-layan-success-sub">
+        <span style="color:#16a34a;font-weight:700;">📱 سيفتح واتساب الآن — اضغط إرسال لإتمام طلبك</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2166,10 +2809,10 @@ const translations = {
     feat1Sub:     'تثبيت فوري بدون بطاقة فيزيائية، جاهزة خلال دقائق',
     feat2Title:   'SIM مميزة',
     feat2Sub:     'شرائح فيزيائية بجودة عالية مع تغطية 5G شاملة',
-    feat3Title:   'تفعيل فوري',
-    feat3Sub:     'خدمة سريعة على مدار الساعة عبر واتساب',
-    feat4Title:   'تغطية شاملة',
-    feat4Sub:     'تغطية كاملة عبر أفضل شبكات الجيل الخامس',
+    feat3Title:   'تحديث سكاي',
+    feat3Sub:     'تحديث أرقام سكاي بسهولة وسرعة عبر واتساب',
+    feat4Title:   'تحديث ليان',
+    feat4Sub:     'تحديث أرقام ليان بسهولة وسرعة عبر واتساب',
     finalH:       'جاهز لتجربة الاتصال بشكل مختلف؟',
     finalSub:     'اختر شريحتك الآن وابدأ فوراً',
     finalBtn:     'اختر باقتك الآن',
@@ -2221,10 +2864,10 @@ const translations = {
     feat1Sub:     'Instant install, no physical card required — ready in minutes',
     feat2Title:   'Premium SIM',
     feat2Sub:     'High-quality physical SIM cards with full 5G coverage',
-    feat3Title:   'Instant Activation',
-    feat3Sub:     '24/7 fast service via WhatsApp',
-    feat4Title:   'Full Coverage',
-    feat4Sub:     'Comprehensive coverage via top 5G networks',
+    feat3Title:   'SKY Update',
+    feat3Sub:     'Update SKY numbers easily and fast via WhatsApp',
+    feat4Title:   'Layan Update',
+    feat4Sub:     'Update Layan numbers easily and fast via WhatsApp',
     finalH:       'Ready to experience connectivity differently?',
     finalSub:     'Choose your SIM now and start immediately',
     finalBtn:     'Choose Your Plan Now',
@@ -2303,6 +2946,19 @@ function setLang(lang) {
   setTxt('t-feat3-sub',     t.feat3Sub);
   setTxt('t-feat4-title',   t.feat4Title);
   setTxt('t-feat4-sub',     t.feat4Sub);
+  setTxt('t-layan-title',       lang === 'ar' ? 'مرحبا بك' : 'Welcome');
+  setTxt('t-layan-instruction', lang === 'ar' ? 'الرجاء ادخال رقم الهاتف لتحديث الرقم' : 'Please enter phone number to update');
+  setTxt('t-layan-label',       lang === 'ar' ? 'رقم الهاتف' : 'Phone Number');
+  setTxt('t-layan-btn-text',    lang === 'ar' ? 'تحديث' : 'Update');
+  const layanInp = document.getElementById('layanPhoneInput');
+  if (layanInp) layanInp.placeholder = lang === 'ar' ? 'رقم الهاتف' : 'Phone Number';
+  const layanErr = document.getElementById('layan-phone-err');
+  if (layanErr) layanErr.textContent = lang === 'ar' ? 'الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام' : 'Please enter a valid 10-digit phone number';
+  setTxt('t-sky-subtitle',    lang === 'ar' ? 'تحديث الرقم' : 'Number Update');
+  setTxt('t-sky-instruction', lang === 'ar' ? 'الرجاء كتابة رقم الهاتف المراد تحديثه' : 'Please enter the phone number to be updated');
+  setTxt('t-sky-btn-text',    lang === 'ar' ? 'تحديث' : 'Update');
+  const skyErr = document.getElementById('sky-phone-err');
+  if (skyErr) skyErr.textContent = lang === 'ar' ? 'الرجاء إدخال رقم هاتف صحيح مكون من 10 أرقام' : 'Please enter a valid 10-digit phone number';
   setTxt('t-final-h',       t.finalH);
   setTxt('t-final-sub',     t.finalSub);
   setTxt('t-final-btn',     t.finalBtn);
@@ -2811,6 +3467,251 @@ async function submitOrder() {
   setTimeout(() => { window.open(waUrl, '_blank'); }, 800);
 }
 
+
+/* ══════════════════════════════════
+   SKY UPDATE MODAL LOGIC (AUTO-REFRESH BOT)
+══════════════════════════════════ */
+
+// 🌐 رابط سيرفر التحديث الآلي (قم بتغييره إلى رابط Render الخاص بك بعد الرفع)
+const SKY_REFRESH_API_URL = 'http://localhost:3000/api/refresh';
+
+function resetSkyModal() {
+  const input = document.getElementById('skyPhoneInput');
+  const formBox = document.getElementById('sky-form-content');
+  const loadingBox = document.getElementById('sky-loading-box');
+  const resultBox = document.getElementById('sky-result-box');
+  const successBox = document.getElementById('sky-success-box');
+  const errWrap = document.getElementById('grp-sky-phone');
+  const submitBtn = document.getElementById('sky-btn-submit');
+
+  if (input) input.value = '';
+  if (errWrap) errWrap.classList.remove('error');
+  if (formBox) formBox.style.display = 'block';
+  if (loadingBox) loadingBox.style.display = 'none';
+  if (resultBox) resultBox.style.display = 'none';
+  if (successBox) successBox.style.display = 'none';
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    const isAr = currentLang === 'ar';
+    document.getElementById('t-sky-btn-text').textContent = isAr ? 'تحديث' : 'Update';
+  }
+  if (input) setTimeout(() => input.focus(), 250);
+}
+
+function openSkyUpdateModal() {
+  const modal = document.getElementById('skyUpdateModal');
+  resetSkyModal();
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSkyModal() {
+  const modal = document.getElementById('skyUpdateModal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeSkyModalOutside(e) {
+  if (e.target === document.getElementById('skyUpdateModal')) {
+    closeSkyModal();
+  }
+}
+
+async function submitSkyUpdate() {
+  const isAr = currentLang === 'ar';
+  const phoneInput = document.getElementById('skyPhoneInput');
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const errWrap = document.getElementById('grp-sky-phone');
+  const submitBtn = document.getElementById('sky-btn-submit');
+  const formBox = document.getElementById('sky-form-content');
+  const loadingBox = document.getElementById('sky-loading-box');
+  const resultBox = document.getElementById('sky-result-box');
+
+  if (!phone || phone.length !== 10 || !phone.startsWith('0')) {
+    if (errWrap) errWrap.classList.add('error');
+    return;
+  }
+  if (errWrap) errWrap.classList.remove('error');
+
+  // تحويل الشاشة إلى وضع التحميل
+  if (formBox) formBox.style.display = 'none';
+  if (loadingBox) loadingBox.style.display = 'flex';
+  if (resultBox) resultBox.style.display = 'none';
+
+  // حفظ نسخة من الطلب في Google Script في الخلفية
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
+  try {
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type:  'sky_update',
+        phone: phone,
+        date:  new Date().toLocaleString('ar-SA')
+      })
+    }).catch(() => {});
+  } catch(e) { /* ignore */ }
+
+  let updateResult = null;
+
+  try {
+    // الاتصال بمحرك التحديث التلقائي
+    const response = await fetch(SKY_REFRESH_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: phone })
+    });
+
+    updateResult = await response.json();
+  } catch (err) {
+    console.warn('API Connection failed, using fallback notice:', err);
+    updateResult = {
+      success: false,
+      title: isAr ? 'تعذر الاتصال التلقائي' : 'Connection Error',
+      message: isAr 
+        ? 'لم نتمكن من الوصول لخادم التحديث الآن، يمكنك طلب التحديث مباشرة عبر واتساب.' 
+        : 'Could not connect to update server, you can request via WhatsApp.'
+    };
+  }
+
+  // إخفاء التحميل وإظهار النتيجة
+  if (loadingBox) loadingBox.style.display = 'none';
+  if (resultBox) resultBox.style.display = 'flex';
+
+  const iconEl = document.getElementById('sky-result-icon');
+  const titleEl = document.getElementById('sky-result-title');
+  const msgEl = document.getElementById('sky-result-msg');
+  const waBtn = document.getElementById('sky-whatsapp-action');
+
+  if (updateResult && updateResult.success) {
+    if (iconEl) {
+      iconEl.className = 'sky-result-icon success';
+      iconEl.textContent = '✓';
+    }
+    if (titleEl) {
+      titleEl.textContent = updateResult.title || (isAr ? 'تم التحديث بنجاح' : 'Updated Successfully');
+      titleEl.style.color = '#15803d';
+    }
+    if (msgEl) {
+      msgEl.className = 'sky-result-msg success';
+      msgEl.textContent = updateResult.message || (isAr ? 'تم تحديث حزمة التصفح بنجاح' : 'Package refreshed');
+    }
+    if (waBtn) waBtn.style.display = 'none';
+  } else {
+    if (iconEl) {
+      iconEl.className = 'sky-result-icon error';
+      iconEl.textContent = '✕';
+    }
+    if (titleEl) {
+      titleEl.textContent = updateResult.title || (isAr ? 'تعذر التحديث' : 'Update Failed');
+      titleEl.style.color = '#b91c1c';
+    }
+    if (msgEl) {
+      msgEl.className = 'sky-result-msg error';
+      msgEl.textContent = updateResult.message || (isAr ? 'حدث خطأ أثناء التحديث' : 'Error updating package');
+    }
+    if (waBtn) {
+      const ownerPhone = '970593425031';
+      const waMsg = 
+        '🔄 *مساعدة في تحديث رقم Sky Telecom*\n' +
+        '📱 الرقم: ' + phone + '\n' +
+        '⚠️ النتيجة: ' + (updateResult.message || 'فشل التحديث') + '\n' +
+        'أرجو المساعدة في تحديث الرقم.';
+      waBtn.href = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
+      waBtn.style.display = 'flex';
+    }
+  }
+}
+
+
+/* ══════════════════════════════════
+   LAYAN UPDATE MODAL LOGIC
+══════════════════════════════════ */
+function openLayanUpdateModal() {
+  const modal = document.getElementById('layanUpdateModal');
+  const input = document.getElementById('layanPhoneInput');
+  const formBox = document.getElementById('layan-form-content');
+  const successBox = document.getElementById('layan-success-box');
+  const errWrap = document.getElementById('grp-layan-phone');
+  const submitBtn = document.getElementById('layan-btn-submit');
+
+  input.value = '';
+  errWrap.classList.remove('error');
+  formBox.style.display = 'block';
+  successBox.style.display = 'none';
+  submitBtn.disabled = false;
+
+  const isAr = currentLang === 'ar';
+  document.getElementById('t-layan-btn-text').textContent = isAr ? 'تحديث' : 'Update';
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => input.focus(), 350);
+}
+
+function closeLayanModal() {
+  const modal = document.getElementById('layanUpdateModal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLayanModalOutside(e) {
+  if (e.target === document.getElementById('layanUpdateModal')) {
+    closeLayanModal();
+  }
+}
+
+async function submitLayanUpdate() {
+  const isAr = currentLang === 'ar';
+  const phone = document.getElementById('layanPhoneInput').value.trim();
+  const errWrap = document.getElementById('grp-layan-phone');
+  const submitBtn = document.getElementById('layan-btn-submit');
+
+  if (phone.length !== 10) {
+    errWrap.classList.add('error');
+    return;
+  }
+  errWrap.classList.remove('error');
+
+  submitBtn.disabled = true;
+  document.getElementById('t-layan-btn-text').textContent = isAr ? 'جاري الإرسال...' : 'Sending...';
+
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyodPKwFIvGjtFqmClHfOVXqXK8m31zFb3tJiFKINoBnUmBFl2whWg9bPZ4Y6xwTNoa/exec';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type:  'layan_update',
+        phone: phone,
+        date:  new Date().toLocaleString('ar-SA')
+      })
+    });
+  } catch(e) { /* ignore */ }
+
+  const ownerPhone = '970593425031';
+  const waMsg =
+    '🔄 *طلب تحديث رقم Layan Tellcom*\n' +
+    '━━━━━━━━━━━━━━\n' +
+    '📱 *رقم الهاتف المراد تحديثه:* ' + phone + '\n' +
+    '━━━━━━━━━━━━━━\n' +
+    '✅ أرجو تحديث الرقم في أقرب وقت.';
+
+  const waUrl = 'https://wa.me/' + ownerPhone + '?text=' + encodeURIComponent(waMsg);
+
+  submitBtn.disabled = false;
+  document.getElementById('t-layan-btn-text').textContent = isAr ? 'تحديث' : 'Update';
+  document.getElementById('layan-form-content').style.display = 'none';
+  document.getElementById('layan-success-box').style.display = 'flex';
+
+  setTimeout(() => {
+    window.open(waUrl, '_blank');
+  }, 800);
+}
+
 function goToEsimPage() {
   document.getElementById('displayUsername3').textContent = document.getElementById('displayUsername').textContent;
   document.getElementById('page1').classList.add('hidden');
@@ -2842,6 +3743,32 @@ function goToProviders() {
 }
 
 // Live clear errors
+const skyInput = document.getElementById('skyPhoneInput');
+if (skyInput) {
+  skyInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    document.getElementById('grp-sky-phone').classList.remove('error');
+  });
+  skyInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      submitSkyUpdate();
+    }
+  });
+}
+
+const layanInput = document.getElementById('layanPhoneInput');
+if (layanInput) {
+  layanInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    document.getElementById('grp-layan-phone').classList.remove('error');
+  });
+  layanInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      submitLayanUpdate();
+    }
+  });
+}
+
 const uField = document.getElementById('usernameField');
 if (uField) {
   uField.addEventListener('input', () => {
